@@ -16,287 +16,345 @@
       font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif;
     }
 
-    .screen {
+    /* 端末フレーム */
+    .device {
       width: 375px;
       min-height: 812px;
+      position: relative;
+      overflow: hidden;
       background: #fff;
+    }
+
+    /* ── 背景: メインアプリ画面 ── */
+    .bg-app {
+      position: absolute;
+      inset: 0;
+      background: #f5f5f5;
       display: flex;
       flex-direction: column;
     }
-
-    /* Status Bar */
-    .status-bar {
+    .bg-status {
       height: 54px;
       background: #fff;
       display: flex;
       align-items: flex-end;
       padding: 0 16px 8px;
       justify-content: space-between;
+      flex-shrink: 0;
     }
-    .status-time { font-size: 17px; font-weight: 600; color: #333; }
-    .status-icons { display: flex; align-items: center; gap: 6px; }
-    .status-icons svg { fill: #333; }
-
-    /* Top Navigation */
-    .top-nav {
+    .bg-status-time { font-size: 17px; font-weight: 600; color: #333; }
+    .bg-status-icons { display: flex; align-items: center; gap: 6px; }
+    .bg-nav {
       height: 44px;
       background: #fff;
+      border-bottom: 0.5px solid #e0e0e0;
       display: flex;
       align-items: center;
-      position: relative;
-      border-bottom: 0.5px solid #c7c7c7;
+      padding: 0 16px;
+      gap: 12px;
+      flex-shrink: 0;
     }
-    .nav-close {
-      width: 44px; height: 44px;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; flex-shrink: 0;
-    }
-    .nav-title {
-      position: absolute; left: 50%; transform: translateX(-50%);
-      font-size: 17px; font-weight: 600; color: #333; white-space: nowrap;
-    }
-
-    /* Paging dots */
-    .paging {
-      display: flex; justify-content: center; gap: 8px;
-      padding: 10px 16px; background: #fff;
-    }
-    .dot { width: 4px; height: 4px; border-radius: 99px; background: #d9d9d9; }
-    .dot.active { background: #ff333f; }
-
-    /* ① Asset Hero — 最初に目が行く */
-    .asset-hero {
-      margin: 0 16px;
-      background: #fff8f8;
-      border: 1.5px solid #ffd0d2;
-      border-radius: 12px;
+    .bg-nav-title { font-size: 17px; font-weight: 700; color: #333; }
+    .bg-content {
+      flex: 1;
       padding: 16px;
       display: flex;
       flex-direction: column;
       gap: 12px;
+      overflow: hidden;
     }
-    .asset-hero-label {
-      font-size: 12px;
-      color: #999;
-      font-weight: 400;
-    }
-    .asset-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-    }
-    .asset-left { display: flex; flex-direction: column; gap: 4px; }
-    .asset-name { font-size: 13px; color: #555; font-weight: 400; }
-    .asset-amount {
-      font-size: 28px;
-      font-weight: 700;
-      color: #333;
-      line-height: 1.1;
-      letter-spacing: -0.5px;
-    }
-    .asset-unit { font-size: 16px; font-weight: 600; }
-    .asset-warning {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 11px;
-      color: #ff333f;
-      margin-top: 2px;
-    }
-    .asset-divider {
-      height: 0.5px;
-      background: #ffd0d2;
-    }
-    .asset-total {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .asset-total-label { font-size: 13px; color: #555; }
-    .asset-total-amount {
-      font-size: 20px;
-      font-weight: 700;
-      color: #333;
-    }
-
-    /* ② Promo — 購入の後押し（補足） */
-    .promo-section {
-      margin: 16px 16px 0;
-    }
-    .promo-banner {
-      background: #006ed1;
+    .bg-card {
+      background: #fff;
       border-radius: 8px;
-      padding: 10px 16px;
-      text-align: center;
+      padding: 12px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      opacity: 0.6;
     }
-    .promo-sub { font-size: 12px; color: #fff; line-height: 1.5; }
-    .promo-main { font-size: 15px; font-weight: 700; color: #fff; line-height: 1.5; }
+    .bg-thumb {
+      width: 60px; height: 60px;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+    .bg-card-text { display: flex; flex-direction: column; gap: 4px; }
+    .bg-card-title { width: 140px; height: 12px; background: #e0e0e0; border-radius: 3px; }
+    .bg-card-sub   { width: 90px;  height: 10px; background: #e8e8e8; border-radius: 3px; }
+    .bg-card-price { width: 60px;  height: 12px; background: #e0e0e0; border-radius: 3px; }
 
-    /* ③ Chart — 補足ビジュアル */
-    .chart-section {
-      margin: 16px 16px 0;
+    /* 暗転オーバーレイ */
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+    }
+
+    /* ── モーダルシート ── */
+    .sheet {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border-radius: 16px 16px 0 0;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      padding-bottom: env(safe-area-inset-bottom, 0);
     }
-    .chart-label { font-size: 11px; color: #aaa; text-align: right; }
 
-    /* Action button */
-    .action-section { margin: 20px 16px 0; }
+    /* シートハンドル */
+    .sheet-handle {
+      display: flex;
+      justify-content: center;
+      padding: 10px 0 4px;
+    }
+    .sheet-handle-bar {
+      width: 36px; height: 4px;
+      background: #d9d9d9;
+      border-radius: 99px;
+    }
+
+    /* シートナビ */
+    .sheet-nav {
+      height: 44px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      border-bottom: 0.5px solid #e8e8e8;
+      padding: 0 4px;
+    }
+    .sheet-nav-close {
+      width: 44px; height: 44px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; flex-shrink: 0;
+    }
+    .sheet-nav-title {
+      position: absolute; left: 50%; transform: translateX(-50%);
+      font-size: 17px; font-weight: 600; color: #333; white-space: nowrap;
+    }
+
+    /* ページングドット */
+    .paging {
+      display: flex; justify-content: center; gap: 8px;
+      padding: 10px 0;
+    }
+    .dot { width: 4px; height: 4px; border-radius: 99px; background: #d9d9d9; }
+    .dot.active { background: #ff333f; }
+
+    /* シート本文 */
+    .sheet-body {
+      padding: 4px 16px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* 資産ヒーロー */
+    .asset-hero {
+      background: #fff8f8;
+      border: 1.5px solid #ffd0d2;
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .asset-hero-label { font-size: 11px; color: #aaa; }
+    .asset-row { display: flex; flex-direction: column; gap: 3px; }
+    .asset-name { font-size: 13px; color: #555; }
+    .asset-amount { font-size: 26px; font-weight: 700; color: #333; line-height: 1.15; letter-spacing: -0.5px; }
+    .asset-unit { font-size: 15px; font-weight: 600; }
+    .asset-warning {
+      display: flex; align-items: center; gap: 4px;
+      font-size: 11px; color: #ff333f; margin-top: 2px;
+    }
+    .asset-divider { height: 0.5px; background: #ffd0d2; }
+    .asset-total { display: flex; justify-content: space-between; align-items: center; }
+    .asset-total-label { font-size: 13px; color: #555; }
+    .asset-total-amount { font-size: 18px; font-weight: 700; color: #333; }
+
+    /* プロモ */
+    .promo-banner {
+      background: #006ed1; border-radius: 8px;
+      padding: 10px 16px; text-align: center;
+    }
+    .promo-sub  { font-size: 12px; color: #fff; line-height: 1.5; }
+    .promo-main { font-size: 15px; font-weight: 700; color: #fff; line-height: 1.5; }
+
+    /* チャート */
+    .chart-section { display: flex; flex-direction: column; gap: 4px; }
+    .chart-label { font-size: 11px; color: #bbb; text-align: right; }
+
+    /* アクションボタン */
     .action-btn {
       width: 100%; min-height: 50px;
       background: #ff333f; border: none; border-radius: 8px;
       font-size: 16px; font-weight: 700; color: #fff;
       display: flex; align-items: center; justify-content: center;
-      cursor: pointer; letter-spacing: 0.3px;
+      cursor: pointer;
     }
 
-    /* Bottom CTA */
-    .cta { padding: 12px 16px 0; margin-top: auto; }
+    /* スキップ */
     .btn-skip {
       width: 100%; min-height: 44px;
-      background: #fff; border: 1px solid #c7c7c7;
-      border-radius: 8px; font-size: 15px; font-weight: 500;
-      color: #666; display: flex; align-items: center;
-      justify-content: center; cursor: pointer;
+      background: #fff; border: 1px solid #c7c7c7; border-radius: 8px;
+      font-size: 15px; font-weight: 500; color: #666;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; margin-top: 8px;
     }
 
-    /* Home indicator */
+    /* ホームインジケーター */
     .home-indicator {
       height: 34px; display: flex;
       align-items: flex-end; justify-content: center; padding-bottom: 8px;
+      margin-top: 12px;
     }
     .home-bar { width: 134px; height: 5px; background: #333; border-radius: 100px; }
   </style>
 </head>
 <body>
-  <div class="screen">
+  <div class="device">
 
-    <!-- Status Bar -->
-    <div class="status-bar">
-      <span class="status-time">9:41</span>
-      <div class="status-icons">
-        <svg width="18" height="12" viewBox="0 0 18 12">
-          <rect x="0" y="8" width="3" height="4" rx="0.5"/>
-          <rect x="4.5" y="5.5" width="3" height="6.5" rx="0.5"/>
-          <rect x="9" y="3" width="3" height="9" rx="0.5"/>
-          <rect x="13.5" y="0" width="3" height="12" rx="0.5"/>
-        </svg>
-        <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="#333" stroke-width="1.5" stroke-linecap="round">
-          <path d="M1 4.5C3.5 2 12.5 2 15 4.5"/>
-          <path d="M3.2 6.8C5 5.1 11 5.1 12.8 6.8"/>
-          <path d="M5.5 9C6.5 8 9.5 8 10.5 9"/>
-          <circle cx="8" cy="11" r="0.8" fill="#333" stroke="none"/>
-        </svg>
-        <svg width="26" height="12" viewBox="0 0 26 12">
-          <rect x="0" y="1" width="22" height="10" rx="2" stroke="#333" stroke-width="1" fill="none"/>
-          <rect x="22.5" y="3.5" width="2" height="5" rx="1" fill="#333"/>
-          <rect x="1.5" y="2.5" width="18" height="7" rx="1.2" fill="#333"/>
-        </svg>
+    <!-- 背景: メインアプリ画面 -->
+    <div class="bg-app">
+      <div class="bg-status">
+        <span class="bg-status-time">9:41</span>
+        <div class="bg-status-icons">
+          <svg width="18" height="12" viewBox="0 0 18 12" fill="#333">
+            <rect x="0" y="8" width="3" height="4" rx="0.5"/>
+            <rect x="4.5" y="5.5" width="3" height="6.5" rx="0.5"/>
+            <rect x="9" y="3" width="3" height="9" rx="0.5"/>
+            <rect x="13.5" y="0" width="3" height="12" rx="0.5"/>
+          </svg>
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="#333" stroke-width="1.5" stroke-linecap="round">
+            <path d="M1 4.5C3.5 2 12.5 2 15 4.5"/>
+            <path d="M3.2 6.8C5 5.1 11 5.1 12.8 6.8"/>
+            <path d="M5.5 9C6.5 8 9.5 8 10.5 9"/>
+            <circle cx="8" cy="11" r="0.8" fill="#333" stroke="none"/>
+          </svg>
+          <svg width="26" height="12" viewBox="0 0 26 12">
+            <rect x="0" y="1" width="22" height="10" rx="2" stroke="#333" stroke-width="1" fill="none"/>
+            <rect x="22.5" y="3.5" width="2" height="5" rx="1" fill="#333"/>
+            <rect x="1.5" y="2.5" width="18" height="7" rx="1.2" fill="#333"/>
+          </svg>
+        </div>
       </div>
-    </div>
-
-    <!-- Top Navigation -->
-    <div class="top-nav">
-      <div class="nav-close">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round">
-          <line x1="3" y1="3" x2="15" y2="15"/>
-          <line x1="15" y1="3" x2="3" y2="15"/>
-        </svg>
+      <div class="bg-nav">
+        <span class="bg-nav-title">ホーム</span>
       </div>
-      <span class="nav-title">ビットコインをはじめよう</span>
-    </div>
-
-    <!-- Paging dots -->
-    <div class="paging">
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot active"></div>
-    </div>
-
-    <!-- ① 資産ヒーロー -->
-    <div class="asset-hero">
-      <span class="asset-hero-label">つみたてに使える資産</span>
-
-      <div class="asset-row">
-        <div class="asset-left">
-          <span class="asset-name">保有ポイント</span>
-          <span class="asset-amount"><span class="asset-unit">P</span>1,000</span>
-          <div class="asset-warning">
-            <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
-              <circle cx="7" cy="7" r="6.5" stroke="#ff333f"/>
-              <path d="M7 4v4" stroke="#ff333f" stroke-width="1.5" stroke-linecap="round"/>
-              <circle cx="7" cy="10" r="0.75" fill="#ff333f"/>
-            </svg>
-            500Pが期限切れ間近（2026/03/31）
+      <div class="bg-content">
+        <div class="bg-card">
+          <div class="bg-thumb" style="background:#e8e8e8;"></div>
+          <div class="bg-card-text">
+            <div class="bg-card-title"></div>
+            <div class="bg-card-sub"></div>
+            <div class="bg-card-price"></div>
+          </div>
+        </div>
+        <div class="bg-card">
+          <div class="bg-thumb" style="background:#e0e0e0;"></div>
+          <div class="bg-card-text">
+            <div class="bg-card-title"></div>
+            <div class="bg-card-sub"></div>
+            <div class="bg-card-price"></div>
+          </div>
+        </div>
+        <div class="bg-card">
+          <div class="bg-thumb" style="background:#e8e8e8;"></div>
+          <div class="bg-card-text">
+            <div class="bg-card-title"></div>
+            <div class="bg-card-sub"></div>
+            <div class="bg-card-price"></div>
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="asset-divider"></div>
+    <!-- 暗転オーバーレイ -->
+    <div class="overlay"></div>
 
-      <div class="asset-row">
-        <div class="asset-left">
-          <span class="asset-name">売上金</span>
-          <span class="asset-amount"><span class="asset-unit">¥</span>3,000</span>
+    <!-- モーダルシート -->
+    <div class="sheet">
+
+      <div class="sheet-handle">
+        <div class="sheet-handle-bar"></div>
+      </div>
+
+      <div class="sheet-nav">
+        <div class="sheet-nav-close">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round">
+            <line x1="3" y1="3" x2="15" y2="15"/>
+            <line x1="15" y1="3" x2="3" y2="15"/>
+          </svg>
         </div>
+        <span class="sheet-nav-title">ビットコインをはじめよう</span>
       </div>
 
-      <div class="asset-divider"></div>
-
-      <div class="asset-total">
-        <span class="asset-total-label">合計</span>
-        <span class="asset-total-amount">約 ¥4,000</span>
+      <div class="paging">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot active"></div>
       </div>
-    </div>
 
-    <!-- ② プロモ（後押し） -->
-    <div class="promo-section">
-      <div class="promo-banner">
-        <p class="promo-sub">1,000円を3ヶ月つみたてると</p>
-        <p class="promo-main">さらに500円分🪙もらえる</p>
+      <div class="sheet-body">
+
+        <!-- 資産ヒーロー -->
+        <div class="asset-hero">
+          <span class="asset-hero-label">つみたてに使える資産</span>
+          <div class="asset-row">
+            <span class="asset-name">保有ポイント</span>
+            <span class="asset-amount"><span class="asset-unit">P</span>1,000</span>
+            <div class="asset-warning">
+              <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+                <circle cx="7" cy="7" r="6.5" stroke="#ff333f"/>
+                <path d="M7 4v4" stroke="#ff333f" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="7" cy="10" r="0.75" fill="#ff333f"/>
+              </svg>
+              500Pが期限切れ間近（2026/03/31）
+            </div>
+          </div>
+          <div class="asset-divider"></div>
+          <div class="asset-row">
+            <span class="asset-name">売上金</span>
+            <span class="asset-amount"><span class="asset-unit">¥</span>3,000</span>
+          </div>
+          <div class="asset-divider"></div>
+          <div class="asset-total">
+            <span class="asset-total-label">合計</span>
+            <span class="asset-total-amount">約 ¥4,000</span>
+          </div>
+        </div>
+
+        <!-- プロモ -->
+        <div class="promo-banner">
+          <p class="promo-sub">1,000円を3ヶ月つみたてると</p>
+          <p class="promo-main">さらに500円分🪙もらえる</p>
+        </div>
+
+        <!-- チャート -->
+        <div class="chart-section">
+          <span class="chart-label">ビットコイン価格推移（イメージ）</span>
+          <svg width="343" height="72" viewBox="0 0 343 72" fill="none">
+            <line x1="0" y1="65" x2="343" y2="65" stroke="#f0f0f0" stroke-width="1"/>
+            <line x1="0" y1="42" x2="343" y2="42" stroke="#f0f0f0" stroke-width="1" stroke-dasharray="4 3"/>
+            <line x1="0" y1="20" x2="343" y2="20" stroke="#f0f0f0" stroke-width="1" stroke-dasharray="4 3"/>
+            <path d="M0,60 57,52 114,46 171,36 228,24 285,14 343,6" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <path d="M0,60 57,52 114,46 171,36 228,24 285,14 343,6 L343,65 L0,65 Z" fill="#ff333f" opacity="0.08"/>
+            <circle cx="343" cy="6" r="4" fill="#ff333f" stroke="#fff" stroke-width="2"/>
+          </svg>
+        </div>
+
+        <!-- ボタン -->
+        <button class="action-btn">毎月1,000円からつみたててみる</button>
+        <button class="btn-skip">今はやめておく</button>
+
       </div>
-    </div>
 
-    <!-- ③ チャート（補足） -->
-    <div class="chart-section">
-      <span class="chart-label">ビットコイン価格推移（イメージ）</span>
-      <svg width="343" height="90" viewBox="0 0 343 90" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <line x1="0" y1="80" x2="343" y2="80" stroke="#f0f0f0" stroke-width="1"/>
-        <line x1="0" y1="55" x2="343" y2="55" stroke="#f0f0f0" stroke-width="1" stroke-dasharray="4 3"/>
-        <line x1="0" y1="30" x2="343" y2="30" stroke="#f0f0f0" stroke-width="1" stroke-dasharray="4 3"/>
-        <polyline
-          points="0,72 57,65 114,58 171,48 228,34 285,20 343,10"
-          stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"
-        />
-        <path
-          d="M0,72 57,65 114,58 171,48 228,34 285,20 343,10 L343,80 L0,80 Z"
-          fill="url(#chartGrad)" opacity="0.15"
-        />
-        <defs>
-          <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#ff333f"/>
-            <stop offset="100%" stop-color="#ff333f" stop-opacity="0"/>
-          </linearGradient>
-        </defs>
-        <circle cx="343" cy="10" r="4" fill="#ff333f" stroke="#fff" stroke-width="2"/>
-      </svg>
-    </div>
+      <div class="home-indicator">
+        <div class="home-bar"></div>
+      </div>
 
-    <!-- アクションボタン -->
-    <div class="action-section">
-      <button class="action-btn">毎月1,000円からつみたててみる</button>
-    </div>
-
-    <!-- スキップ -->
-    <div class="cta">
-      <button class="btn-skip">今はやめておく</button>
-    </div>
-
-    <!-- Home Indicator -->
-    <div class="home-indicator">
-      <div class="home-bar"></div>
     </div>
 
   </div>
