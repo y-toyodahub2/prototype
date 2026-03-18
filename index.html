@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Journal</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif;
+      background: #f5f5f5;
+      color: #333;
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+    }
+    header {
+      background: #fff;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    header h1 { font-size: 18px; font-weight: 700; }
+    .new-btn {
+      margin-left: auto;
+      background: #ff4545;
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      padding: 8px 16px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .new-btn:active { opacity: 0.8; }
+    main { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 16px;
+      border: 1px solid #e8e8e8;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .mood { font-size: 20px; }
+    .card-title { font-size: 16px; font-weight: 600; flex: 1; }
+    .card-date { font-size: 12px; color: #999; }
+    .card-body { font-size: 14px; color: #666; line-height: 1.6; }
+    .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+    .tag {
+      background: #f0f0f0;
+      color: #555;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 10px;
+    }
+    .empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: #aaa;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>📔 My Journal</h1>
+    <button class="new-btn">+ 新しい記録</button>
+  </header>
+  <main>
+    <div class="card">
+      <div class="card-header">
+        <span class="mood">😊</span>
+        <span class="card-title">今日はとても良い一日だった</span>
+        <span class="card-date">3/18</span>
+      </div>
+      <div class="card-body">朝から天気が良くて、仕事もうまくいった。夜は友人と食事して充実した一日。</div>
+      <div class="tags">
+        <span class="tag">仕事</span>
+        <span class="tag">友人</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="mood">😌</span>
+        <span class="card-title">読書の時間</span>
+        <span class="card-date">3/17</span>
+      </div>
+      <div class="card-body">久しぶりに本を読んだ。静かな時間が心地よかった。</div>
+      <div class="tags">
+        <span class="tag">趣味</span>
+        <span class="tag">読書</span>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
