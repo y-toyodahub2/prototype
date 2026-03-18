@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ビットコインをはじめよう</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif;
+    }
+
+    .screen {
+      width: 375px;
+      min-height: 812px;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Status Bar */
+    .status-bar {
+      height: 54px;
+      background: #fff;
+      display: flex;
+      align-items: flex-end;
+      padding: 0 16px 8px;
+      justify-content: space-between;
+    }
+    .status-time {
+      font-size: 17px;
+      font-weight: 600;
+      color: #333;
+      letter-spacing: 0;
+    }
+    .status-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .status-icons svg {
+      fill: #333;
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      height: 44px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      position: relative;
+      border-bottom: 0.5px solid #c7c7c7;
+    }
+    .nav-close {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .nav-title {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 17px;
+      font-weight: 600;
+      color: #333;
+      white-space: nowrap;
+    }
+
+    /* Paging dots */
+    .paging {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: #fff;
+    }
+    .dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 99px;
+      background: #d9d9d9;
+    }
+    .dot.active {
+      background: #ff333f;
+    }
+
+    /* Illustration */
+    .illustration {
+      display: flex;
+      justify-content: center;
+      padding: 0;
+      background: #fff;
+      height: 240px;
+      overflow: hidden;
+      position: relative;
+    }
+    .illustration-circle {
+      width: 240px;
+      height: 240px;
+      background: #f0f0f0;
+      border-radius: 50%;
+      overflow: hidden;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .illustration-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Content area */
+    .content {
+      flex: 1;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 16px 24px 0;
+    }
+
+    /* Speech bubble */
+    .speech-bubble {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .bubble-box {
+      background: #4dc9ff;
+      border-radius: 3.5px;
+      padding: 6px 16px 4px;
+      width: 100%;
+    }
+    .bubble-box p {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      text-align: center;
+    }
+    .bubble-tip {
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 10px solid #4dc9ff;
+    }
+
+    /* Main title */
+    .main-title {
+      text-align: center;
+    }
+    .main-title .headline {
+      font-size: 26px;
+      font-weight: 700;
+      color: #333;
+      letter-spacing: 0.5px;
+    }
+    .main-title .headline span {
+      font-size: 20px;
+    }
+    .main-title .subline {
+      font-size: 20px;
+      font-weight: 700;
+      color: #333;
+      margin-top: 2px;
+    }
+
+    /* Info card */
+    .info-card {
+      margin: 0 0;
+      border: 0.5px solid #c7c7c7;
+      border-radius: 8px;
+      padding: 8px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .info-label {
+      font-size: 12px;
+      color: #333;
+    }
+    .info-value {
+      font-size: 12px;
+      font-weight: 600;
+      color: #333;
+      white-space: nowrap;
+    }
+    .info-warning {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      color: #ff333f;
+    }
+    .info-warning svg {
+      flex-shrink: 0;
+    }
+
+    /* Promo banner */
+    .promo-wrap {
+      padding: 0 16px;
+    }
+    .promo-banner {
+      background: #006ed1;
+      border-radius: 8px;
+      padding: 6px 12px;
+      text-align: center;
+    }
+    .promo-banner .promo-sub {
+      font-size: 12px;
+      color: #fff;
+      line-height: 1.4;
+    }
+    .promo-banner .promo-main {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.4;
+    }
+    .promo-beak {
+      display: flex;
+      padding-left: 48px;
+    }
+    .promo-beak-inner {
+      width: 0;
+      height: 0;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-top: 8px solid #006ed1;
+    }
+
+    /* Checkbox row */
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 16px;
+      min-height: 56px;
+    }
+    .checkbox {
+      width: 20px;
+      height: 20px;
+      background: #006ed1;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .checkbox svg {
+      stroke: #fff;
+      fill: none;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .checkbox-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .checkbox-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333;
+      line-height: 1.4;
+    }
+    .checkbox-hint {
+      font-size: 12px;
+      color: #666;
+    }
+
+    /* Bottom CTA */
+    .cta {
+      background: #fff;
+      padding: 16px;
+      margin-top: auto;
+    }
+    .cta-buttons {
+      display: flex;
+      gap: 16px;
+    }
+    .btn {
+      flex: 1;
+      min-height: 44px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-outline {
+      background: #fff;
+      border: 1px solid #ff333f;
+      color: #ff333f;
+    }
+    .btn-fill {
+      background: #ff333f;
+      color: #fff;
+    }
+
+    /* Home indicator */
+    .home-indicator {
+      height: 34px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 8px;
+    }
+    .home-bar {
+      width: 134px;
+      height: 5px;
+      background: #333;
+      border-radius: 100px;
+    }
+  </style>
+</head>
+<body>
+  <div class="screen">
+
+    <!-- Status Bar -->
+    <div class="status-bar">
+      <span class="status-time">9:41</span>
+      <div class="status-icons">
+        <!-- Signal -->
+        <svg width="18" height="12" viewBox="0 0 18 12">
+          <rect x="0" y="8" width="3" height="4" rx="0.5"/>
+          <rect x="4.5" y="5.5" width="3" height="6.5" rx="0.5"/>
+          <rect x="9" y="3" width="3" height="9" rx="0.5"/>
+          <rect x="13.5" y="0" width="3" height="12" rx="0.5"/>
+        </svg>
+        <!-- Wifi -->
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="#333" stroke-width="1.5" stroke-linecap="round">
+          <path d="M1 4.5C3.5 2 12.5 2 15 4.5"/>
+          <path d="M3.2 6.8C5 5.1 11 5.1 12.8 6.8"/>
+          <path d="M5.5 9C6.5 8 9.5 8 10.5 9"/>
+          <circle cx="8" cy="11" r="0.8" fill="#333" stroke="none"/>
+        </svg>
+        <!-- Battery -->
+        <svg width="26" height="12" viewBox="0 0 26 12">
+          <rect x="0" y="1" width="22" height="10" rx="2" stroke="#333" stroke-width="1" fill="none"/>
+          <rect x="22.5" y="3.5" width="2" height="5" rx="1" fill="#333"/>
+          <rect x="1.5" y="2.5" width="18" height="7" rx="1.2" fill="#333"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Top Navigation -->
+    <div class="top-nav">
+      <div class="nav-close">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round">
+          <line x1="3" y1="3" x2="15" y2="15"/>
+          <line x1="15" y1="3" x2="3" y2="15"/>
+        </svg>
+      </div>
+      <span class="nav-title">ビットコインをはじめよう</span>
+    </div>
+
+    <!-- Paging dots -->
+    <div class="paging">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot active"></div>
+    </div>
+
+    <!-- Illustration -->
+    <div class="illustration">
+      <div class="illustration-circle">
+        <img src="https://www.figma.com/api/mcp/asset/8a8d8daa-2c3a-4270-8ea6-c4990299ee87" alt="illustration" />
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+
+      <!-- Speech bubble -->
+      <div class="speech-bubble">
+        <div class="bubble-box">
+          <p>手間なく、かしこく</p>
+        </div>
+        <div class="bubble-tip"></div>
+      </div>
+
+      <!-- Main title -->
+      <div class="main-title">
+        <div class="headline">
+          <span>自由に</span>「つみたて」
+        </div>
+        <div class="subline">未来のためのお金</div>
+      </div>
+
+      <!-- Info card -->
+      <div class="info-card">
+        <div class="info-row">
+          <span class="info-label">保有ポイント</span>
+          <span class="info-value">P1,000</span>
+        </div>
+        <div class="info-warning">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <circle cx="7" cy="7" r="6.5" stroke="#ff333f"/>
+            <path d="M7 4v4" stroke="#ff333f" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="7" cy="10" r="0.75" fill="#ff333f"/>
+          </svg>
+          500ポイントが期限切れ間近（2026/03/31）
+        </div>
+        <div class="info-row" style="margin-top:4px;">
+          <span class="info-label">メルペイ残高</span>
+          <span class="info-value">¥3,000</span>
+        </div>
+      </div>
+
+      <!-- Promo banner -->
+      <div class="promo-wrap">
+        <div class="promo-banner">
+          <p class="promo-sub">1,000円を3ヶ月つみたてると</p>
+          <p class="promo-main">さらに500円分🪙もらえる</p>
+        </div>
+        <div class="promo-beak">
+          <div class="promo-beak-inner"></div>
+        </div>
+      </div>
+
+      <!-- Checkbox -->
+      <div class="checkbox-row">
+        <div class="checkbox">
+          <svg width="12" height="10" viewBox="0 0 12 10">
+            <polyline points="1.5,5 4.5,8 10.5,1.5"/>
+          </svg>
+        </div>
+        <div class="checkbox-text">
+          <span class="checkbox-label">毎月1,000円からつみたててみる</span>
+          <span class="checkbox-hint">金額・頻度・つみたて日の変更、解除はいつでもできます</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom CTA -->
+    <div class="cta">
+      <div class="cta-buttons">
+        <button class="btn btn-outline">戻る</button>
+        <button class="btn btn-fill">次へ</button>
+      </div>
+    </div>
+
+    <!-- Home Indicator -->
+    <div class="home-indicator">
+      <div class="home-bar"></div>
+    </div>
+
+  </div>
+</body>
+</html>
