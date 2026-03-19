@@ -304,19 +304,6 @@
       cursor: pointer;
     }
 
-    /* ⑤ チャート（補足） */
-    .chart-section {
-      display: flex;
-      flex-direction: column;
-      gap: var(--spacing4);
-      padding-bottom: var(--spacing4);
-    }
-    .chart-label {
-      font-size: var(--fontsize-xsmall);
-      font-weight: var(--fontweight-regular);
-      color: var(--foreground-basic-secondary);
-    }
-
     /* Home indicator */
     .home-indicator {
       height: 34px;
@@ -430,20 +417,6 @@
         <!-- ④ スキップ：テキストリンク -->
         <button class="btn-skip">今はやめておく</button>
 
-        <!-- ⑤ チャート（補足） -->
-        <div class="chart-section">
-          <span class="chart-label">ビットコインは長期で右肩上がりの傾向があります</span>
-          <svg width="343" height="64" viewBox="0 0 343 64" fill="none">
-            <line x1="0" y1="57" x2="343" y2="57" stroke="#eeeeee" stroke-width="1"/>
-            <line x1="0" y1="36" x2="343" y2="36" stroke="#eeeeee" stroke-width="0.5" stroke-dasharray="4 3"/>
-            <line x1="0" y1="16" x2="343" y2="16" stroke="#eeeeee" stroke-width="0.5" stroke-dasharray="4 3"/>
-            <path d="M0,52 57,46 114,40 171,30 228,19 285,10 343,4"
-              stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M0,52 57,46 114,40 171,30 228,19 285,10 343,4 L343,57 L0,57 Z"
-              fill="#ff333f" opacity="0.07"/>
-            <circle cx="343" cy="4" r="4" fill="#ff333f" stroke="white" stroke-width="2"/>
-          </svg>
-        </div>
 
       </div>
 
