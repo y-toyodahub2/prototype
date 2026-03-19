@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ビットコイン価格推移</title>
+  <style>
+    /* =============================================
+       DS4.0 Design Tokens
+       ============================================= */
+    :root {
+      --foreground-basic-primary:     #333333;
+      --foreground-basic-secondary:   #666666;
+      --foreground-basic-tertiary:    #ffffff;
+      --foreground-attention-primary: #ff333f;
+
+      --background-basic-primary:   #f5f5f5;
+      --background-basic-secondary: #eeeeee;
+      --background-basic-tertiary:  #ffffff;
+      --background-brand-primary:   #ff333f;
+      --background-accent-primary:  #006ed1;
+
+      --border-basic-primary: #c7c7c7;
+
+      --typeface-ios: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', sans-serif;
+
+      --fontweight-bold:    600;
+      --fontweight-regular: 300;
+
+      --fontsize-large:  17px;
+      --fontsize-medium: 15px;
+      --fontsize-small:  14px;
+      --fontsize-xsmall: 12px;
+
+      --lineheight-body:   1.4;
+      --lineheight-button: 1.25;
+
+      --spacing4:  4px;
+      --spacing8:  8px;
+      --spacing12: 12px;
+      --spacing16: 16px;
+      --spacing24: 24px;
+
+      --radius-medium: 8px;
+      --radius-large:  16px;
+
+      --border-extra-thin: 0.5px;
+      --border-thin:       1px;
+
+      /* ページ固有カラー（Figmaデザイン準拠） */
+      --background-page: #ffef5f;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--background-basic-secondary);
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: var(--typeface-ios);
+      color: var(--foreground-basic-primary);
+    }
+
+    /* =============================================
+       Device
+       ============================================= */
+    .device {
+      width: 375px;
+      min-height: 812px;
+      background: var(--background-page);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ステータスバー */
+    .status-bar {
+      height: 54px;
+      display: flex;
+      align-items: flex-end;
+      padding: 0 var(--spacing16) var(--spacing8);
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .status-time {
+      font-size: var(--fontsize-large);
+      font-weight: var(--fontweight-bold);
+      color: var(--foreground-basic-primary);
+    }
+    .status-icons { display: flex; align-items: center; gap: var(--spacing8); }
+
+    /* =============================================
+       ページコンテンツ
+       ============================================= */
+    .page-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 0 var(--spacing24) var(--spacing16);
+      gap: var(--spacing16);
+    }
+
+    /* トップバー：ロゴ + 注意事項 */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: var(--spacing8);
+    }
+    .logo {
+      font-size: 16px;
+      font-weight: var(--fontweight-bold);
+      color: var(--foreground-basic-primary);
+      letter-spacing: -0.3px;
+    }
+    .disclaimer-link {
+      font-size: var(--fontsize-xsmall);
+      color: var(--foreground-basic-primary);
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      text-decoration: none;
+    }
+    .disclaimer-link svg {
+      flex-shrink: 0;
+    }
+
+    /* 大見出し */
+    .headline {
+      font-size: 26px;
+      font-weight: var(--fontweight-bold);
+      line-height: 1.6;
+      color: var(--foreground-basic-primary);
+      text-align: center;
+      letter-spacing: -0.5px;
+    }
+
+    /* =============================================
+       チャートカード
+       ============================================= */
+    .chart-card {
+      background: var(--background-basic-tertiary);
+      border-radius: var(--spacing4);
+      padding: var(--spacing12) var(--spacing8) var(--spacing8);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing4);
+    }
+    .chart-inner {
+      display: flex;
+      align-items: flex-start;
+    }
+    .chart-y-axis {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex-shrink: 0;
+      height: 166px;
+      padding-right: var(--spacing4);
+      align-items: flex-end;
+    }
+    .y-label {
+      font-size: 5.5px;
+      color: var(--foreground-basic-primary);
+      white-space: nowrap;
+      line-height: 1;
+    }
+    .chart-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .chart-images {
+      position: relative;
+      width: 100%;
+      height: 166px;
+    }
+    .chart-grid {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+    }
+    .chart-line {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 126px;
+      object-fit: fill;
+    }
+    .chart-x-labels {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 2px;
+    }
+    .x-label {
+      font-size: 5px;
+      color: var(--foreground-basic-primary);
+      white-space: nowrap;
+    }
+    .chart-y-title-wrap {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-size: 7px;
+      font-weight: var(--fontweight-bold);
+      color: var(--foreground-basic-primary);
+      align-self: center;
+      white-space: nowrap;
+      margin-right: 2px;
+      flex-shrink: 0;
+    }
+
+    /* 注意書き */
+    .notes {
+      font-size: 10px;
+      font-weight: var(--fontweight-regular);
+      line-height: 1.6;
+      color: var(--foreground-basic-primary);
+    }
+
+    /* 次へボタン */
+    .action-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      background: var(--background-brand-primary);
+      border-radius: var(--radius-medium);
+      font-family: var(--typeface-ios);
+      font-size: var(--fontsize-medium);
+      font-weight: var(--fontweight-bold);
+      line-height: var(--lineheight-button);
+      color: var(--foreground-basic-tertiary);
+      text-decoration: none;
+      margin-top: auto;
+    }
+
+    /* Home indicator */
+    .home-indicator {
+      height: 34px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: var(--spacing8);
+    }
+    .home-bar {
+      width: 134px;
+      height: 5px;
+      background: var(--foreground-basic-primary);
+      border-radius: 100px;
+    }
+  </style>
+</head>
+<body>
+  <div class="device">
+
+    <!-- ステータスバー -->
+    <div class="status-bar">
+      <span class="status-time">9:41</span>
+      <div class="status-icons">
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="#333">
+          <rect x="0" y="8" width="3" height="4" rx="0.5"/>
+          <rect x="4.5" y="5.5" width="3" height="6.5" rx="0.5"/>
+          <rect x="9" y="3" width="3" height="9" rx="0.5"/>
+          <rect x="13.5" y="0" width="3" height="12" rx="0.5"/>
+        </svg>
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="#333" stroke-width="1.5" stroke-linecap="round">
+          <path d="M1 4.5C3.5 2 12.5 2 15 4.5"/>
+          <path d="M3.2 6.8C5 5.1 11 5.1 12.8 6.8"/>
+          <path d="M5.5 9C6.5 8 9.5 8 10.5 9"/>
+          <circle cx="8" cy="11" r="0.8" fill="#333" stroke="none"/>
+        </svg>
+        <svg width="26" height="12" viewBox="0 0 26 12">
+          <rect x="0" y="1" width="22" height="10" rx="2" stroke="#333" stroke-width="1" fill="none"/>
+          <rect x="22.5" y="3.5" width="2" height="5" rx="1" fill="#333"/>
+          <rect x="1.5" y="2.5" width="18" height="7" rx="1.2" fill="#333"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- ページコンテンツ -->
+    <div class="page-content">
+
+      <!-- トップバー -->
+      <div class="topbar">
+        <span class="logo">mercoin</span>
+        <a class="disclaimer-link" href="#">
+          注意事項
+          <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="#333" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="2,1 7,4 2,7"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- 大見出し -->
+      <p class="headline">1ビットコインあたりの<br>直近5年間の価格変動を<br>グラフにしてみると…👀</p>
+
+      <!-- チャートカード -->
+      <div class="chart-card">
+        <div class="chart-inner">
+          <!-- 縦軸タイトル -->
+          <div class="chart-y-title-wrap">１ビットコインあたりの価格</div>
+
+          <!-- 縦軸ラベル -->
+          <div class="chart-y-axis">
+            <span class="y-label">¥20,000,000</span>
+            <span class="y-label">¥15,000,000</span>
+            <span class="y-label">¥10,000,000</span>
+            <span class="y-label">¥5,000,000</span>
+            <span class="y-label">¥0</span>
+          </div>
+
+          <!-- チャート本体 -->
+          <div class="chart-area">
+            <div class="chart-images">
+              <img class="chart-grid" src="https://www.figma.com/api/mcp/asset/e0394479-7fe1-4edf-aed6-5fb365db412d" alt="チャートグリッド">
+              <img class="chart-line" src="https://www.figma.com/api/mcp/asset/4074ab51-b023-490c-901f-b205c4f9b751" alt="価格推移ライン">
+            </div>
+            <div class="chart-x-labels">
+              <span class="x-label">2019/01/01</span>
+              <span class="x-label">2020/01/01</span>
+              <span class="x-label">2021/01/01</span>
+              <span class="x-label">2022/01/01</span>
+              <span class="x-label">2023/01/01</span>
+              <span class="x-label">2024/01/01</span>
+              <span class="x-label">2025/01/01</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 注意書き -->
+      <p class="notes">
+        ※将来の価格上昇を保証するものではありません<br>
+        ※このグラフは、2019年1月1日～2025年3月10日における実際の1ビットコインあたりの価格推移です（外部データ利用／終値・中値）<br>
+        ※弊社サービスにおける実際の暗号資産の売買では、スプレッド（取引コスト）を含んだ金額がお客さまへの提示価格になります
+      </p>
+
+      <!-- 次へ -->
+      <a class="action-btn" href="bitcoin.html">次へ</a>
+
+    </div>
+
+    <div class="home-indicator"><div class="home-bar"></div></div>
+  </div>
+</body>
+</html>
