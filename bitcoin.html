@@ -217,8 +217,8 @@
       display: flex;
       align-items: center;
       gap: var(--spacing8);
-      background: #fff5f5;
-      border: var(--border-thin) solid #ffb3b3;
+      background: var(--background-basic-tertiary);
+      border: var(--border-thin) solid var(--foreground-attention-primary);
       border-radius: var(--radius-medium);
       padding: var(--spacing8) var(--spacing12);
     }
@@ -251,43 +251,35 @@
       color: var(--foreground-basic-secondary);
     }
     .asset-amount {
-      font-size: 22px;
+      font-size: var(--fontsize-large);
       font-weight: var(--fontweight-bold);
-      line-height: 1.15;
+      line-height: var(--lineheight-body);
       color: var(--foreground-basic-primary);
-      letter-spacing: -0.5px;
     }
-    .asset-unit { font-size: var(--fontsize-small); }
+    .asset-unit { font-size: var(--fontsize-xsmall); }
 
-    /* ③ ベネフィット + プライマリCTA */
-    .cta-group { display: flex; flex-direction: column; }
-    .nudge-banner {
-      background: var(--background-accent-primary);
-      border-radius: var(--radius-medium) var(--radius-medium) 0 0;
-      padding: var(--spacing8) var(--spacing16);
+    /* ③ プライマリCTA + 補足テキスト */
+    .cta-group { display: flex; flex-direction: column; gap: var(--spacing8); }
+    .nudge-hint {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      gap: 2px;
-    }
-    .nudge-text {
+      justify-content: center;
+      gap: var(--spacing4);
       font-size: var(--fontsize-xsmall);
       font-weight: var(--fontweight-regular);
       line-height: var(--lineheight-body);
-      color: rgba(255, 255, 255, 0.85);
+      color: var(--foreground-basic-secondary);
     }
-    .nudge-highlight {
-      font-size: var(--fontsize-small);
+    .nudge-hint strong {
       font-weight: var(--fontweight-bold);
-      line-height: var(--lineheight-body);
-      color: var(--foreground-basic-tertiary);
+      color: var(--background-accent-primary);
     }
     .action-btn {
       width: 100%;
       min-height: 44px;
       background: var(--background-brand-primary);
       border: none;
-      border-radius: 0 0 var(--radius-medium) var(--radius-medium);
+      border-radius: var(--radius-medium);
       font-family: var(--typeface-ios);
       font-size: var(--fontsize-medium);
       font-weight: var(--fontweight-bold);
@@ -429,13 +421,10 @@
           </div>
         </div>
 
-        <!-- ③ ベネフィット + プライマリCTA -->
+        <!-- ③ プライマリCTA + 補足テキスト -->
         <div class="cta-group">
-          <div class="nudge-banner">
-            <span class="nudge-text">1,000円を3ヶ月つみたてると</span>
-            <span class="nudge-highlight">さらに500円分🪙もらえる</span>
-          </div>
           <button class="action-btn">まずつみたててみる</button>
+          <p class="nudge-hint">3ヶ月続けると <strong>500円分🪙もらえる</strong></p>
         </div>
 
         <!-- ④ スキップ：テキストリンク -->
