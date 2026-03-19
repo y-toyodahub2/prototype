@@ -156,6 +156,7 @@
     .sheet {
       position: absolute;
       bottom: 0; left: 0; right: 0;
+      height: 540px;
       background: var(--background-basic-tertiary);
       border-radius: var(--radius-large) var(--radius-large) 0 0;
       display: flex;
@@ -206,10 +207,12 @@
        Sheet Body
        ============================================= */
     .sheet-body {
+      flex: 1;
       padding: var(--spacing4) var(--spacing16) 0;
       display: flex;
       flex-direction: column;
       gap: var(--spacing12);
+      overflow: hidden;
     }
 
     /* ① 期限切れアテンションバー */
@@ -258,7 +261,40 @@
     }
     .asset-unit { font-size: var(--fontsize-xsmall); }
 
-    /* ③ プライマリCTA + 補足テキスト */
+    /* ③ 金額選択 */
+    .amount-section {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing8);
+    }
+    .amount-label {
+      font-size: var(--fontsize-xsmall);
+      font-weight: var(--fontweight-regular);
+      color: var(--foreground-basic-secondary);
+    }
+    .amount-options {
+      display: flex;
+      gap: var(--spacing8);
+    }
+    .amount-btn {
+      flex: 1;
+      height: 44px;
+      background: var(--background-basic-tertiary);
+      border: var(--border-thin) solid var(--border-basic-primary);
+      border-radius: var(--radius-medium);
+      font-family: var(--typeface-ios);
+      font-size: var(--fontsize-medium);
+      font-weight: var(--fontweight-bold);
+      color: var(--foreground-basic-primary);
+      cursor: pointer;
+    }
+    .amount-btn.active {
+      background: var(--background-brand-primary);
+      border-color: var(--background-brand-primary);
+      color: var(--foreground-basic-tertiary);
+    }
+
+    /* ④ プライマリCTA + 補足テキスト */
     .cta-group { display: flex; flex-direction: column; gap: var(--spacing8); }
     .nudge-hint {
       display: flex;
@@ -408,9 +444,19 @@
           </div>
         </div>
 
-        <!-- ③ プライマリCTA + 補足テキスト -->
+        <!-- ③ 金額選択 -->
+        <div class="amount-section">
+          <p class="amount-label">つみたて金額を選ぶ</p>
+          <div class="amount-options">
+            <button class="amount-btn">¥500</button>
+            <button class="amount-btn active">¥1,000</button>
+            <button class="amount-btn">¥3,000</button>
+          </div>
+        </div>
+
+        <!-- ④ プライマリCTA + 補足テキスト -->
         <div class="cta-group">
-          <button class="action-btn">まずつみたててみる</button>
+          <button class="action-btn">¥1,000 つみたててみる</button>
           <p class="nudge-hint">3ヶ月続けると <strong>500円分🪙もらえる</strong></p>
         </div>
 
