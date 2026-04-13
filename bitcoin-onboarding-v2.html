@@ -521,17 +521,17 @@
     .modal-sheet {
       width: 100%;
       background: var(--bg-primary);
-      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      border-radius: 12px 12px 0 0;
       display: flex;
       flex-direction: column;
       transform: translateY(100%);
       transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-      max-height: 67%;
+      height: calc(100% * 2 / 3);
     }
     .modal-overlay.is-open .modal-sheet { transform: translateY(0); }
 
     .drag-handle-wrap {
-      padding: 12px 0 8px;
+      padding: 8px 0 4px;
       display: flex;
       justify-content: center;
       flex-shrink: 0;
@@ -542,15 +542,36 @@
       background: var(--dot-inactive);
       border-radius: var(--radius-full);
     }
+    /* DS ModalHeader */
     .modal-header {
-      padding: 0 var(--space-16) var(--space-16);
-      text-align: center;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
       flex-shrink: 0;
+      padding: 0 var(--space-16);
     }
+    .modal-close-btn {
+      position: absolute;
+      left: var(--space-4);
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+      border-radius: var(--radius-full);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .modal-close-btn:active { opacity: 0.4; }
     .modal-title {
       font-size: var(--size-lg);
       font-weight: var(--fw-bold);
       color: var(--text-primary);
+      text-align: center;
     }
     .options-list {
       overflow-y: auto;
@@ -850,8 +871,14 @@
         <div class="drag-handle"></div>
       </div>
       <div class="modal-header" onclick="event.stopPropagation()">
+        <button class="modal-close-btn" onclick="closeModal('amount')">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M18 6L6 18M6 6l12 12" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
         <p class="modal-title">金額を選択</p>
       </div>
+      <div class="separator" onclick="event.stopPropagation()"></div>
       <div class="options-list" onclick="event.stopPropagation()">
         <div class="option-item" data-value="500"   data-label="500円"    onclick="selectOption('amount',this)">
           <span class="option-label">500円</span>
@@ -891,8 +918,14 @@
         <div class="drag-handle"></div>
       </div>
       <div class="modal-header" onclick="event.stopPropagation()">
+        <button class="modal-close-btn" onclick="closeModal('frequency')">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M18 6L6 18M6 6l12 12" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
         <p class="modal-title">頻度を選択</p>
       </div>
+      <div class="separator" onclick="event.stopPropagation()"></div>
       <div class="options-list" onclick="event.stopPropagation()">
         <div class="option-item" data-value="daily"   data-label="毎日"  onclick="selectOption('frequency',this)">
           <span class="option-label">毎日</span>
