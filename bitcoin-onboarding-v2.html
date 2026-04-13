@@ -268,226 +268,127 @@
        Page 1: ユーザー属性の把握
     ============================================= */
     .p1-content {
-      padding: var(--space-32) var(--space-24) var(--space-24);
+      padding: var(--space-24);
       display: flex;
       flex-direction: column;
+      align-items: center;
       gap: var(--space-24);
     }
-    .p1-question {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-8);
-    }
-    .p1-question-sub {
+    .p1-stat-banner {
+      background: var(--brand-primary-bg);
+      border-radius: var(--radius-md);
+      padding: var(--space-12) var(--space-16);
+      text-align: center;
       font-size: var(--size-sm);
-      color: var(--text-secondary);
-      font-weight: var(--fw-regular);
-      line-height: var(--lh-body);
+      font-weight: var(--fw-bold);
+      color: var(--brand-primary);
+      line-height: 1.7;
+      width: 100%;
     }
-    .p1-question-title {
+    .p1-illust {
+      width: 180px;
+      height: 156px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .p1-illust img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .p1-choice-question {
       font-size: var(--size-xl);
       font-weight: var(--fw-bold);
       color: var(--text-primary);
+      text-align: center;
       line-height: 1.5;
     }
-
-    /* 選択カード */
-    .select-cards {
+    .p1-choice-btns {
+      display: flex;
+      gap: var(--space-12);
+      width: 100%;
+    }
+    .btn-choice {
+      flex: 1;
+      min-height: 80px;
+      border-radius: var(--radius-lg);
+      font-family: var(--font);
+      cursor: pointer;
       display: flex;
       flex-direction: column;
-      gap: var(--space-12);
-    }
-    .select-card {
-      border: 1.5px solid var(--border-primary);
-      border-radius: var(--radius-lg);
-      padding: var(--space-16);
-      display: flex;
       align-items: center;
-      gap: var(--space-12);
-      cursor: pointer;
+      justify-content: center;
+      gap: var(--space-4);
+      border: 1.5px solid var(--border-primary);
+      background: var(--bg-primary);
+      color: var(--text-primary);
       transition: border-color 0.15s, background 0.15s;
       -webkit-tap-highlight-color: transparent;
-      user-select: none;
     }
-    .select-card:active { background: var(--bg-secondary); }
-    .select-card.selected {
+    .btn-choice:active {
+      background: var(--brand-primary-bg);
+      border-color: var(--brand-primary);
+    }
+    .btn-choice.selected {
       border-color: var(--brand-primary);
       background: var(--brand-primary-bg);
+      color: var(--brand-primary);
     }
-    .select-card-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: var(--radius-md);
-      background: var(--bg-secondary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      flex-shrink: 0;
-      transition: background 0.15s;
-    }
-    .select-card.selected .select-card-icon {
-      background: var(--brand-primary-bg);
-    }
-    .select-card-body {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-    .select-card-label {
-      font-size: var(--size-md);
-      font-weight: var(--fw-bold);
-      color: var(--text-primary);
-      line-height: var(--lh-body);
-    }
-    .select-card-desc {
-      font-size: var(--size-xs);
-      color: var(--text-secondary);
-      line-height: var(--lh-body);
-    }
-    .select-card.selected .select-card-label { color: var(--brand-primary); }
-    .select-card-radio {
-      width: 20px;
-      height: 20px;
-      border-radius: var(--radius-full);
-      border: 1.5px solid var(--border-primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      transition: border-color 0.15s, background 0.15s;
-    }
-    .select-card.selected .select-card-radio {
-      border-color: var(--brand-primary);
-      background: var(--brand-primary);
-    }
-    .select-card-radio::after {
-      content: '';
-      width: 6px;
-      height: 6px;
-      border-radius: var(--radius-full);
-      background: var(--text-white);
-      opacity: 0;
-      transition: opacity 0.15s;
-    }
-    .select-card.selected .select-card-radio::after { opacity: 1; }
+    .btn-choice-icon { font-size: 24px; line-height: 1; }
+    .btn-choice-label { font-size: var(--size-lg); font-weight: var(--fw-bold); }
 
     /* =============================================
        Page 2: 価値訴求
     ============================================= */
     .p2-content {
+      padding: var(--space-24) var(--space-24) 0;
       display: flex;
       flex-direction: column;
       gap: var(--space-24);
     }
-
-    /* イラストエリア */
-    .illust-wrapper {
-      height: 220px;
-      position: relative;
-      flex-shrink: 0;
-    }
-    .illust-card {
-      position: absolute;
-      left: 60px;
-      top: 48px;
-      width: 256px;
-      height: 144px;
-      background: var(--bg-secondary);
-      border-radius: var(--radius-sm);
-      overflow: hidden;
-      display: flex;
+    .p2-badge {
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
-    }
-    .illust-card img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-
-    /* スピーチバブル + タイトル */
-    .p2-text {
-      padding: 0 var(--space-24);
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-16);
-      align-items: center;
-    }
-    .speech-bubble-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .speech-bubble {
-      background: var(--accent-blue);
-      border-radius: 3.5px;
-      padding: 5px var(--space-16) 4px;
-      color: var(--text-white);
-      font-size: var(--size-sm);
+      gap: var(--space-4);
+      background: var(--brand-primary-bg);
+      color: var(--brand-primary);
+      font-size: var(--size-xs);
       font-weight: var(--fw-bold);
-      white-space: nowrap;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
       line-height: 1.6;
     }
-    .speech-bubble-arrow {
-      width: 0; height: 0;
-      border-left: 5.5px solid transparent;
-      border-right: 5.5px solid transparent;
-      border-top: 7px solid var(--accent-blue);
-    }
-    .p2-titles {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .p2-title-main {
+    .p2-title {
+      font-size: var(--size-2xl);
       font-weight: var(--fw-bold);
       color: var(--text-primary);
-      text-align: center;
-      letter-spacing: 0.5px;
-      line-height: 1.5;
-    }
-    .p2-title-main .t-sm  { font-size: var(--size-xl); }
-    .p2-title-main .t-lg  { font-size: var(--size-2xl); }
-    .p2-title-sub {
-      font-size: var(--size-xl);
-      font-weight: var(--fw-bold);
-      color: var(--text-primary);
-      text-align: center;
-      line-height: 1.5;
+      line-height: 1.45;
+      margin-top: var(--space-8);
     }
 
-    /* プロモーションカード */
-    .promo-section { padding: 0 var(--space-16); }
-    .promo-card {
-      border: 1px solid var(--border-primary);
+    /* シミュレーションチャートカード */
+    .chart-card {
+      background: var(--bg-secondary);
       border-radius: var(--radius-lg);
-      padding: var(--space-8) var(--space-24) var(--space-16);
+      padding: var(--space-16) var(--space-16) var(--space-12);
       display: flex;
       flex-direction: column;
       gap: var(--space-8);
-      align-items: center;
     }
-    .promo-header {
-      display: flex;
-      align-items: center;
-      gap: var(--space-12);
-      width: 100%;
-    }
-    .promo-line { flex: 1; height: 1px; background: var(--border-primary); }
-    .promo-label {
-      font-size: 12.7px;
+    .chart-caption {
+      font-size: var(--size-xs);
+      color: var(--text-secondary);
       font-weight: var(--fw-bold);
-      color: var(--text-primary);
-      white-space: nowrap;
-      line-height: 1.6;
+      line-height: var(--lh-body);
+      text-align: center;
     }
-    .promo-body { display: flex; align-items: center; gap: var(--space-8); }
-    .promo-left-img { height: 35px; width: auto; object-fit: contain; }
-    .promo-right { display: flex; align-items: center; gap: var(--space-2); }
-    .promo-coin-img { width: 37px; height: 37px; object-fit: contain; }
-    .promo-amount-img { height: 36px; width: auto; object-fit: contain; }
+    .chart-note {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      text-align: center;
+      line-height: var(--lh-body);
+    }
 
     /* =============================================
        Page 3: 積立設定
@@ -769,39 +670,32 @@
         <div class="page-content">
           <div class="p1-content">
 
-            <div class="p1-question">
-              <p class="p1-question-sub">ビットコインへの関心</p>
-              <p class="p1-question-title">あなたに近いのは<br>どれですか？</p>
+            <!-- 統計バナー -->
+            <div class="p1-stat-banner">
+              🔰 メルカリのビットコインをはじめた<br>ひとの8割が初心者です。
             </div>
 
-            <div class="select-cards" id="select-cards-p1">
-              <!-- カード 1 -->
-              <div class="select-card selected" data-value="tsumitate" onclick="selectCard(this, 'p1')">
-                <div class="select-card-icon">🌱</div>
-                <div class="select-card-body">
-                  <span class="select-card-label">コツコツ積み立てたい</span>
-                  <span class="select-card-desc">リスクをおさえながら、少額からはじめたい</span>
-                </div>
-                <div class="select-card-radio"></div>
-              </div>
-              <!-- カード 2 -->
-              <div class="select-card" data-value="timing" onclick="selectCard(this, 'p1')">
-                <div class="select-card-icon">📈</div>
-                <div class="select-card-body">
-                  <span class="select-card-label">タイミングを見て購入したい</span>
-                  <span class="select-card-desc">価格の動きを見ながら自分で判断したい</span>
-                </div>
-                <div class="select-card-radio"></div>
-              </div>
-              <!-- カード 3 -->
-              <div class="select-card" data-value="learn" onclick="selectCard(this, 'p1')">
-                <div class="select-card-icon">🔍</div>
-                <div class="select-card-body">
-                  <span class="select-card-label">まずは仕組みを知りたい</span>
-                  <span class="select-card-desc">ビットコインが何かを理解してから始めたい</span>
-                </div>
-                <div class="select-card-radio"></div>
-              </div>
+            <!-- カメイラスト -->
+            <div class="p1-illust">
+              <img
+                src="https://www.figma.com/api/mcp/asset/75f87bf4-5bfa-466f-af96-b2cb3b235181"
+                alt="マスコットキャラクター"
+              />
+            </div>
+
+            <!-- 質問文 -->
+            <p class="p1-choice-question">あなたはどっち？</p>
+
+            <!-- 2択ボタン -->
+            <div class="p1-choice-btns">
+              <button class="btn-choice" id="btn-beginner" onclick="selectChoice('beginner')">
+                <span class="btn-choice-icon">🔰</span>
+                <span class="btn-choice-label">初心者</span>
+              </button>
+              <button class="btn-choice" id="btn-expert" onclick="selectChoice('expert')">
+                <span class="btn-choice-icon">📈</span>
+                <span class="btn-choice-label">経験者</span>
+              </button>
             </div>
 
           </div>
@@ -809,7 +703,7 @@
         <div class="page-footer">
           <div class="separator"></div>
           <div class="cta-wrap">
-            <button class="btn btn-primary" id="btn-p1-next" onclick="goToPage(2)">次へ</button>
+            <button class="btn btn-primary" onclick="goToPage(2)">次へ</button>
           </div>
           <div class="home-indicator"><div class="home-bar"></div></div>
         </div>
@@ -820,56 +714,59 @@
         <div class="page-content">
           <div class="p2-content">
 
-            <!-- イラスト -->
-            <div class="illust-wrapper">
-              <div class="illust-card">
-                <img
-                  src="https://www.figma.com/api/mcp/asset/75f87bf4-5bfa-466f-af96-b2cb3b235181"
-                  alt="積立マスコット"
-                />
-              </div>
+            <!-- 見出し -->
+            <div>
+              <span class="p2-badge">🔰 積立のポイント</span>
+              <p class="p2-title">長期的な目線で<br>1円からちょっとずつ</p>
             </div>
 
-            <!-- スピーチバブル + タイトル -->
-            <div class="p2-text">
-              <div class="speech-bubble-wrap">
-                <div class="speech-bubble">リスクをおさえたい初心者向け</div>
-                <div class="speech-bubble-arrow"></div>
-              </div>
-              <div class="p2-titles">
-                <p class="p2-title-main">
-                  <span class="t-sm">コツコツ</span><span class="t-lg">「つみたて」</span>
-                </p>
-                <p class="p2-title-sub">未来のためのお金</p>
-              </div>
-            </div>
+            <!-- シミュレーションチャート -->
+            <div class="chart-card">
+              <p class="chart-caption">積立シミュレーション（月1,000円 × 36ヶ月）</p>
+              <!-- SVGチャート: viewBox 0 0 295 155, chart area x:40-285 y:10-125 -->
+              <svg viewBox="0 0 295 155" width="100%" height="160" style="display:block;">
+                <!-- グリッド横線 -->
+                <line x1="40" y1="125" x2="285" y2="125" stroke="#c7c7c7" stroke-width="0.8"/>
+                <line x1="40" y1="88"  x2="285" y2="88"  stroke="#ddd" stroke-width="0.5" stroke-dasharray="4,3"/>
+                <line x1="40" y1="51"  x2="285" y2="51"  stroke="#ddd" stroke-width="0.5" stroke-dasharray="4,3"/>
+                <line x1="40" y1="14"  x2="285" y2="14"  stroke="#ddd" stroke-width="0.5" stroke-dasharray="4,3"/>
+                <!-- Y軸 -->
+                <line x1="40" y1="12" x2="40" y2="125" stroke="#c7c7c7" stroke-width="0.8"/>
 
-            <!-- プロモーションカード -->
-            <div class="promo-section">
-              <div class="promo-card">
-                <div class="promo-header">
-                  <div class="promo-line"></div>
-                  <span class="promo-label">今ならもらえる</span>
-                  <div class="promo-line"></div>
-                </div>
-                <div class="promo-body">
-                  <img
-                    class="promo-left-img"
-                    src="https://www.figma.com/api/mcp/asset/bdfde19a-9ee6-4afb-84de-870eb100a0b0"
-                    alt="1,000円×3ヶ月つみたてると"
-                  />
-                  <div class="promo-right">
-                    <img class="promo-coin-img"
-                      src="https://www.figma.com/api/mcp/asset/44141090-f4a5-4e82-9b1b-0ebf917979cd"
-                      alt="コイン"
-                    />
-                    <img class="promo-amount-img"
-                      src="https://www.figma.com/api/mcp/asset/47986de4-058f-4741-b651-dde23fdb04e0"
-                      alt="500円分"
-                    />
-                  </div>
-                </div>
-              </div>
+                <!-- 積立元本エリア（直線・薄い赤） -->
+                <path d="M 40 125 L 285 50 L 285 125 Z" fill="rgba(255,51,63,0.08)"/>
+                <!-- 積立元本ライン（破線） -->
+                <path d="M 40 125 L 285 50" fill="none" stroke="rgba(255,51,63,0.4)" stroke-width="1.5" stroke-dasharray="5,3"/>
+
+                <!-- 運用益込みエリア（曲線・赤塗り） -->
+                <path d="M 40 125 C 120 122 195 85 285 18 L 285 50 C 195 80 120 118 40 125 Z" fill="rgba(255,51,63,0.18)"/>
+                <!-- 運用益込みライン（メイン） -->
+                <path d="M 40 125 C 120 122 195 85 285 18" fill="none" stroke="#ff333f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+                <!-- 終点ドット -->
+                <circle cx="285" cy="18" r="4" fill="#ff333f"/>
+
+                <!-- 終点金額ラベル -->
+                <text x="278" y="13" text-anchor="end" font-size="10" fill="#ff333f" font-weight="bold" font-family="sans-serif">¥43,000</text>
+
+                <!-- Y軸ラベル -->
+                <text x="36" y="128" text-anchor="end" font-size="9" fill="#999" font-family="sans-serif">¥0</text>
+                <text x="36" y="91"  text-anchor="end" font-size="9" fill="#999" font-family="sans-serif">15,000</text>
+                <text x="36" y="54"  text-anchor="end" font-size="9" fill="#999" font-family="sans-serif">30,000</text>
+
+                <!-- X軸ラベル -->
+                <text x="40"  y="141" text-anchor="middle" font-size="9" fill="#999" font-family="sans-serif">開始</text>
+                <text x="122" y="141" text-anchor="middle" font-size="9" fill="#999" font-family="sans-serif">12ヶ月</text>
+                <text x="204" y="141" text-anchor="middle" font-size="9" fill="#999" font-family="sans-serif">24ヶ月</text>
+                <text x="285" y="141" text-anchor="middle" font-size="9" fill="#999" font-family="sans-serif">36ヶ月</text>
+
+                <!-- 凡例 -->
+                <rect x="55" y="10" width="9" height="7" fill="rgba(255,51,63,0.25)" rx="1"/>
+                <text x="68" y="17" font-size="9" fill="#666" font-family="sans-serif">資産総額</text>
+                <line x1="110" y1="14" x2="122" y2="14" stroke="rgba(255,51,63,0.4)" stroke-width="1.5" stroke-dasharray="4,3"/>
+                <text x="127" y="17" font-size="9" fill="#666" font-family="sans-serif">積立元本</text>
+              </svg>
+              <p class="chart-note">※ シミュレーションは参考値です。実際の運用成果を保証するものではありません。</p>
             </div>
 
           </div>
@@ -1077,12 +974,11 @@
   }
 
   /* =============================================
-     Page 1: カード選択
+     Page 1: 2択選択
   ============================================= */
-  function selectCard(el, groupId) {
-    const container = document.getElementById('select-cards-' + groupId);
-    container.querySelectorAll('.select-card').forEach(c => c.classList.remove('selected'));
-    el.classList.add('selected');
+  function selectChoice(type) {
+    document.getElementById('btn-beginner').classList.toggle('selected', type === 'beginner');
+    document.getElementById('btn-expert').classList.toggle('selected', type === 'expert');
   }
 
   /* =============================================
