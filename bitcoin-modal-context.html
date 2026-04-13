@@ -3,31 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=375, initial-scale=1">
-  <title>ビットコイン - 積立設定モーダル</title>
+  <title>ビットコインをはじめよう（モーダル版）</title>
   <style>
     :root {
       --brand-primary:    #ff333f;
       --brand-primary-bg: rgba(255, 51, 63, 0.07);
+      --accent-blue:      #4dc9ff;
       --btc-gold:         #f0b90b;
-      --btc-gold-bg:      rgba(240, 185, 11, 0.12);
+
       --text-primary:   #333333;
       --text-secondary: #666666;
       --text-tertiary:  #999999;
       --text-white:     #ffffff;
+
       --bg-primary:   #ffffff;
       --bg-secondary: #f0f0f0;
       --bg-overlay:   rgba(0, 0, 0, 0.45);
+
       --border-primary: #c7c7c7;
       --dot-inactive:   #d9d9d9;
+
       --space-4:  4px;
       --space-8:  8px;
       --space-12: 12px;
       --space-16: 16px;
       --space-24: 24px;
+
       --radius-sm:   4px;
       --radius-md:   8px;
       --radius-lg:   16px;
       --radius-full: 999px;
+
       --font: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
       --size-xs:  12px;
       --size-sm:  14px;
@@ -68,8 +74,6 @@
     /* =============================================
        Background: ビットコイン画面
     ============================================= */
-
-    /* Status Bar */
     .bg-status {
       height: 54px;
       padding: 14px 20px 0;
@@ -78,19 +82,14 @@
       justify-content: space-between;
       flex-shrink: 0;
     }
-    .bg-status-time {
+    .bg-time {
       font-size: 17px;
       font-weight: 600;
       color: var(--text-primary);
       letter-spacing: -0.3px;
     }
-    .bg-status-icons {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+    .bg-icons { display: flex; align-items: center; gap: 6px; }
 
-    /* Navigation */
     .bg-nav {
       height: 44px;
       display: flex;
@@ -111,9 +110,8 @@
       font-weight: var(--fw-bold);
       color: var(--text-primary);
     }
-    .bg-separator { height: 1px; background: var(--border-primary); flex-shrink: 0; }
+    .bg-hr { height: 1px; background: var(--border-primary); flex-shrink: 0; }
 
-    /* コインタブ */
     .bg-tabs {
       display: flex;
       padding: var(--space-8) var(--space-16) 0;
@@ -121,8 +119,7 @@
       flex-shrink: 0;
     }
     .bg-tab {
-      display: flex;
-      align-items: center;
+      display: flex; align-items: center;
       gap: var(--space-8);
       padding: 8px var(--space-16);
       border-radius: var(--radius-full);
@@ -138,29 +135,17 @@
       outline: 2px solid #4dc9ff;
       outline-offset: -2px;
     }
-    .coin-icon {
-      width: 20px; height: 20px;
+    .coin-dot {
+      width: 18px; height: 18px;
       border-radius: var(--radius-full);
       display: flex; align-items: center; justify-content: center;
-      font-size: 12px;
-      font-weight: 700;
-      flex-shrink: 0;
+      font-size: 10px; font-weight: 700; flex-shrink: 0;
     }
-    .coin-icon-mercari {
-      background: linear-gradient(135deg, #ff333f 0%, #ff333f 25%, #4dc9ff 25%, #4dc9ff 50%, #f0b90b 50%, #f0b90b 75%, #4ade80 75%);
-      font-size: 0;
-    }
-    .coin-icon-btc { background: var(--btc-gold); color: white; font-size: 11px; }
+    .coin-dot-m { background: linear-gradient(135deg, #ff333f 0 25%, #4dc9ff 25% 50%, #f0b90b 50% 75%, #4ade80 75%); }
+    .coin-dot-b { background: var(--btc-gold); color: white; }
 
-    /* スクロールコンテンツ */
-    .bg-scroll {
-      flex: 1;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
+    .bg-scroll { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
 
-    /* 運用額カード */
     .bg-card {
       margin: var(--space-12) var(--space-16) 0;
       background: var(--bg-primary);
@@ -169,133 +154,405 @@
       overflow: hidden;
       flex-shrink: 0;
     }
-    .bg-card-header {
+    .bg-card-head {
       padding: var(--space-12) var(--space-16) var(--space-8);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      display: flex; align-items: center; justify-content: space-between;
     }
-    .bg-card-label-wrap {
-      display: flex;
-      align-items: center;
-      gap: var(--space-8);
-    }
-    .bg-card-btc-icon {
-      width: 24px; height: 24px;
+    .bg-card-label-row { display: flex; align-items: center; gap: var(--space-8); }
+    .btc-icon-sm {
+      width: 22px; height: 22px;
       border-radius: var(--radius-full);
       background: var(--btc-gold);
-      display: flex; align-items: center; justify-content: center;
       color: white;
-      font-size: 13px;
-      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700;
     }
-    .bg-card-label {
-      font-size: var(--size-sm);
-      font-weight: var(--fw-bold);
-      color: var(--text-secondary);
+    .bg-card-label { font-size: var(--size-sm); font-weight: var(--fw-bold); color: var(--text-secondary); }
+
+    .bg-balance { padding: 0 var(--space-16) var(--space-8); }
+    .bg-balance-num {
+      font-size: 32px; font-weight: var(--fw-bold);
+      color: var(--text-primary); letter-spacing: -0.5px;
     }
-    .bg-card-meta {
-      display: flex;
-      align-items: center;
-      gap: var(--space-12);
-    }
-    .bg-card-balance {
-      padding: 0 var(--space-16) var(--space-8);
-    }
-    .bg-balance-amount {
-      font-size: 32px;
-      font-weight: var(--fw-bold);
-      color: var(--text-primary);
-      letter-spacing: -0.5px;
-    }
-    .bg-balance-yen {
-      font-size: var(--size-xl);
-      font-weight: var(--fw-bold);
-    }
+    .bg-balance-yen { font-size: var(--size-xl); font-weight: var(--fw-bold); }
     .bg-balance-diff {
-      font-size: var(--size-sm);
-      color: #22c55e;
+      font-size: var(--size-sm); color: #22c55e;
       font-weight: var(--fw-bold);
-      display: flex;
-      align-items: center;
-      gap: 2px;
-      margin-top: 2px;
+      display: flex; align-items: center; gap: 2px; margin-top: 2px;
     }
 
-    /* チャートエリア */
-    .bg-chart {
-      height: 100px;
-      position: relative;
-      overflow: hidden;
-    }
+    .bg-chart { height: 90px; position: relative; }
 
     /* =============================================
-       モーダルオーバーレイ（デフォルト開き状態）
+       オンボーディング: 2/3モーダル
     ============================================= */
-    .modal-overlay {
+    .onboarding-overlay {
       position: absolute;
       inset: 0;
       background: var(--bg-overlay);
-      z-index: 300;
+      z-index: 100;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
       border-radius: 44px;
       overflow: hidden;
-      /* 最初から表示 */
-      opacity: 1;
-      pointer-events: all;
     }
-    .modal-sheet {
+
+    .onboarding-sheet {
       width: 100%;
       background: var(--bg-primary);
       border-radius: 12px 12px 0 0;
-      display: flex;
-      flex-direction: column;
       flex: 0 0 67%;
       min-height: 0;
-      /* 最初から展開 */
-      transform: translateY(0);
+      display: flex;
+      flex-direction: column;
     }
 
-    /* DS ModalHeader */
-    .modal-header {
+    /* トップナビ（モーダル内） */
+    .ob-nav {
       height: 44px;
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
       flex-shrink: 0;
-      padding: 0 var(--space-16);
     }
-    .modal-close-btn {
+    .ob-nav-btn {
       position: absolute;
-      left: var(--space-4);
       width: 44px; height: 44px;
       display: flex; align-items: center; justify-content: center;
-      background: none; border: none;
-      cursor: pointer;
+      background: none; border: none; cursor: pointer;
       border-radius: var(--radius-full);
       -webkit-tap-highlight-color: transparent;
     }
-    .modal-close-btn:active { opacity: 0.4; }
-    .modal-title {
+    .ob-nav-btn:active { opacity: 0.4; }
+    .ob-nav-left { left: 4px; }
+    .ob-nav-title {
       font-size: var(--size-lg);
       font-weight: var(--fw-bold);
       color: var(--text-primary);
     }
+    .ob-skip {
+      position: absolute;
+      right: 12px;
+      font-size: var(--size-sm);
+      font-weight: var(--fw-bold);
+      color: var(--text-secondary);
+      background: none; border: none;
+      cursor: pointer;
+      padding: 4px 8px;
+      font-family: var(--font);
+      -webkit-tap-highlight-color: transparent;
+      transition: opacity 0.2s;
+    }
+    .ob-skip.hidden { opacity: 0; pointer-events: none; }
+
     .separator { height: 1px; background: var(--border-primary); flex-shrink: 0; }
 
-    /* オプションリスト */
-    .options-list {
-      overflow-y: auto;
-      flex: 1;
-      padding: 0 var(--space-16);
+    /* ステップインジケーター */
+    .step-dots {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: var(--space-8);
+      padding: 12px var(--space-16);
+      flex-shrink: 0;
     }
-    .option-item {
+    .dot {
+      height: 4px; width: 4px;
+      border-radius: var(--radius-full);
+      background: var(--dot-inactive);
+      transition: width 0.25s ease, background 0.25s ease;
+    }
+    .dot.active { width: 16px; background: var(--brand-primary); }
+
+    /* ページコンテナ */
+    .pages-outer {
+      flex: 1;
+      overflow: hidden;
+      min-height: 0;
+      position: relative;
+    }
+    .pages-container {
+      display: flex;
+      height: 100%;
+      width: calc(375px * 3);
+      transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform;
+    }
+    .page {
+      width: 375px;
+      flex-shrink: 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .page-content {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .page-footer {
+      flex-shrink: 0;
+      background: var(--bg-primary);
+    }
+
+    /* CTA共通 */
+    .btn {
+      flex: 1;
+      min-height: 44px;
+      border-radius: var(--radius-md);
+      font-size: var(--size-md);
+      font-weight: var(--fw-bold);
+      font-family: var(--font);
+      cursor: pointer;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
+      border: none;
+      transition: opacity 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn:active { opacity: 0.7; }
+    .btn-primary { background: var(--brand-primary); color: var(--text-white); }
+    .btn-secondary {
+      background: var(--bg-primary);
+      border: 1px solid var(--brand-primary);
+      color: var(--brand-primary);
+    }
+    .cta-row {
+      display: flex;
+      gap: var(--space-16);
+      padding: var(--space-12) var(--space-16);
+    }
+    .home-indicator {
+      height: 30px;
+      display: flex; align-items: flex-end; justify-content: center;
+      padding-bottom: 8px;
+    }
+    .home-bar {
+      width: 134px; height: 5px;
+      background: var(--text-primary);
+      border-radius: 100px;
+    }
+
+    /* =============================================
+       Page 1: ユーザー属性
+    ============================================= */
+    .p1-content {
+      padding: var(--space-16) var(--space-24);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-16);
+    }
+    .p1-stat-banner {
+      background: var(--brand-primary-bg);
+      border-radius: var(--radius-md);
+      padding: var(--space-12) var(--space-16);
+      text-align: center;
+      font-size: var(--size-sm);
+      font-weight: var(--fw-bold);
+      color: var(--brand-primary);
+      line-height: 1.7;
+      width: 100%;
+    }
+    .p1-illust {
+      width: 130px; height: 110px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .p1-illust img { width: 100%; height: 100%; object-fit: contain; }
+    .p1-question {
+      font-size: var(--size-xl);
+      font-weight: var(--fw-bold);
+      color: var(--text-primary);
+      text-align: center;
+    }
+    .p1-choice-btns { display: flex; gap: var(--space-12); width: 100%; }
+    .btn-choice {
+      flex: 1;
+      min-height: 72px;
+      border-radius: var(--radius-lg);
+      font-family: var(--font);
+      cursor: pointer;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: var(--space-4);
+      border: 1.5px solid var(--border-primary);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      transition: border-color 0.15s, background 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn-choice:active, .btn-choice.selected {
+      border-color: var(--brand-primary);
+      background: var(--brand-primary-bg);
+      color: var(--brand-primary);
+    }
+    .btn-choice-icon  { font-size: 22px; line-height: 1; }
+    .btn-choice-label { font-size: var(--size-lg); font-weight: var(--fw-bold); }
+
+    /* =============================================
+       Page 2: 価値訴求
+    ============================================= */
+    .p2-content {
+      padding: var(--space-16) var(--space-24) 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-16);
+    }
+    .p2-badge {
+      display: inline-flex; align-items: center; gap: var(--space-4);
+      background: var(--brand-primary-bg);
+      color: var(--brand-primary);
+      font-size: var(--size-xs); font-weight: var(--fw-bold);
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      line-height: 1.6;
+    }
+    .p2-title {
+      font-size: var(--size-xl);
+      font-weight: var(--fw-bold);
+      color: var(--text-primary);
+      line-height: 1.45;
+    }
+    .chart-card {
+      background: var(--bg-secondary);
+      border-radius: var(--radius-lg);
+      padding: var(--space-12) var(--space-12) var(--space-8);
+      display: flex; flex-direction: column; gap: var(--space-8);
+    }
+    .chart-caption {
+      font-size: var(--size-xs); color: var(--text-secondary);
+      font-weight: var(--fw-bold); text-align: center;
+    }
+    .chart-note {
+      font-size: 10px; color: var(--text-tertiary); text-align: center;
+    }
+
+    /* =============================================
+       Page 3: 積立設定
+    ============================================= */
+    .p3-content {
+      padding: var(--space-16) var(--space-24) 0;
+      display: flex; flex-direction: column; gap: var(--space-16);
+    }
+    .recommend-section {
+      display: flex; flex-direction: column;
+      align-items: center; gap: var(--space-8);
+      text-align: center;
+    }
+    .recommend-badge {
+      display: inline-flex; align-items: center; gap: var(--space-4);
+      background: var(--brand-primary-bg);
+      color: var(--brand-primary);
+      font-size: var(--size-xs); font-weight: var(--fw-bold);
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      line-height: 1.6;
+    }
+    .recommend-title {
+      font-size: var(--size-xl); font-weight: var(--fw-bold);
+      color: var(--text-primary); line-height: 1.4;
+    }
+    .recommend-desc {
+      font-size: var(--size-sm); color: var(--text-secondary);
+      line-height: var(--lh-body);
+    }
+    .p3-illust {
+      width: 100%; height: 80px;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .p3-illust img { height: 100%; object-fit: contain; }
+
+    .settings-card {
+      background: var(--bg-secondary);
+      border-radius: var(--radius-lg);
+      padding: var(--space-16) var(--space-16);
+      display: flex; flex-direction: column; gap: var(--space-12);
+    }
+    .settings-label {
+      font-size: var(--size-xs); font-weight: var(--fw-bold);
+      color: var(--text-secondary); text-align: center; letter-spacing: 0.5px;
+    }
+    .settings-row {
+      display: flex; align-items: center;
+      justify-content: center; gap: var(--space-8);
+    }
+    .chip {
+      display: inline-flex; align-items: center; gap: var(--space-4);
+      background: var(--bg-primary);
+      border: 1.5px solid var(--border-primary);
+      border-radius: var(--radius-md);
+      padding: 6px 12px;
+      font-size: var(--size-lg); font-weight: var(--fw-bold);
+      color: var(--text-primary);
+      cursor: pointer;
+      min-width: 80px; justify-content: center;
+      user-select: none;
+      transition: border-color 0.15s;
+      font-family: var(--font);
+    }
+    .chip:active { border-color: var(--brand-primary); }
+    .chip-chevron { color: var(--text-tertiary); flex-shrink: 0; }
+    .chip-text { font-size: var(--size-lg); font-weight: var(--fw-bold); color: var(--text-primary); }
+
+    /* =============================================
+       ハーフモーダル（金額・頻度選択）
+       ※ オンボーディングモーダルの上に重なる
+    ============================================= */
+    .modal-overlay {
+      position: absolute;
+      inset: 0;
+      background: var(--bg-overlay);
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      border-radius: 44px;
+      overflow: hidden;
+    }
+    .modal-overlay.is-open { opacity: 1; pointer-events: all; }
+
+    .modal-sheet {
+      width: 100%;
+      background: var(--bg-primary);
+      border-radius: 12px 12px 0 0;
+      display: flex; flex-direction: column;
+      transform: translateY(100%);
+      transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+      flex: 0 0 67%;
+      min-height: 0;
+    }
+    .modal-overlay.is-open .modal-sheet { transform: translateY(0); }
+
+    .modal-header {
+      height: 44px;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; flex-shrink: 0;
+      padding: 0 var(--space-16);
+    }
+    .modal-close-btn {
+      position: absolute; left: var(--space-4);
+      width: 44px; height: 44px;
+      display: flex; align-items: center; justify-content: center;
+      background: none; border: none; cursor: pointer;
+      border-radius: var(--radius-full);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .modal-close-btn:active { opacity: 0.4; }
+    .modal-title { font-size: var(--size-lg); font-weight: var(--fw-bold); color: var(--text-primary); }
+
+    .options-list { overflow-y: auto; flex: 1; padding: 0 var(--space-16); }
+    .option-item {
+      display: flex; align-items: center; justify-content: space-between;
       padding: var(--space-16) var(--space-8);
       border-bottom: 1px solid var(--bg-secondary);
       cursor: pointer;
@@ -306,65 +563,25 @@
     }
     .option-item:last-child { border-bottom: none; }
     .option-item:active { background: var(--bg-secondary); }
-    .option-label {
-      font-size: var(--size-lg);
-      color: var(--text-primary);
-      font-weight: var(--fw-regular);
-    }
-    .option-item.selected .option-label {
-      font-weight: var(--fw-bold);
-      color: var(--brand-primary);
-    }
+    .option-label { font-size: var(--size-lg); color: var(--text-primary); font-weight: var(--fw-regular); }
+    .option-item.selected .option-label { font-weight: var(--fw-bold); color: var(--brand-primary); }
     .option-check {
       width: 22px; height: 22px;
       display: flex; align-items: center; justify-content: center;
-      opacity: 0;
-      transition: opacity 0.15s;
+      opacity: 0; transition: opacity 0.15s;
     }
     .option-item.selected .option-check { opacity: 1; }
 
-    /* ヒント */
     .modal-hint {
       padding: var(--space-8) var(--space-16) var(--space-4);
-      font-size: var(--size-xs);
-      color: var(--text-tertiary);
-      text-align: center;
-      flex-shrink: 0;
+      font-size: var(--size-xs); color: var(--text-tertiary);
+      text-align: center; flex-shrink: 0;
     }
-
-    /* CTA */
-    .modal-cta {
-      padding: var(--space-12) var(--space-16);
-      flex-shrink: 0;
-    }
-    .btn-primary {
-      width: 100%;
-      min-height: 48px;
-      border-radius: var(--radius-md);
-      font-size: var(--size-md);
-      font-weight: var(--fw-bold);
-      font-family: var(--font);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--brand-primary);
-      color: var(--text-white);
-      border: none;
-    }
-    .btn-primary:active { opacity: 0.7; }
-
-    /* ホームインジケーター */
+    .modal-cta { padding: var(--space-12) var(--space-16); flex-shrink: 0; }
     .modal-home {
-      height: 34px;
+      height: 28px;
       display: flex; align-items: flex-end; justify-content: center;
       padding-bottom: 8px;
-      flex-shrink: 0;
-    }
-    .home-bar {
-      width: 134px; height: 5px;
-      background: var(--text-primary);
-      border-radius: 100px;
     }
   </style>
 </head>
@@ -372,12 +589,10 @@
 <div class="phone">
 
   <!-- ===== Background: ビットコイン画面 ===== -->
-
-  <!-- Status Bar -->
   <div class="bg-status">
-    <span class="bg-status-time">9:41</span>
+    <span class="bg-time">9:41</span>
     <div style="width:100px;"></div>
-    <div class="bg-status-icons">
+    <div class="bg-icons">
       <svg width="19" height="12" viewBox="0 0 19 12" fill="none">
         <rect x="0"  y="8"  width="3" height="4"  rx="0.5" fill="#333"/>
         <rect x="4"  y="5"  width="3" height="7"  rx="0.5" fill="#333"/>
@@ -397,7 +612,6 @@
     </div>
   </div>
 
-  <!-- Navigation -->
   <div class="bg-nav">
     <div class="bg-nav-btn bg-nav-left">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -413,50 +627,29 @@
       </svg>
     </div>
   </div>
-  <div class="bg-separator"></div>
+  <div class="bg-hr"></div>
 
-  <!-- コインタブ -->
   <div class="bg-tabs">
     <div class="bg-tab">
-      <div class="coin-icon coin-icon-mercari"></div>
+      <div class="coin-dot coin-dot-m"></div>
       メルカリコイン
     </div>
     <div class="bg-tab active">
-      <div class="coin-icon coin-icon-btc">B</div>
+      <div class="coin-dot coin-dot-b">B</div>
       ビットコイン
     </div>
   </div>
 
-  <!-- スクロールコンテンツ -->
   <div class="bg-scroll">
-
-    <!-- 運用額カード -->
     <div class="bg-card">
-      <div class="bg-card-header">
-        <div class="bg-card-label-wrap">
-          <div class="bg-card-btc-icon">₿</div>
+      <div class="bg-card-head">
+        <div class="bg-card-label-row">
+          <div class="btc-icon-sm">₿</div>
           <span class="bg-card-label">現在の運用額</span>
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <circle cx="7" cy="7" r="6" stroke="#999" stroke-width="1"/>
-            <path d="M7 6.2v3.6" stroke="#999" stroke-width="1.2" stroke-linecap="round"/>
-            <circle cx="7" cy="4.5" r="0.6" fill="#999"/>
-          </svg>
-        </div>
-        <div class="bg-card-meta">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <path d="M2 9 C4 5 8 4 10 7 C12 10 14 8 16 5" stroke="#999" stroke-width="1.3" stroke-linecap="round" fill="none"/>
-          </svg>
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <circle cx="10" cy="10" r="1.5" fill="#999"/>
-            <circle cx="10" cy="5"  r="1.5" fill="#999"/>
-            <circle cx="10" cy="15" r="1.5" fill="#999"/>
-          </svg>
         </div>
       </div>
-      <div class="bg-card-balance">
-        <div class="bg-balance-amount">
-          <span class="bg-balance-yen">¥ </span>2,000
-        </div>
+      <div class="bg-balance">
+        <div class="bg-balance-num"><span class="bg-balance-yen">¥ </span>2,000</div>
         <div class="bg-balance-diff">
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
             <path d="M6 10V2M2 6l4-4 4 4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -464,84 +657,294 @@
           ¥100
         </div>
       </div>
-
-      <!-- 価格チャート (SVG) -->
       <div class="bg-chart">
-        <svg viewBox="0 0 375 100" width="375" height="100" preserveAspectRatio="none">
-          <!-- 塗りつぶしエリア -->
+        <svg viewBox="0 0 375 90" width="375" height="90" preserveAspectRatio="none">
           <defs>
-            <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%"   stop-color="#f0b90b" stop-opacity="0.35"/>
-              <stop offset="100%" stop-color="#f0b90b" stop-opacity="0.03"/>
+            <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"   stop-color="#f0b90b" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#f0b90b" stop-opacity="0.02"/>
             </linearGradient>
           </defs>
-          <path d="M0 70 C30 65 50 78 70 60 C90 42 110 55 130 40 C150 25 165 48 190 35 C210 24 225 50 250 42 C270 36 290 28 310 20 C330 14 355 22 375 15 L375 100 L0 100 Z"
-                fill="url(#goldGrad)"/>
-          <!-- ラインチャート -->
-          <path d="M0 70 C30 65 50 78 70 60 C90 42 110 55 130 40 C150 25 165 48 190 35 C210 24 225 50 250 42 C270 36 290 28 310 20 C330 14 355 22 375 15"
-                fill="none" stroke="#f0b90b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M0 65 C30 60 50 72 70 55 C90 38 110 50 130 36 C150 22 165 44 190 32 C210 22 225 46 250 38 C270 32 290 24 310 16 C330 10 355 18 375 12 L375 90 L0 90 Z" fill="url(#g)"/>
+          <path d="M0 65 C30 60 50 72 70 55 C90 38 110 50 130 36 C150 22 165 44 190 32 C210 22 225 46 250 38 C270 32 290 24 310 16 C330 10 355 18 375 12"
+                fill="none" stroke="#f0b90b" stroke-width="2" stroke-linecap="round"/>
         </svg>
       </div>
+    </div>
+  </div>
 
-    </div><!-- /bg-card -->
+  <!-- =============================================
+       オンボーディング: 2/3モーダル（3ページスライド）
+  ============================================= -->
+  <div class="onboarding-overlay">
+    <div class="onboarding-sheet">
 
-  </div><!-- /bg-scroll -->
+      <!-- トップナビ -->
+      <div class="ob-nav">
+        <button class="ob-nav-btn ob-nav-left" id="nav-left" onclick="navLeft()">
+          <svg id="nav-icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M18 6L6 18M6 6l12 12" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <svg id="nav-icon-back" width="24" height="24" viewBox="0 0 24 24" fill="none" style="display:none">
+            <path d="M15 18l-6-6 6-6" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <span class="ob-nav-title">ビットコインをはじめよう</span>
+        <button class="ob-skip" id="ob-skip" onclick="goToPage(3)">スキップ</button>
+      </div>
+      <div class="separator"></div>
+
+      <!-- ステップドット -->
+      <div class="step-dots">
+        <div class="dot active" id="dot-1"></div>
+        <div class="dot"        id="dot-2"></div>
+        <div class="dot"        id="dot-3"></div>
+      </div>
+
+      <!-- ページコンテナ -->
+      <div class="pages-outer">
+        <div class="pages-container" id="pages-container">
+
+          <!-- PAGE 1: ユーザー属性 -->
+          <div class="page" id="page-1">
+            <div class="page-content">
+              <div class="p1-content">
+                <div class="p1-stat-banner">
+                  🔰 メルカリのビットコインをはじめた<br>ひとの8割が初心者です。
+                </div>
+                <div class="p1-illust">
+                  <img src="https://www.figma.com/api/mcp/asset/75f87bf4-5bfa-466f-af96-b2cb3b235181" alt="マスコット"/>
+                </div>
+                <p class="p1-question">あなたはどっち？</p>
+                <div class="p1-choice-btns">
+                  <button class="btn-choice" id="btn-beginner" onclick="selectChoice('beginner')">
+                    <span class="btn-choice-icon">🔰</span>
+                    <span class="btn-choice-label">初心者</span>
+                  </button>
+                  <button class="btn-choice" id="btn-expert" onclick="selectChoice('expert')">
+                    <span class="btn-choice-icon">📈</span>
+                    <span class="btn-choice-label">経験者</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="page-footer">
+              <div class="separator"></div>
+              <div class="cta-row">
+                <button class="btn btn-primary" onclick="goToPage(2)">次へ</button>
+              </div>
+              <div class="home-indicator"><div class="home-bar"></div></div>
+            </div>
+          </div><!-- /page-1 -->
+
+          <!-- PAGE 2: 価値訴求 -->
+          <div class="page" id="page-2">
+            <div class="page-content">
+              <div class="p2-content">
+                <div>
+                  <span class="p2-badge">🔰 積立のポイント</span>
+                  <p class="p2-title" style="margin-top:var(--space-8);">長期的な目線で<br>1円からちょっとずつ</p>
+                </div>
+                <div class="chart-card">
+                  <p class="chart-caption">積立シミュレーション（月1,000円 × 36ヶ月）</p>
+                  <svg viewBox="0 0 295 150" width="100%" height="150" style="display:block;">
+                    <line x1="40" y1="125" x2="285" y2="125" stroke="#c7c7c7" stroke-width="0.8"/>
+                    <line x1="40" y1="88"  x2="285" y2="88"  stroke="#ddd" stroke-width="0.5" stroke-dasharray="4,3"/>
+                    <line x1="40" y1="51"  x2="285" y2="51"  stroke="#ddd" stroke-width="0.5" stroke-dasharray="4,3"/>
+                    <line x1="40" y1="12"  x2="40"  y2="125" stroke="#c7c7c7" stroke-width="0.8"/>
+                    <path d="M 40 125 L 285 50 L 285 125 Z" fill="rgba(255,51,63,0.08)"/>
+                    <path d="M 40 125 L 285 50" fill="none" stroke="rgba(255,51,63,0.4)" stroke-width="1.5" stroke-dasharray="5,3"/>
+                    <path d="M 40 125 C 120 122 195 82 285 18 L 285 50 C 195 78 120 118 40 125 Z" fill="rgba(255,51,63,0.18)"/>
+                    <path d="M 40 125 C 120 122 195 82 285 18" fill="none" stroke="#ff333f" stroke-width="2.5" stroke-linecap="round"/>
+                    <circle cx="285" cy="18" r="4" fill="#ff333f"/>
+                    <text x="278" y="13" text-anchor="end" font-size="10" fill="#ff333f" font-weight="bold" font-family="sans-serif">¥43,000</text>
+                    <text x="36" y="128" text-anchor="end" font-size="9" fill="#999" font-family="sans-serif">¥0</text>
+                    <text x="36" y="91"  text-anchor="end" font-size="9" fill="#999" font-family="sans-serif">15,000</text>
+                    <text x="36" y="54"  text-anchor="end" font-size="9" fill="#999" font-family="sans-serif">30,000</text>
+                    <text x="40"  y="140" text-anchor="middle" font-size="9" fill="#999" font-family="sans-serif">開始</text>
+                    <text x="122" y="140" text-anchor="middle" font-size="9" fill="#999" font-family="sans-serif">12ヶ月</text>
+                    <text x="204" y="140" text-anchor="middle" font-size="9" fill="#999" font-family="sans-serif">24ヶ月</text>
+                    <text x="285" y="140" text-anchor="middle" font-size="9" fill="#999" font-family="sans-serif">36ヶ月</text>
+                    <rect x="55" y="10" width="9" height="7" fill="rgba(255,51,63,0.25)" rx="1"/>
+                    <text x="68" y="17" font-size="9" fill="#666" font-family="sans-serif">資産総額</text>
+                    <line x1="110" y1="14" x2="122" y2="14" stroke="rgba(255,51,63,0.4)" stroke-width="1.5" stroke-dasharray="4,3"/>
+                    <text x="127" y="17" font-size="9" fill="#666" font-family="sans-serif">積立元本</text>
+                  </svg>
+                  <p class="chart-note">※ シミュレーションは参考値です。実際の運用成果を保証するものではありません。</p>
+                </div>
+              </div>
+            </div>
+            <div class="page-footer">
+              <div class="separator"></div>
+              <div class="cta-row">
+                <button class="btn btn-secondary" onclick="goToPage(1)">戻る</button>
+                <button class="btn btn-primary"   onclick="goToPage(3)">次へ</button>
+              </div>
+              <div class="home-indicator"><div class="home-bar"></div></div>
+            </div>
+          </div><!-- /page-2 -->
+
+          <!-- PAGE 3: 積立設定 -->
+          <div class="page" id="page-3">
+            <div class="page-content">
+              <div class="p3-content">
+                <div class="recommend-section">
+                  <span class="recommend-badge">
+                    <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+                      <path d="M5.5 1l1.18 2.38 2.64.38-1.91 1.86.45 2.63L5.5 7l-2.36 1.25.45-2.63L1.68 3.76l2.64-.38L5.5 1z" fill="#ff333f"/>
+                    </svg>
+                    こんな人におすすめ
+                  </span>
+                  <p class="recommend-title">買い時が<br>わからない</p>
+                  <p class="recommend-desc">価格を気にせず毎月自動で、<br>少額からコツコツ積み立てられます。</p>
+                </div>
+                <div class="p3-illust">
+                  <img src="https://www.figma.com/api/mcp/asset/75f87bf4-5bfa-466f-af96-b2cb3b235181" alt="積立イラスト"/>
+                </div>
+                <div class="settings-card">
+                  <p class="settings-label">積立の設定</p>
+                  <div class="settings-row">
+                    <button class="chip" onclick="openModal('frequency')">
+                      <span id="chip-freq-label">月1回</span>
+                      <svg class="chip-chevron" width="13" height="13" viewBox="0 0 13 13" fill="none">
+                        <path d="M2.5 4.5l4 4 4-4" stroke="#999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </button>
+                    <button class="chip" onclick="openModal('amount')">
+                      <span id="chip-amount-label">1,000円</span>
+                      <svg class="chip-chevron" width="13" height="13" viewBox="0 0 13 13" fill="none">
+                        <path d="M2.5 4.5l4 4 4-4" stroke="#999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </button>
+                    <span class="chip-text">つみたてる</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="page-footer">
+              <div class="separator"></div>
+              <div class="cta-row">
+                <button class="btn btn-secondary" onclick="goToPage(2)">戻る</button>
+                <button class="btn btn-primary"   onclick="alert('設定を確認します')">確認する</button>
+              </div>
+              <div class="home-indicator"><div class="home-bar"></div></div>
+            </div>
+          </div><!-- /page-3 -->
+
+        </div><!-- /pages-container -->
+      </div><!-- /pages-outer -->
+
+    </div><!-- /onboarding-sheet -->
+  </div><!-- /onboarding-overlay -->
 
 
-  <!-- ===== モーダルオーバーレイ（初期表示で開いている） ===== -->
-  <div class="modal-overlay">
+  <!-- =============================================
+       ハーフモーダル: 金額選択
+  ============================================= -->
+  <div class="modal-overlay" id="modal-amount" onclick="handleOverlayClick(event,'amount')">
     <div class="modal-sheet">
-
-      <!-- DS ModalHeader: × + タイトル -->
-      <div class="modal-header">
-        <button class="modal-close-btn">
+      <div class="modal-header" onclick="event.stopPropagation()">
+        <button class="modal-close-btn" onclick="closeModal('amount')">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path d="M18 6L6 18M6 6l12 12" stroke="#333" stroke-width="2" stroke-linecap="round"/>
           </svg>
         </button>
         <p class="modal-title">金額を選択</p>
       </div>
-      <div class="separator"></div>
-
-      <!-- オプションリスト -->
-      <div class="options-list">
-        <div class="option-item" onclick="selectOpt(this)">
-          <span class="option-label">500円</span>
-          <span class="option-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        </div>
-        <div class="option-item selected" onclick="selectOpt(this)">
-          <span class="option-label">1,000円</span>
-          <span class="option-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        </div>
-        <div class="option-item" onclick="selectOpt(this)">
-          <span class="option-label">3,000円</span>
-          <span class="option-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        </div>
-        <div class="option-item" onclick="selectOpt(this)">
-          <span class="option-label">5,000円</span>
-          <span class="option-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        </div>
-        <div class="option-item" onclick="selectOpt(this)">
-          <span class="option-label">10,000円</span>
-          <span class="option-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        </div>
+      <div class="separator" onclick="event.stopPropagation()"></div>
+      <div class="options-list" onclick="event.stopPropagation()">
+        <div class="option-item" data-value="500"   data-label="500円"    onclick="selectOption('amount',this)"><span class="option-label">500円</span><span class="option-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+        <div class="option-item selected" data-value="1000" data-label="1,000円" onclick="selectOption('amount',this)"><span class="option-label">1,000円</span><span class="option-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+        <div class="option-item" data-value="3000" data-label="3,000円" onclick="selectOption('amount',this)"><span class="option-label">3,000円</span><span class="option-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+        <div class="option-item" data-value="5000" data-label="5,000円" onclick="selectOption('amount',this)"><span class="option-label">5,000円</span><span class="option-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+        <div class="option-item" data-value="10000" data-label="10,000円" onclick="selectOption('amount',this)"><span class="option-label">10,000円</span><span class="option-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
       </div>
-
-      <p class="modal-hint">少額からはじめられます</p>
-      <div class="modal-cta">
-        <button class="btn-primary">決定</button>
+      <p class="modal-hint" onclick="event.stopPropagation()">少額からはじめられます</p>
+      <div class="modal-cta" onclick="event.stopPropagation()">
+        <button class="btn btn-primary" style="width:100%;min-height:44px;" onclick="confirmModal('amount')">決定</button>
       </div>
       <div class="modal-home"><div class="home-bar"></div></div>
+    </div>
+  </div>
 
+  <!-- =============================================
+       ハーフモーダル: 頻度選択
+  ============================================= -->
+  <div class="modal-overlay" id="modal-frequency" onclick="handleOverlayClick(event,'frequency')">
+    <div class="modal-sheet">
+      <div class="modal-header" onclick="event.stopPropagation()">
+        <button class="modal-close-btn" onclick="closeModal('frequency')">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M18 6L6 18M6 6l12 12" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <p class="modal-title">頻度を選択</p>
+      </div>
+      <div class="separator" onclick="event.stopPropagation()"></div>
+      <div class="options-list" onclick="event.stopPropagation()">
+        <div class="option-item" data-value="daily"   data-label="毎日"  onclick="selectOption('frequency',this)"><span class="option-label">毎日</span><span class="option-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+        <div class="option-item" data-value="weekly"  data-label="毎週"  onclick="selectOption('frequency',this)"><span class="option-label">毎週</span><span class="option-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+        <div class="option-item selected" data-value="monthly" data-label="月1回" onclick="selectOption('frequency',this)"><span class="option-label">月1回</span><span class="option-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+      </div>
+      <div class="modal-cta" onclick="event.stopPropagation()">
+        <button class="btn btn-primary" style="width:100%;min-height:44px;" onclick="confirmModal('frequency')">決定</button>
+      </div>
+      <div class="modal-home"><div class="home-bar"></div></div>
     </div>
   </div>
 
 </div><!-- /phone -->
 
 <script>
-  function selectOpt(el) {
+  let currentPage = 1;
+  const state = {
+    amount:    { value: '1000',   label: '1,000円' },
+    frequency: { value: 'monthly', label: '月1回'  },
+  };
+  const pending = { amount: null, frequency: null };
+
+  function goToPage(n) {
+    if (n < 1 || n > 3) return;
+    currentPage = n;
+    document.getElementById('pages-container').style.transform = `translateX(-${(n-1)*375}px)`;
+    [1,2,3].forEach(i => document.getElementById('dot-'+i).classList.toggle('active', i===n));
+    const close = document.getElementById('nav-icon-close');
+    const back  = document.getElementById('nav-icon-back');
+    if (n === 1) { close.style.display=''; back.style.display='none'; }
+    else         { close.style.display='none'; back.style.display=''; }
+    document.getElementById('ob-skip').classList.toggle('hidden', n !== 1);
+  }
+
+  function navLeft() {
+    if (currentPage === 1) alert('オンボーディングを閉じます');
+    else goToPage(currentPage - 1);
+  }
+
+  function selectChoice(type) {
+    document.getElementById('btn-beginner').classList.toggle('selected', type==='beginner');
+    document.getElementById('btn-expert').classList.toggle('selected', type==='expert');
+  }
+
+  function openModal(type) {
+    pending[type] = null;
+    document.getElementById('modal-'+type).classList.add('is-open');
+  }
+  function closeModal(type) {
+    document.getElementById('modal-'+type).classList.remove('is-open');
+  }
+  function handleOverlayClick(e, type) {
+    if (e.target === document.getElementById('modal-'+type)) closeModal(type);
+  }
+  function selectOption(type, el) {
     el.closest('.options-list').querySelectorAll('.option-item').forEach(i => i.classList.remove('selected'));
     el.classList.add('selected');
+    pending[type] = { value: el.dataset.value, label: el.dataset.label };
+  }
+  function confirmModal(type) {
+    if (pending[type]) state[type] = { ...pending[type] };
+    if (type==='amount')    document.getElementById('chip-amount-label').textContent = state.amount.label;
+    else                    document.getElementById('chip-freq-label').textContent   = state.frequency.label;
+    closeModal(type);
   }
 </script>
 </body>
