@@ -530,18 +530,6 @@
     }
     .modal-overlay.is-open .modal-sheet { transform: translateY(0); }
 
-    .drag-handle-wrap {
-      padding: 8px 0 4px;
-      display: flex;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .drag-handle {
-      width: 36px;
-      height: 4px;
-      background: var(--dot-inactive);
-      border-radius: var(--radius-full);
-    }
     /* DS ModalHeader */
     .modal-header {
       height: 44px;
@@ -867,9 +855,6 @@
   ============================================= -->
   <div class="modal-overlay" id="modal-amount" onclick="handleOverlayClick(event,'amount')">
     <div class="modal-sheet">
-      <div class="drag-handle-wrap" onclick="event.stopPropagation()">
-        <div class="drag-handle"></div>
-      </div>
       <div class="modal-header" onclick="event.stopPropagation()">
         <button class="modal-close-btn" onclick="closeModal('amount')">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -914,9 +899,6 @@
   ============================================= -->
   <div class="modal-overlay" id="modal-frequency" onclick="handleOverlayClick(event,'frequency')">
     <div class="modal-sheet">
-      <div class="drag-handle-wrap" onclick="event.stopPropagation()">
-        <div class="drag-handle"></div>
-      </div>
       <div class="modal-header" onclick="event.stopPropagation()">
         <button class="modal-close-btn" onclick="closeModal('frequency')">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
