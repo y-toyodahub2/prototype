@@ -7,9 +7,10 @@
   <style>
     :root {
       /* === DS4.0 カラートークン === */
-      --brand-primary:     #ff333f;
-      --brand-primary-bg:  rgba(255, 51, 63, 0.08);
-      --accent-blue:       #4dc9ff;
+      --brand-primary:    #ff333f;
+      --brand-primary-bg: rgba(255, 51, 63, 0.07);
+      --brand-border:     #ff333f;
+      --accent-blue:      #4dc9ff;
 
       --text-primary:   #333333;
       --text-secondary: #666666;
@@ -46,9 +47,9 @@
       --size-lg:  17px;
       --size-xl:  20px;
       --size-2xl: 26px;
-      --fw-light:  300;
+      --fw-light:   300;
       --fw-regular: 400;
-      --fw-bold:   600;
+      --fw-bold:    600;
       --lh-body:   1.4;
       --lh-button: 1.25;
     }
@@ -56,7 +57,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background: #b0b0b0;
+      background: #a8a8a8;
       display: flex;
       justify-content: center;
       align-items: flex-start;
@@ -75,7 +76,7 @@
       flex-direction: column;
       border-radius: 44px;
       box-shadow: 0 32px 80px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(0,0,0,0.12);
-      position: relative; /* modal position anchor */
+      position: relative;
     }
 
     /* ===== Status Bar ===== */
@@ -127,14 +128,12 @@
       -webkit-tap-highlight-color: transparent;
     }
     .nav-btn:active { opacity: 0.4; }
-    .nav-btn-left  { left: 4px; }
-    .nav-btn-right { right: 4px; }
+    .nav-btn-left { left: 4px; }
     .nav-title {
       font-size: var(--size-lg);
       font-weight: var(--fw-bold);
       color: var(--text-primary);
       text-align: center;
-      line-height: var(--lh-body);
     }
     .nav-skip {
       position: absolute;
@@ -148,8 +147,10 @@
       padding: 4px 8px;
       font-family: var(--font);
       -webkit-tap-highlight-color: transparent;
+      transition: opacity 0.2s;
     }
     .nav-skip:active { opacity: 0.4; }
+    .nav-skip.hidden { opacity: 0; pointer-events: none; }
 
     /* ===== Separator ===== */
     .separator { height: 1px; background: var(--border-primary); flex-shrink: 0; }
@@ -160,45 +161,350 @@
       justify-content: center;
       align-items: center;
       gap: var(--space-8);
-      padding: var(--space-16);
+      padding: 14px var(--space-16);
       flex-shrink: 0;
     }
     .dot {
-      width: 4px;
       height: 4px;
+      width: 4px;
       border-radius: var(--radius-full);
       background: var(--dot-inactive);
-      transition: background 0.2s, width 0.2s;
+      transition: width 0.25s ease, background 0.25s ease;
     }
     .dot.active {
-      background: var(--brand-primary);
       width: 16px;
+      background: var(--brand-primary);
     }
 
-    /* ===== スクリーン共通 ===== */
-    .screen {
+    /* ===== ページ遷移コンテナ ===== */
+    .pages-outer {
       flex: 1;
+      overflow: hidden;
+      min-height: 0;
+      position: relative;
+    }
+    .pages-container {
+      display: flex;
+      height: 100%;
+      width: calc(375px * 3);
+      transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform;
+    }
+    .page {
+      width: 375px;
+      flex-shrink: 0;
+      height: 100%;
       display: flex;
       flex-direction: column;
       overflow: hidden;
     }
+    .page-content {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .page-footer {
+      flex-shrink: 0;
+      background: var(--bg-primary);
+    }
 
-    /* ===== Page 3: メインコンテンツ ===== */
-    .page3-content {
+    /* ===== 共通ボタン ===== */
+    .btn {
+      width: 100%;
+      min-height: 48px;
+      border-radius: var(--radius-md);
+      font-size: var(--size-md);
+      font-weight: var(--fw-bold);
+      font-family: var(--font);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: var(--lh-button);
+      border: none;
+      transition: opacity 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn:active:not(:disabled) { opacity: 0.7; }
+    .btn-primary {
+      background: var(--brand-primary);
+      color: var(--text-white);
+    }
+    .btn-primary:disabled {
+      background: var(--dot-inactive);
+      color: var(--text-white);
+      cursor: default;
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: var(--size-sm);
+      min-height: 40px;
+    }
+
+    /* ===== CTA エリア（共通） ===== */
+    .cta-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-4);
+      padding: var(--space-16);
+    }
+    .home-indicator {
+      height: 34px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 8px;
+    }
+    .home-bar {
+      width: 134px;
+      height: 5px;
+      background: var(--text-primary);
+      border-radius: 100px;
+    }
+
+    /* =============================================
+       Page 1: ユーザー属性の把握
+    ============================================= */
+    .p1-content {
+      padding: var(--space-32) var(--space-24) var(--space-24);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-24);
+    }
+    .p1-question {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-8);
+    }
+    .p1-question-sub {
+      font-size: var(--size-sm);
+      color: var(--text-secondary);
+      font-weight: var(--fw-regular);
+      line-height: var(--lh-body);
+    }
+    .p1-question-title {
+      font-size: var(--size-xl);
+      font-weight: var(--fw-bold);
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+
+    /* 選択カード */
+    .select-cards {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-12);
+    }
+    .select-card {
+      border: 1.5px solid var(--border-primary);
+      border-radius: var(--radius-lg);
+      padding: var(--space-16);
+      display: flex;
+      align-items: center;
+      gap: var(--space-12);
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    .select-card:active { background: var(--bg-secondary); }
+    .select-card.selected {
+      border-color: var(--brand-primary);
+      background: var(--brand-primary-bg);
+    }
+    .select-card-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-md);
+      background: var(--bg-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+    .select-card.selected .select-card-icon {
+      background: var(--brand-primary-bg);
+    }
+    .select-card-body {
       flex: 1;
       display: flex;
       flex-direction: column;
-      padding: var(--space-24) var(--space-24) 0;
+      gap: 2px;
+    }
+    .select-card-label {
+      font-size: var(--size-md);
+      font-weight: var(--fw-bold);
+      color: var(--text-primary);
+      line-height: var(--lh-body);
+    }
+    .select-card-desc {
+      font-size: var(--size-xs);
+      color: var(--text-secondary);
+      line-height: var(--lh-body);
+    }
+    .select-card.selected .select-card-label { color: var(--brand-primary); }
+    .select-card-radio {
+      width: 20px;
+      height: 20px;
+      border-radius: var(--radius-full);
+      border: 1.5px solid var(--border-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .select-card.selected .select-card-radio {
+      border-color: var(--brand-primary);
+      background: var(--brand-primary);
+    }
+    .select-card-radio::after {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: var(--radius-full);
+      background: var(--text-white);
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .select-card.selected .select-card-radio::after { opacity: 1; }
+
+    /* =============================================
+       Page 2: 価値訴求
+    ============================================= */
+    .p2-content {
+      display: flex;
+      flex-direction: column;
       gap: var(--space-24);
-      overflow-y: auto;
     }
 
-    /* おすすめバッジ + 説明 */
+    /* イラストエリア */
+    .illust-wrapper {
+      height: 220px;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .illust-card {
+      position: absolute;
+      left: 60px;
+      top: 48px;
+      width: 256px;
+      height: 144px;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .illust-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    /* スピーチバブル + タイトル */
+    .p2-text {
+      padding: 0 var(--space-24);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-16);
+      align-items: center;
+    }
+    .speech-bubble-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .speech-bubble {
+      background: var(--accent-blue);
+      border-radius: 3.5px;
+      padding: 5px var(--space-16) 4px;
+      color: var(--text-white);
+      font-size: var(--size-sm);
+      font-weight: var(--fw-bold);
+      white-space: nowrap;
+      line-height: 1.6;
+    }
+    .speech-bubble-arrow {
+      width: 0; height: 0;
+      border-left: 5.5px solid transparent;
+      border-right: 5.5px solid transparent;
+      border-top: 7px solid var(--accent-blue);
+    }
+    .p2-titles {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .p2-title-main {
+      font-weight: var(--fw-bold);
+      color: var(--text-primary);
+      text-align: center;
+      letter-spacing: 0.5px;
+      line-height: 1.5;
+    }
+    .p2-title-main .t-sm  { font-size: var(--size-xl); }
+    .p2-title-main .t-lg  { font-size: var(--size-2xl); }
+    .p2-title-sub {
+      font-size: var(--size-xl);
+      font-weight: var(--fw-bold);
+      color: var(--text-primary);
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    /* プロモーションカード */
+    .promo-section { padding: 0 var(--space-16); }
+    .promo-card {
+      border: 1px solid var(--border-primary);
+      border-radius: var(--radius-lg);
+      padding: var(--space-8) var(--space-24) var(--space-16);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-8);
+      align-items: center;
+    }
+    .promo-header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-12);
+      width: 100%;
+    }
+    .promo-line { flex: 1; height: 1px; background: var(--border-primary); }
+    .promo-label {
+      font-size: 12.7px;
+      font-weight: var(--fw-bold);
+      color: var(--text-primary);
+      white-space: nowrap;
+      line-height: 1.6;
+    }
+    .promo-body { display: flex; align-items: center; gap: var(--space-8); }
+    .promo-left-img { height: 35px; width: auto; object-fit: contain; }
+    .promo-right { display: flex; align-items: center; gap: var(--space-2); }
+    .promo-coin-img { width: 37px; height: 37px; object-fit: contain; }
+    .promo-amount-img { height: 36px; width: auto; object-fit: contain; }
+
+    /* =============================================
+       Page 3: 積立設定
+    ============================================= */
+    .p3-content {
+      padding: var(--space-24) var(--space-24) 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-24);
+    }
+
+    /* おすすめバッジ */
     .recommend-section {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: var(--space-16);
+      gap: var(--space-12);
       text-align: center;
     }
     .recommend-badge {
@@ -220,15 +526,15 @@
       line-height: 1.5;
     }
     .recommend-desc {
-      font-size: var(--size-md);
+      font-size: var(--size-sm);
       color: var(--text-secondary);
       line-height: var(--lh-body);
     }
 
-    /* イラストプレースホルダー */
-    .illust-area {
+    /* p3 イラスト */
+    .p3-illust {
       width: 100%;
-      height: 120px;
+      height: 110px;
       background: var(--bg-secondary);
       border-radius: var(--radius-md);
       display: flex;
@@ -237,12 +543,12 @@
       overflow: hidden;
       flex-shrink: 0;
     }
-    .illust-area img {
-      height: 110px;
+    .p3-illust img {
+      height: 100%;
       object-fit: contain;
     }
 
-    /* ===== 積立設定カード ===== */
+    /* 積立設定カード */
     .settings-card {
       background: var(--bg-secondary);
       border-radius: var(--radius-lg);
@@ -264,9 +570,7 @@
       align-items: center;
       justify-content: center;
       gap: var(--space-8);
-      flex-wrap: wrap;
     }
-    /* タップ可能チップ */
     .chip {
       display: inline-flex;
       align-items: center;
@@ -279,81 +583,19 @@
       font-weight: var(--fw-bold);
       color: var(--text-primary);
       cursor: pointer;
-      transition: border-color 0.15s, background 0.15s;
       -webkit-tap-highlight-color: transparent;
-      min-width: 90px;
+      min-width: 88px;
       justify-content: center;
       user-select: none;
+      transition: border-color 0.15s, background 0.15s;
+      font-family: var(--font);
     }
     .chip:active {
       background: var(--brand-primary-bg);
       border-color: var(--brand-primary);
     }
-    .chip-chevron {
-      color: var(--text-secondary);
-      flex-shrink: 0;
-    }
-    .chip-tsumitate {
-      font-size: var(--size-lg);
-      font-weight: var(--fw-bold);
-      color: var(--text-primary);
-      padding: 8px 0;
-    }
-
-    /* ===== フッター ===== */
-    .footer {
-      flex-shrink: 0;
-      background: var(--bg-primary);
-    }
-    .cta-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: var(--space-4);
-      padding: var(--space-16);
-    }
-    .btn {
-      width: 100%;
-      min-height: 48px;
-      border-radius: var(--radius-md);
-      font-size: var(--size-md);
-      font-weight: var(--fw-bold);
-      font-family: var(--font);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      line-height: var(--lh-button);
-      border: none;
-      transition: opacity 0.15s;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .btn:active { opacity: 0.7; }
-    .btn-primary {
-      background: var(--brand-primary);
-      color: var(--text-white);
-    }
-    .btn-ghost {
-      background: transparent;
-      color: var(--text-secondary);
-      font-size: var(--size-sm);
-      min-height: 40px;
-    }
-
-    /* ===== ホームインジケーター ===== */
-    .home-indicator {
-      height: 34px;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      padding-bottom: 8px;
-    }
-    .home-bar {
-      width: 134px;
-      height: 5px;
-      background: var(--text-primary);
-      border-radius: 100px;
-    }
+    .chip-chevron { color: var(--text-tertiary); flex-shrink: 0; }
+    .chip-text { font-size: var(--size-lg); font-weight: var(--fw-bold); color: var(--text-primary); }
 
     /* =============================================
        ハーフモーダル
@@ -362,20 +604,19 @@
       position: absolute;
       inset: 0;
       background: var(--bg-overlay);
-      z-index: 200;
+      z-index: 300;
       display: flex;
       align-items: flex-end;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.25s ease;
-      border-radius: 44px; /* phone と合わせる */
+      border-radius: 44px;
       overflow: hidden;
     }
     .modal-overlay.is-open {
       opacity: 1;
       pointer-events: all;
     }
-
     .modal-sheet {
       width: 100%;
       background: var(--bg-primary);
@@ -386,17 +627,13 @@
       transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
       max-height: 67%;
     }
-    .modal-overlay.is-open .modal-sheet {
-      transform: translateY(0);
-    }
+    .modal-overlay.is-open .modal-sheet { transform: translateY(0); }
 
-    /* ドラッグハンドル */
     .drag-handle-wrap {
       padding: 12px 0 8px;
       display: flex;
       justify-content: center;
       flex-shrink: 0;
-      cursor: grab;
     }
     .drag-handle {
       width: 36px;
@@ -404,23 +641,16 @@
       background: var(--dot-inactive);
       border-radius: var(--radius-full);
     }
-
-    /* モーダルヘッダー */
     .modal-header {
       padding: 0 var(--space-16) var(--space-16);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      text-align: center;
       flex-shrink: 0;
     }
     .modal-title {
       font-size: var(--size-lg);
       font-weight: var(--fw-bold);
       color: var(--text-primary);
-      text-align: center;
     }
-
-    /* 選択肢リスト */
     .options-list {
       overflow-y: auto;
       flex: 1;
@@ -433,25 +663,25 @@
       padding: var(--space-16) var(--space-8);
       border-bottom: 1px solid var(--bg-secondary);
       cursor: pointer;
-      transition: background 0.1s;
-      border-radius: var(--radius-sm);
       -webkit-tap-highlight-color: transparent;
       user-select: none;
+      border-radius: var(--radius-sm);
+      transition: background 0.1s;
     }
     .option-item:last-child { border-bottom: none; }
     .option-item:active { background: var(--bg-secondary); }
     .option-label {
       font-size: var(--size-lg);
-      font-weight: var(--fw-regular);
       color: var(--text-primary);
+      font-weight: var(--fw-regular);
     }
     .option-item.selected .option-label {
       font-weight: var(--fw-bold);
       color: var(--brand-primary);
     }
     .option-check {
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -460,7 +690,6 @@
     }
     .option-item.selected .option-check { opacity: 1; }
 
-    /* モーダル補足テキスト */
     .modal-hint {
       padding: var(--space-8) var(--space-16) var(--space-4);
       font-size: var(--size-xs);
@@ -468,14 +697,9 @@
       text-align: center;
       flex-shrink: 0;
     }
-
-    /* モーダル CTA */
     .modal-cta {
       padding: var(--space-12) var(--space-16);
       flex-shrink: 0;
-    }
-    .modal-cta .btn-primary {
-      min-height: 44px;
     }
     .modal-home {
       height: 28px;
@@ -513,260 +737,381 @@
     </div>
   </div>
 
-  <!-- ② Top Navigation -->
+  <!-- ② Top Navigation（JS で更新） -->
   <div class="top-nav">
-    <button class="nav-btn nav-btn-left" aria-label="閉じる" onclick="alert('閉じる')">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <button class="nav-btn nav-btn-left" id="nav-left" onclick="navLeft()">
+      <!-- Page1: × / Page2-3: ← -->
+      <svg id="nav-icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none">
         <path d="M18 6L6 18M6 6l12 12" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <svg id="nav-icon-back" width="24" height="24" viewBox="0 0 24 24" fill="none" style="display:none">
+        <path d="M15 18l-6-6 6-6" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </button>
     <span class="nav-title">ビットコインをはじめよう</span>
+    <button class="nav-skip" id="nav-skip" onclick="skipAll()">スキップ</button>
   </div>
   <div class="separator"></div>
 
-  <!-- ③ ステップインジケーター（3/3） -->
+  <!-- ③ ステップインジケーター -->
   <div class="step-indicators">
-    <div class="dot"></div>
-    <div class="dot"></div>
-    <div class="dot active"></div>
+    <div class="dot active" id="dot-1"></div>
+    <div class="dot"        id="dot-2"></div>
+    <div class="dot"        id="dot-3"></div>
   </div>
 
-  <!-- ④ メインスクリーン -->
-  <div class="screen">
-    <div class="page3-content">
+  <!-- ④ Pages -->
+  <div class="pages-outer">
+    <div class="pages-container" id="pages-container">
 
-      <!-- おすすめバッジ + テキスト -->
-      <div class="recommend-section">
-        <span class="recommend-badge">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-            <path d="M6 1l1.3 2.6 2.9.4-2.1 2 .5 2.9L6 7.5 3.4 8.9l.5-2.9L2 4l2.9-.4L6 1z" fill="#ff333f"/>
-          </svg>
-          こんな人におすすめ
-        </span>
-        <p class="recommend-title">買い時が<br>わからない</p>
-        <p class="recommend-desc">価格を気にせず、毎月自動で少額から<br>コツコツ積み立てられます。</p>
-      </div>
+      <!-- ======= PAGE 1: ユーザー属性の把握 ======= -->
+      <div class="page" id="page-1">
+        <div class="page-content">
+          <div class="p1-content">
 
-      <!-- イラストエリア -->
-      <div class="illust-area">
-        <img
-          src="https://www.figma.com/api/mcp/asset/75f87bf4-5bfa-466f-af96-b2cb3b235181"
-          alt="積立イラスト"
-        />
-      </div>
+            <div class="p1-question">
+              <p class="p1-question-sub">ビットコインへの関心</p>
+              <p class="p1-question-title">あなたに近いのは<br>どれですか？</p>
+            </div>
 
-      <!-- 積立設定カード -->
-      <div class="settings-card">
-        <p class="settings-card-label">積立の設定</p>
-        <div class="settings-row">
-          <!-- 頻度チップ -->
-          <button class="chip" id="chip-freq" onclick="openModal('frequency')" aria-label="頻度を変更">
-            <span id="chip-freq-label">月1回</span>
-            <svg class="chip-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M3 5l4 4 4-4" stroke="#999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
+            <div class="select-cards" id="select-cards-p1">
+              <!-- カード 1 -->
+              <div class="select-card selected" data-value="tsumitate" onclick="selectCard(this, 'p1')">
+                <div class="select-card-icon">🌱</div>
+                <div class="select-card-body">
+                  <span class="select-card-label">コツコツ積み立てたい</span>
+                  <span class="select-card-desc">リスクをおさえながら、少額からはじめたい</span>
+                </div>
+                <div class="select-card-radio"></div>
+              </div>
+              <!-- カード 2 -->
+              <div class="select-card" data-value="timing" onclick="selectCard(this, 'p1')">
+                <div class="select-card-icon">📈</div>
+                <div class="select-card-body">
+                  <span class="select-card-label">タイミングを見て購入したい</span>
+                  <span class="select-card-desc">価格の動きを見ながら自分で判断したい</span>
+                </div>
+                <div class="select-card-radio"></div>
+              </div>
+              <!-- カード 3 -->
+              <div class="select-card" data-value="learn" onclick="selectCard(this, 'p1')">
+                <div class="select-card-icon">🔍</div>
+                <div class="select-card-body">
+                  <span class="select-card-label">まずは仕組みを知りたい</span>
+                  <span class="select-card-desc">ビットコインが何かを理解してから始めたい</span>
+                </div>
+                <div class="select-card-radio"></div>
+              </div>
+            </div>
 
-          <!-- 金額チップ -->
-          <button class="chip" id="chip-amount" onclick="openModal('amount')" aria-label="金額を変更">
-            <span id="chip-amount-label">1,000円</span>
-            <svg class="chip-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M3 5l4 4 4-4" stroke="#999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-
-          <span class="chip-tsumitate">つみたてる</span>
+          </div>
         </div>
-      </div>
+        <div class="page-footer">
+          <div class="separator"></div>
+          <div class="cta-wrap">
+            <button class="btn btn-primary" id="btn-p1-next" onclick="goToPage(2)">次へ</button>
+          </div>
+          <div class="home-indicator"><div class="home-bar"></div></div>
+        </div>
+      </div><!-- /page-1 -->
 
-    </div><!-- /page3-content -->
+      <!-- ======= PAGE 2: 価値訴求 ======= -->
+      <div class="page" id="page-2">
+        <div class="page-content">
+          <div class="p2-content">
 
-    <!-- フッター CTA -->
-    <div class="footer">
-      <div class="separator"></div>
-      <div class="cta-wrap">
-        <button class="btn btn-primary" onclick="alert('設定を確認します')">確認する</button>
-        <button class="btn btn-ghost" onclick="alert('あとで設定します')">あとでにする</button>
-      </div>
-      <div class="home-indicator">
-        <div class="home-bar"></div>
-      </div>
-    </div>
+            <!-- イラスト -->
+            <div class="illust-wrapper">
+              <div class="illust-card">
+                <img
+                  src="https://www.figma.com/api/mcp/asset/75f87bf4-5bfa-466f-af96-b2cb3b235181"
+                  alt="積立マスコット"
+                />
+              </div>
+            </div>
 
-  </div><!-- /screen -->
+            <!-- スピーチバブル + タイトル -->
+            <div class="p2-text">
+              <div class="speech-bubble-wrap">
+                <div class="speech-bubble">リスクをおさえたい初心者向け</div>
+                <div class="speech-bubble-arrow"></div>
+              </div>
+              <div class="p2-titles">
+                <p class="p2-title-main">
+                  <span class="t-sm">コツコツ</span><span class="t-lg">「つみたて」</span>
+                </p>
+                <p class="p2-title-sub">未来のためのお金</p>
+              </div>
+            </div>
+
+            <!-- プロモーションカード -->
+            <div class="promo-section">
+              <div class="promo-card">
+                <div class="promo-header">
+                  <div class="promo-line"></div>
+                  <span class="promo-label">今ならもらえる</span>
+                  <div class="promo-line"></div>
+                </div>
+                <div class="promo-body">
+                  <img
+                    class="promo-left-img"
+                    src="https://www.figma.com/api/mcp/asset/bdfde19a-9ee6-4afb-84de-870eb100a0b0"
+                    alt="1,000円×3ヶ月つみたてると"
+                  />
+                  <div class="promo-right">
+                    <img class="promo-coin-img"
+                      src="https://www.figma.com/api/mcp/asset/44141090-f4a5-4e82-9b1b-0ebf917979cd"
+                      alt="コイン"
+                    />
+                    <img class="promo-amount-img"
+                      src="https://www.figma.com/api/mcp/asset/47986de4-058f-4741-b651-dde23fdb04e0"
+                      alt="500円分"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="page-footer">
+          <div class="separator"></div>
+          <div class="cta-wrap">
+            <button class="btn btn-primary" onclick="goToPage(3)">次へ</button>
+          </div>
+          <div class="home-indicator"><div class="home-bar"></div></div>
+        </div>
+      </div><!-- /page-2 -->
+
+      <!-- ======= PAGE 3: 積立設定 ======= -->
+      <div class="page" id="page-3">
+        <div class="page-content">
+          <div class="p3-content">
+
+            <!-- おすすめバッジ -->
+            <div class="recommend-section">
+              <span class="recommend-badge">
+                <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+                  <path d="M5.5 1l1.18 2.38 2.64.38-1.91 1.86.45 2.63L5.5 7l-2.36 1.25.45-2.63L1.68 3.76l2.64-.38L5.5 1z" fill="#ff333f"/>
+                </svg>
+                こんな人におすすめ
+              </span>
+              <p class="recommend-title">買い時が<br>わからない</p>
+              <p class="recommend-desc">価格を気にせず毎月自動で、<br>少額からコツコツ積み立てられます。</p>
+            </div>
+
+            <!-- イラスト -->
+            <div class="p3-illust">
+              <img
+                src="https://www.figma.com/api/mcp/asset/75f87bf4-5bfa-466f-af96-b2cb3b235181"
+                alt="積立イラスト"
+              />
+            </div>
+
+            <!-- 積立設定カード -->
+            <div class="settings-card">
+              <p class="settings-card-label">積立の設定</p>
+              <div class="settings-row">
+                <button class="chip" onclick="openModal('frequency')">
+                  <span id="chip-freq-label">月1回</span>
+                  <svg class="chip-chevron" width="13" height="13" viewBox="0 0 13 13" fill="none">
+                    <path d="M2.5 4.5l4 4 4-4" stroke="#999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+                <button class="chip" onclick="openModal('amount')">
+                  <span id="chip-amount-label">1,000円</span>
+                  <svg class="chip-chevron" width="13" height="13" viewBox="0 0 13 13" fill="none">
+                    <path d="M2.5 4.5l4 4 4-4" stroke="#999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+                <span class="chip-text">つみたてる</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="page-footer">
+          <div class="separator"></div>
+          <div class="cta-wrap">
+            <button class="btn btn-primary" onclick="alert('設定を確認します')">確認する</button>
+            <button class="btn btn-ghost" onclick="alert('あとで設定します')">あとでにする</button>
+          </div>
+          <div class="home-indicator"><div class="home-bar"></div></div>
+        </div>
+      </div><!-- /page-3 -->
+
+    </div><!-- /pages-container -->
+  </div><!-- /pages-outer -->
 
 
   <!-- =============================================
-       ハーフモーダル（金額選択）
+       ハーフモーダル: 金額選択
   ============================================= -->
-  <div class="modal-overlay" id="modal-amount" onclick="handleOverlayClick(event, 'amount')">
+  <div class="modal-overlay" id="modal-amount" onclick="handleOverlayClick(event,'amount')">
     <div class="modal-sheet">
-      <!-- ドラッグハンドル -->
       <div class="drag-handle-wrap" onclick="event.stopPropagation()">
         <div class="drag-handle"></div>
       </div>
-      <!-- タイトル -->
       <div class="modal-header" onclick="event.stopPropagation()">
         <p class="modal-title">金額を選択</p>
       </div>
-      <!-- 選択肢 -->
       <div class="options-list" onclick="event.stopPropagation()">
-        <div class="option-item" data-value="500" data-label="500円" onclick="selectOption('amount', this)">
+        <div class="option-item" data-value="500"   data-label="500円"    onclick="selectOption('amount',this)">
           <span class="option-label">500円</span>
-          <span class="option-check">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
+          <span class="option-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
-        <div class="option-item selected" data-value="1000" data-label="1,000円" onclick="selectOption('amount', this)">
+        <div class="option-item selected" data-value="1000" data-label="1,000円" onclick="selectOption('amount',this)">
           <span class="option-label">1,000円</span>
-          <span class="option-check">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
+          <span class="option-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
-        <div class="option-item" data-value="3000" data-label="3,000円" onclick="selectOption('amount', this)">
+        <div class="option-item" data-value="3000" data-label="3,000円" onclick="selectOption('amount',this)">
           <span class="option-label">3,000円</span>
-          <span class="option-check">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
+          <span class="option-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
-        <div class="option-item" data-value="5000" data-label="5,000円" onclick="selectOption('amount', this)">
+        <div class="option-item" data-value="5000" data-label="5,000円" onclick="selectOption('amount',this)">
           <span class="option-label">5,000円</span>
-          <span class="option-check">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
+          <span class="option-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
-        <div class="option-item" data-value="10000" data-label="10,000円" onclick="selectOption('amount', this)">
+        <div class="option-item" data-value="10000" data-label="10,000円" onclick="selectOption('amount',this)">
           <span class="option-label">10,000円</span>
-          <span class="option-check">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
+          <span class="option-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
       </div>
-      <!-- 補足 -->
       <p class="modal-hint" onclick="event.stopPropagation()">少額からはじめられます</p>
-      <!-- CTA -->
       <div class="modal-cta" onclick="event.stopPropagation()">
-        <button class="btn btn-primary" onclick="confirmModal('amount')">決定</button>
+        <button class="btn btn-primary" style="min-height:44px;" onclick="confirmModal('amount')">決定</button>
       </div>
-      <div class="modal-home">
-        <div class="home-bar"></div>
-      </div>
+      <div class="modal-home"><div class="home-bar"></div></div>
     </div>
   </div>
 
-
   <!-- =============================================
-       ハーフモーダル（頻度選択）
+       ハーフモーダル: 頻度選択
   ============================================= -->
-  <div class="modal-overlay" id="modal-frequency" onclick="handleOverlayClick(event, 'frequency')">
+  <div class="modal-overlay" id="modal-frequency" onclick="handleOverlayClick(event,'frequency')">
     <div class="modal-sheet">
-      <!-- ドラッグハンドル -->
       <div class="drag-handle-wrap" onclick="event.stopPropagation()">
         <div class="drag-handle"></div>
       </div>
-      <!-- タイトル -->
       <div class="modal-header" onclick="event.stopPropagation()">
         <p class="modal-title">頻度を選択</p>
       </div>
-      <!-- 選択肢 -->
       <div class="options-list" onclick="event.stopPropagation()">
-        <div class="option-item" data-value="daily" data-label="毎日" onclick="selectOption('frequency', this)">
+        <div class="option-item" data-value="daily"   data-label="毎日"  onclick="selectOption('frequency',this)">
           <span class="option-label">毎日</span>
-          <span class="option-check">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
+          <span class="option-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
-        <div class="option-item" data-value="weekly" data-label="毎週" onclick="selectOption('frequency', this)">
+        <div class="option-item" data-value="weekly"  data-label="毎週"  onclick="selectOption('frequency',this)">
           <span class="option-label">毎週</span>
-          <span class="option-check">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
+          <span class="option-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
-        <div class="option-item selected" data-value="monthly" data-label="月1回" onclick="selectOption('frequency', this)">
+        <div class="option-item selected" data-value="monthly" data-label="月1回" onclick="selectOption('frequency',this)">
           <span class="option-label">月1回</span>
-          <span class="option-check">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
+          <span class="option-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
       </div>
-      <!-- CTA -->
       <div class="modal-cta" onclick="event.stopPropagation()">
-        <button class="btn btn-primary" onclick="confirmModal('frequency')">決定</button>
+        <button class="btn btn-primary" style="min-height:44px;" onclick="confirmModal('frequency')">決定</button>
       </div>
-      <div class="modal-home">
-        <div class="home-bar"></div>
-      </div>
+      <div class="modal-home"><div class="home-bar"></div></div>
     </div>
   </div>
 
 </div><!-- /phone -->
 
 <script>
-  // ===== 状態管理 =====
+  /* =============================================
+     状態管理
+  ============================================= */
+  let currentPage = 1;
   const state = {
     amount:    { value: '1000',   label: '1,000円' },
     frequency: { value: 'monthly', label: '月1回'  },
   };
-  // 各モーダルの一時選択（確定前）
   const pending = { amount: null, frequency: null };
 
-  // ===== モーダル開閉 =====
+  /* =============================================
+     ページ遷移
+  ============================================= */
+  function goToPage(n) {
+    if (n < 1 || n > 3) return;
+    currentPage = n;
+
+    // Slide pages
+    const offset = (n - 1) * 375;
+    document.getElementById('pages-container').style.transform = `translateX(-${offset}px)`;
+
+    // Step dots
+    [1,2,3].forEach(i => {
+      const dot = document.getElementById('dot-' + i);
+      dot.classList.toggle('active', i === n);
+    });
+
+    // Nav left button: page1 → ×, page2-3 → ←
+    const iconClose = document.getElementById('nav-icon-close');
+    const iconBack  = document.getElementById('nav-icon-back');
+    if (n === 1) {
+      iconClose.style.display = '';
+      iconBack.style.display  = 'none';
+    } else {
+      iconClose.style.display = 'none';
+      iconBack.style.display  = '';
+    }
+
+    // スキップ: page1 のみ表示
+    const skip = document.getElementById('nav-skip');
+    skip.classList.toggle('hidden', n !== 1);
+  }
+
+  function navLeft() {
+    if (currentPage === 1) {
+      // × → フロー終了（デモ用）
+      alert('オンボーディングを閉じます');
+    } else {
+      goToPage(currentPage - 1);
+    }
+  }
+
+  function skipAll() {
+    goToPage(3); // デモ: 最終ページへジャンプ
+  }
+
+  /* =============================================
+     Page 1: カード選択
+  ============================================= */
+  function selectCard(el, groupId) {
+    const container = document.getElementById('select-cards-' + groupId);
+    container.querySelectorAll('.select-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  /* =============================================
+     ハーフモーダル
+  ============================================= */
   function openModal(type) {
-    const overlay = document.getElementById('modal-' + type);
-    // 一時選択をリセット（現在の確定値を反映）
     pending[type] = null;
-    overlay.classList.add('is-open');
+    document.getElementById('modal-' + type).classList.add('is-open');
   }
 
   function closeModal(type) {
-    const overlay = document.getElementById('modal-' + type);
-    overlay.classList.remove('is-open');
+    document.getElementById('modal-' + type).classList.remove('is-open');
   }
 
   function handleOverlayClick(event, type) {
-    // overlay 背景クリック（= sheet 外）で閉じる
     if (event.target === document.getElementById('modal-' + type)) {
       closeModal(type);
     }
   }
 
-  // ===== オプション選択 =====
   function selectOption(type, el) {
-    // 同一リスト内の全選択を解除
     const list = el.closest('.options-list');
     list.querySelectorAll('.option-item').forEach(item => item.classList.remove('selected'));
-    // 選択
     el.classList.add('selected');
-    // 一時保存
-    pending[type] = {
-      value: el.dataset.value,
-      label: el.dataset.label,
-    };
+    pending[type] = { value: el.dataset.value, label: el.dataset.label };
   }
 
-  // ===== 決定ボタン =====
   function confirmModal(type) {
-    // pending があれば確定、なければ現状維持
-    if (pending[type]) {
-      state[type] = { ...pending[type] };
-    }
-    // チップ表示を更新
+    if (pending[type]) state[type] = { ...pending[type] };
     if (type === 'amount') {
       document.getElementById('chip-amount-label').textContent = state.amount.label;
     } else {
