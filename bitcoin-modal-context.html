@@ -403,11 +403,9 @@
     }
     .p2-badge {
       display: inline-flex; align-items: center; gap: var(--space-4);
-      background: var(--brand-primary-bg);
-      color: var(--brand-primary);
+      color: var(--text-primary);
       font-size: var(--size-xs); font-weight: var(--fw-bold);
-      padding: 4px 12px;
-      border-radius: var(--radius-full);
+      padding: 4px 0;
       line-height: 1.6;
     }
     .p2-title {
@@ -444,11 +442,9 @@
     }
     .recommend-badge {
       display: inline-flex; align-items: center; gap: var(--space-4);
-      background: var(--brand-primary-bg);
-      color: var(--brand-primary);
+      color: var(--text-primary);
       font-size: var(--size-xs); font-weight: var(--fw-bold);
-      padding: 4px 12px;
-      border-radius: var(--radius-full);
+      padding: 4px 0;
       line-height: 1.6;
     }
     .recommend-title {
@@ -710,9 +706,6 @@
                 <div class="p1-stat-banner">
                   🔰 メルカリのビットコインをはじめた<br>ひとの8割が初心者です。
                 </div>
-                <div class="p1-illust">
-                  <img src="https://www.figma.com/api/mcp/asset/75f87bf4-5bfa-466f-af96-b2cb3b235181" alt="マスコット"/>
-                </div>
                 <p class="p1-question">あなたはどっち？</p>
                 <div class="p1-choice-btns">
                   <button class="btn-choice" id="btn-beginner" onclick="selectChoice('beginner')">
@@ -823,17 +816,16 @@
                       </svg>
                     </button>
                   </div>
-                  <div class="settings-row">
-                    <span class="chip-text" style="font-size:var(--size-xl);">つみたてる</span>
-                  </div>
                 </div>
               </div>
             </div>
             <div class="page-footer">
               <div class="separator"></div>
-              <div class="cta-row">
-                <button class="btn btn-secondary" onclick="alert('あとでにします')">あとでにする</button>
-                <button class="btn btn-primary"   onclick="alert('設定を確認します')">確認する</button>
+              <div style="padding: var(--space-12) var(--space-16) var(--space-8);">
+                <button class="btn btn-primary" style="width:100%;" onclick="alert('設定を確認します')">つみたてる</button>
+              </div>
+              <div style="display:flex;justify-content:center;padding-bottom:var(--space-8);">
+                <button class="ob-skip" onclick="alert('あとでにします')">あとでにする</button>
               </div>
               <div class="home-indicator"><div class="home-bar"></div></div>
             </div>
