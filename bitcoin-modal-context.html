@@ -348,13 +348,12 @@
       gap: var(--space-16);
     }
     .p1-stat-banner {
-      background: var(--brand-primary-bg);
       border-radius: var(--radius-md);
       padding: var(--space-12) var(--space-16);
       text-align: center;
       font-size: var(--size-sm);
       font-weight: var(--fw-bold);
-      color: var(--brand-primary);
+      color: var(--text-primary);
       line-height: 1.7;
       width: 100%;
     }
@@ -689,8 +688,7 @@
             <path d="M15 18l-6-6 6-6" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
-        <span class="ob-nav-title">ビットコインをはじめよう</span>
-        <button class="ob-skip" id="ob-skip" onclick="goToPage(3)">スキップ</button>
+        <span class="ob-nav-title">ようこそ。</span>
       </div>
       <div class="separator"></div>
 
@@ -732,6 +730,9 @@
               <div class="separator"></div>
               <div class="cta-row">
                 <button class="btn btn-primary" onclick="goToPage(2)">次へ</button>
+              </div>
+              <div style="display:flex;justify-content:center;padding:0 var(--space-16) var(--space-8);">
+                <button class="ob-skip" id="ob-skip" onclick="goToPage(3)">スキップ</button>
               </div>
               <div class="home-indicator"><div class="home-bar"></div></div>
             </div>
@@ -912,7 +913,6 @@
     const back  = document.getElementById('nav-icon-back');
     if (n === 1) { close.style.display=''; back.style.display='none'; }
     else         { close.style.display='none'; back.style.display=''; }
-    document.getElementById('ob-skip').classList.toggle('hidden', n !== 1);
   }
 
   function navLeft() {
