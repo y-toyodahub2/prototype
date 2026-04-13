@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=375, initial-scale=1">
+  <title>ビットコイン - 積立設定モーダル</title>
+  <style>
+    :root {
+      --brand-primary:    #ff333f;
+      --brand-primary-bg: rgba(255, 51, 63, 0.07);
+      --btc-gold:         #f0b90b;
+      --btc-gold-bg:      rgba(240, 185, 11, 0.12);
+      --text-primary:   #333333;
+      --text-secondary: #666666;
+      --text-tertiary:  #999999;
+      --text-white:     #ffffff;
+      --bg-primary:   #ffffff;
+      --bg-secondary: #f0f0f0;
+      --bg-overlay:   rgba(0, 0, 0, 0.45);
+      --border-primary: #c7c7c7;
+      --dot-inactive:   #d9d9d9;
+      --space-4:  4px;
+      --space-8:  8px;
+      --space-12: 12px;
+      --space-16: 16px;
+      --space-24: 24px;
+      --radius-sm:   4px;
+      --radius-md:   8px;
+      --radius-lg:   16px;
+      --radius-full: 999px;
+      --font: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+      --size-xs:  12px;
+      --size-sm:  14px;
+      --size-md:  15px;
+      --size-lg:  17px;
+      --size-xl:  20px;
+      --size-2xl: 26px;
+      --fw-regular: 400;
+      --fw-bold:    600;
+      --lh-body:   1.4;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #a8a8a8;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 40px 0 60px;
+      font-family: var(--font);
+    }
+
+    /* ===== 電話フレーム ===== */
+    .phone {
+      width: 375px;
+      height: 812px;
+      background: var(--bg-primary);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border-radius: 44px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(0,0,0,0.12);
+      position: relative;
+    }
+
+    /* =============================================
+       Background: ビットコイン画面
+    ============================================= */
+
+    /* Status Bar */
+    .bg-status {
+      height: 54px;
+      padding: 14px 20px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .bg-status-time {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: -0.3px;
+    }
+    .bg-status-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Navigation */
+    .bg-nav {
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .bg-nav-btn {
+      position: absolute;
+      width: 44px; height: 44px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .bg-nav-left  { left: 4px; }
+    .bg-nav-right { right: 4px; }
+    .bg-nav-title {
+      font-size: var(--size-lg);
+      font-weight: var(--fw-bold);
+      color: var(--text-primary);
+    }
+    .bg-separator { height: 1px; background: var(--border-primary); flex-shrink: 0; }
+
+    /* コインタブ */
+    .bg-tabs {
+      display: flex;
+      padding: var(--space-8) var(--space-16) 0;
+      gap: var(--space-8);
+      flex-shrink: 0;
+    }
+    .bg-tab {
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+      padding: 8px var(--space-16);
+      border-radius: var(--radius-full);
+      font-size: var(--size-sm);
+      font-weight: var(--fw-bold);
+      color: var(--text-secondary);
+      background: var(--bg-secondary);
+    }
+    .bg-tab.active {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+      outline: 2px solid #4dc9ff;
+      outline-offset: -2px;
+    }
+    .coin-icon {
+      width: 20px; height: 20px;
+      border-radius: var(--radius-full);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .coin-icon-mercari {
+      background: linear-gradient(135deg, #ff333f 0%, #ff333f 25%, #4dc9ff 25%, #4dc9ff 50%, #f0b90b 50%, #f0b90b 75%, #4ade80 75%);
+      font-size: 0;
+    }
+    .coin-icon-btc { background: var(--btc-gold); color: white; font-size: 11px; }
+
+    /* スクロールコンテンツ */
+    .bg-scroll {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* 運用額カード */
+    .bg-card {
+      margin: var(--space-12) var(--space-16) 0;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-primary);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .bg-card-header {
+      padding: var(--space-12) var(--space-16) var(--space-8);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .bg-card-label-wrap {
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+    }
+    .bg-card-btc-icon {
+      width: 24px; height: 24px;
+      border-radius: var(--radius-full);
+      background: var(--btc-gold);
+      display: flex; align-items: center; justify-content: center;
+      color: white;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .bg-card-label {
+      font-size: var(--size-sm);
+      font-weight: var(--fw-bold);
+      color: var(--text-secondary);
+    }
+    .bg-card-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--space-12);
+    }
+    .bg-card-balance {
+      padding: 0 var(--space-16) var(--space-8);
+    }
+    .bg-balance-amount {
+      font-size: 32px;
+      font-weight: var(--fw-bold);
+      color: var(--text-primary);
+      letter-spacing: -0.5px;
+    }
+    .bg-balance-yen {
+      font-size: var(--size-xl);
+      font-weight: var(--fw-bold);
+    }
+    .bg-balance-diff {
+      font-size: var(--size-sm);
+      color: #22c55e;
+      font-weight: var(--fw-bold);
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      margin-top: 2px;
+    }
+
+    /* チャートエリア */
+    .bg-chart {
+      height: 100px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* =============================================
+       モーダルオーバーレイ（デフォルト開き状態）
+    ============================================= */
+    .modal-overlay {
+      position: absolute;
+      inset: 0;
+      background: var(--bg-overlay);
+      z-index: 300;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      border-radius: 44px;
+      overflow: hidden;
+      /* 最初から表示 */
+      opacity: 1;
+      pointer-events: all;
+    }
+    .modal-sheet {
+      width: 100%;
+      background: var(--bg-primary);
+      border-radius: 12px 12px 0 0;
+      display: flex;
+      flex-direction: column;
+      flex: 0 0 67%;
+      min-height: 0;
+      /* 最初から展開 */
+      transform: translateY(0);
+    }
+
+    /* DS ModalHeader */
+    .modal-header {
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      flex-shrink: 0;
+      padding: 0 var(--space-16);
+    }
+    .modal-close-btn {
+      position: absolute;
+      left: var(--space-4);
+      width: 44px; height: 44px;
+      display: flex; align-items: center; justify-content: center;
+      background: none; border: none;
+      cursor: pointer;
+      border-radius: var(--radius-full);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .modal-close-btn:active { opacity: 0.4; }
+    .modal-title {
+      font-size: var(--size-lg);
+      font-weight: var(--fw-bold);
+      color: var(--text-primary);
+    }
+    .separator { height: 1px; background: var(--border-primary); flex-shrink: 0; }
+
+    /* オプションリスト */
+    .options-list {
+      overflow-y: auto;
+      flex: 1;
+      padding: 0 var(--space-16);
+    }
+    .option-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-16) var(--space-8);
+      border-bottom: 1px solid var(--bg-secondary);
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      border-radius: var(--radius-sm);
+      transition: background 0.1s;
+    }
+    .option-item:last-child { border-bottom: none; }
+    .option-item:active { background: var(--bg-secondary); }
+    .option-label {
+      font-size: var(--size-lg);
+      color: var(--text-primary);
+      font-weight: var(--fw-regular);
+    }
+    .option-item.selected .option-label {
+      font-weight: var(--fw-bold);
+      color: var(--brand-primary);
+    }
+    .option-check {
+      width: 22px; height: 22px;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .option-item.selected .option-check { opacity: 1; }
+
+    /* ヒント */
+    .modal-hint {
+      padding: var(--space-8) var(--space-16) var(--space-4);
+      font-size: var(--size-xs);
+      color: var(--text-tertiary);
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    /* CTA */
+    .modal-cta {
+      padding: var(--space-12) var(--space-16);
+      flex-shrink: 0;
+    }
+    .btn-primary {
+      width: 100%;
+      min-height: 48px;
+      border-radius: var(--radius-md);
+      font-size: var(--size-md);
+      font-weight: var(--fw-bold);
+      font-family: var(--font);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--brand-primary);
+      color: var(--text-white);
+      border: none;
+    }
+    .btn-primary:active { opacity: 0.7; }
+
+    /* ホームインジケーター */
+    .modal-home {
+      height: 34px;
+      display: flex; align-items: flex-end; justify-content: center;
+      padding-bottom: 8px;
+      flex-shrink: 0;
+    }
+    .home-bar {
+      width: 134px; height: 5px;
+      background: var(--text-primary);
+      border-radius: 100px;
+    }
+  </style>
+</head>
+<body>
+<div class="phone">
+
+  <!-- ===== Background: ビットコイン画面 ===== -->
+
+  <!-- Status Bar -->
+  <div class="bg-status">
+    <span class="bg-status-time">9:41</span>
+    <div style="width:100px;"></div>
+    <div class="bg-status-icons">
+      <svg width="19" height="12" viewBox="0 0 19 12" fill="none">
+        <rect x="0"  y="8"  width="3" height="4"  rx="0.5" fill="#333"/>
+        <rect x="4"  y="5"  width="3" height="7"  rx="0.5" fill="#333"/>
+        <rect x="8"  y="2"  width="3" height="10" rx="0.5" fill="#333"/>
+        <rect x="12" y="0"  width="3" height="12" rx="0.5" fill="#333"/>
+      </svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+        <circle cx="8" cy="10.5" r="1.5" fill="#333"/>
+        <path d="M4 7.2C5.2 5.8 6.5 5.1 8 5.1s2.8.7 4 2.1" stroke="#333" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+        <path d="M0.5 4C2.8 1.6 5.2 0.3 8 0.3S13.2 1.6 15.5 4" stroke="#333" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+      </svg>
+      <svg width="27" height="13" viewBox="0 0 27 13" fill="none">
+        <rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#333" stroke-opacity="0.35"/>
+        <rect x="2" y="2" width="18" height="9" rx="1.5" fill="#333"/>
+        <path d="M24.5 4.5v4a2 2 0 0 0 0-4z" fill="#333" fill-opacity="0.4"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="bg-nav">
+    <div class="bg-nav-btn bg-nav-left">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M15 18l-6-6 6-6" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <span class="bg-nav-title">ビットコイン</span>
+    <div class="bg-nav-btn bg-nav-right">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="9.5" stroke="#333" stroke-width="1.2"/>
+        <path d="M12 11v5" stroke="#333" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="12" cy="8" r="0.75" fill="#333"/>
+      </svg>
+    </div>
+  </div>
+  <div class="bg-separator"></div>
+
+  <!-- コインタブ -->
+  <div class="bg-tabs">
+    <div class="bg-tab">
+      <div class="coin-icon coin-icon-mercari"></div>
+      メルカリコイン
+    </div>
+    <div class="bg-tab active">
+      <div class="coin-icon coin-icon-btc">B</div>
+      ビットコイン
+    </div>
+  </div>
+
+  <!-- スクロールコンテンツ -->
+  <div class="bg-scroll">
+
+    <!-- 運用額カード -->
+    <div class="bg-card">
+      <div class="bg-card-header">
+        <div class="bg-card-label-wrap">
+          <div class="bg-card-btc-icon">₿</div>
+          <span class="bg-card-label">現在の運用額</span>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <circle cx="7" cy="7" r="6" stroke="#999" stroke-width="1"/>
+            <path d="M7 6.2v3.6" stroke="#999" stroke-width="1.2" stroke-linecap="round"/>
+            <circle cx="7" cy="4.5" r="0.6" fill="#999"/>
+          </svg>
+        </div>
+        <div class="bg-card-meta">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path d="M2 9 C4 5 8 4 10 7 C12 10 14 8 16 5" stroke="#999" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+          </svg>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="1.5" fill="#999"/>
+            <circle cx="10" cy="5"  r="1.5" fill="#999"/>
+            <circle cx="10" cy="15" r="1.5" fill="#999"/>
+          </svg>
+        </div>
+      </div>
+      <div class="bg-card-balance">
+        <div class="bg-balance-amount">
+          <span class="bg-balance-yen">¥ </span>2,000
+        </div>
+        <div class="bg-balance-diff">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M6 10V2M2 6l4-4 4 4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          ¥100
+        </div>
+      </div>
+
+      <!-- 価格チャート (SVG) -->
+      <div class="bg-chart">
+        <svg viewBox="0 0 375 100" width="375" height="100" preserveAspectRatio="none">
+          <!-- 塗りつぶしエリア -->
+          <defs>
+            <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"   stop-color="#f0b90b" stop-opacity="0.35"/>
+              <stop offset="100%" stop-color="#f0b90b" stop-opacity="0.03"/>
+            </linearGradient>
+          </defs>
+          <path d="M0 70 C30 65 50 78 70 60 C90 42 110 55 130 40 C150 25 165 48 190 35 C210 24 225 50 250 42 C270 36 290 28 310 20 C330 14 355 22 375 15 L375 100 L0 100 Z"
+                fill="url(#goldGrad)"/>
+          <!-- ラインチャート -->
+          <path d="M0 70 C30 65 50 78 70 60 C90 42 110 55 130 40 C150 25 165 48 190 35 C210 24 225 50 250 42 C270 36 290 28 310 20 C330 14 355 22 375 15"
+                fill="none" stroke="#f0b90b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+    </div><!-- /bg-card -->
+
+  </div><!-- /bg-scroll -->
+
+
+  <!-- ===== モーダルオーバーレイ（初期表示で開いている） ===== -->
+  <div class="modal-overlay">
+    <div class="modal-sheet">
+
+      <!-- DS ModalHeader: × + タイトル -->
+      <div class="modal-header">
+        <button class="modal-close-btn">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M18 6L6 18M6 6l12 12" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <p class="modal-title">金額を選択</p>
+      </div>
+      <div class="separator"></div>
+
+      <!-- オプションリスト -->
+      <div class="options-list">
+        <div class="option-item" onclick="selectOpt(this)">
+          <span class="option-label">500円</span>
+          <span class="option-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+        <div class="option-item selected" onclick="selectOpt(this)">
+          <span class="option-label">1,000円</span>
+          <span class="option-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+        <div class="option-item" onclick="selectOpt(this)">
+          <span class="option-label">3,000円</span>
+          <span class="option-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+        <div class="option-item" onclick="selectOpt(this)">
+          <span class="option-label">5,000円</span>
+          <span class="option-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+        <div class="option-item" onclick="selectOpt(this)">
+          <span class="option-label">10,000円</span>
+          <span class="option-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </div>
+
+      <p class="modal-hint">少額からはじめられます</p>
+      <div class="modal-cta">
+        <button class="btn-primary">決定</button>
+      </div>
+      <div class="modal-home"><div class="home-bar"></div></div>
+
+    </div>
+  </div>
+
+</div><!-- /phone -->
+
+<script>
+  function selectOpt(el) {
+    el.closest('.options-list').querySelectorAll('.option-item').forEach(i => i.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+</script>
+</body>
+</html>
