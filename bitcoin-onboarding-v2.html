@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=375, initial-scale=1">
+  <title>ビットコインをはじめよう（v2）</title>
+  <style>
+    :root {
+      /* === DS4.0 カラートークン === */
+      --brand-primary:     #ff333f;
+      --brand-primary-bg:  rgba(255, 51, 63, 0.08);
+      --accent-blue:       #4dc9ff;
+
+      --text-primary:   #333333;
+      --text-secondary: #666666;
+      --text-tertiary:  #999999;
+      --text-white:     #ffffff;
+
+      --bg-primary:   #ffffff;
+      --bg-secondary: #f0f0f0;
+      --bg-overlay:   rgba(0, 0, 0, 0.5);
+
+      --border-primary: #c7c7c7;
+      --dot-inactive:   #d9d9d9;
+
+      /* === DS4.0 スペーシング === */
+      --space-2:  2px;
+      --space-4:  4px;
+      --space-8:  8px;
+      --space-12: 12px;
+      --space-16: 16px;
+      --space-24: 24px;
+      --space-32: 32px;
+
+      /* === DS4.0 ボーダーラジアス === */
+      --radius-sm:   4px;
+      --radius-md:   8px;
+      --radius-lg:   16px;
+      --radius-full: 999px;
+
+      /* === DS4.0 タイポグラフィ === */
+      --font: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+      --size-xs:  12px;
+      --size-sm:  14px;
+      --size-md:  15px;
+      --size-lg:  17px;
+      --size-xl:  20px;
+      --size-2xl: 26px;
+      --fw-light:  300;
+      --fw-regular: 400;
+      --fw-bold:   600;
+      --lh-body:   1.4;
+      --lh-button: 1.25;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #b0b0b0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 40px 0 60px;
+      font-family: var(--font);
+    }
+
+    /* ===== 電話フレーム ===== */
+    .phone {
+      width: 375px;
+      height: 812px;
+      background: var(--bg-primary);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border-radius: 44px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(0,0,0,0.12);
+      position: relative; /* modal position anchor */
+    }
+
+    /* ===== Status Bar ===== */
+    .status-bar {
+      height: 54px;
+      padding: 14px 20px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      background: var(--bg-primary);
+    }
+    .status-time {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: -0.3px;
+      min-width: 50px;
+    }
+    .status-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 50px;
+      justify-content: flex-end;
+    }
+
+    /* ===== Top Navigation ===== */
+    .top-nav {
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      flex-shrink: 0;
+      background: var(--bg-primary);
+    }
+    .nav-btn {
+      position: absolute;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      background: none;
+      border: none;
+      border-radius: var(--radius-full);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .nav-btn:active { opacity: 0.4; }
+    .nav-btn-left  { left: 4px; }
+    .nav-btn-right { right: 4px; }
+    .nav-title {
+      font-size: var(--size-lg);
+      font-weight: var(--fw-bold);
+      color: var(--text-primary);
+      text-align: center;
+      line-height: var(--lh-body);
+    }
+    .nav-skip {
+      position: absolute;
+      right: 12px;
+      font-size: var(--size-sm);
+      font-weight: var(--fw-bold);
+      color: var(--text-secondary);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 8px;
+      font-family: var(--font);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .nav-skip:active { opacity: 0.4; }
+
+    /* ===== Separator ===== */
+    .separator { height: 1px; background: var(--border-primary); flex-shrink: 0; }
+
+    /* ===== ステップインジケーター ===== */
+    .step-indicators {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: var(--space-8);
+      padding: var(--space-16);
+      flex-shrink: 0;
+    }
+    .dot {
+      width: 4px;
+      height: 4px;
+      border-radius: var(--radius-full);
+      background: var(--dot-inactive);
+      transition: background 0.2s, width 0.2s;
+    }
+    .dot.active {
+      background: var(--brand-primary);
+      width: 16px;
+    }
+
+    /* ===== スクリーン共通 ===== */
+    .screen {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ===== Page 3: メインコンテンツ ===== */
+    .page3-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: var(--space-24) var(--space-24) 0;
+      gap: var(--space-24);
+      overflow-y: auto;
+    }
+
+    /* おすすめバッジ + 説明 */
+    .recommend-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-16);
+      text-align: center;
+    }
+    .recommend-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-4);
+      background: var(--brand-primary-bg);
+      color: var(--brand-primary);
+      font-size: var(--size-xs);
+      font-weight: var(--fw-bold);
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      line-height: 1.6;
+    }
+    .recommend-title {
+      font-size: var(--size-xl);
+      font-weight: var(--fw-bold);
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+    .recommend-desc {
+      font-size: var(--size-md);
+      color: var(--text-secondary);
+      line-height: var(--lh-body);
+    }
+
+    /* イラストプレースホルダー */
+    .illust-area {
+      width: 100%;
+      height: 120px;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .illust-area img {
+      height: 110px;
+      object-fit: contain;
+    }
+
+    /* ===== 積立設定カード ===== */
+    .settings-card {
+      background: var(--bg-secondary);
+      border-radius: var(--radius-lg);
+      padding: var(--space-24) var(--space-16);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-16);
+      flex-shrink: 0;
+    }
+    .settings-card-label {
+      font-size: var(--size-xs);
+      font-weight: var(--fw-bold);
+      color: var(--text-secondary);
+      text-align: center;
+      letter-spacing: 0.5px;
+    }
+    .settings-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-8);
+      flex-wrap: wrap;
+    }
+    /* タップ可能チップ */
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-4);
+      background: var(--bg-primary);
+      border: 1.5px solid var(--border-primary);
+      border-radius: var(--radius-md);
+      padding: 8px 14px;
+      font-size: var(--size-lg);
+      font-weight: var(--fw-bold);
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      -webkit-tap-highlight-color: transparent;
+      min-width: 90px;
+      justify-content: center;
+      user-select: none;
+    }
+    .chip:active {
+      background: var(--brand-primary-bg);
+      border-color: var(--brand-primary);
+    }
+    .chip-chevron {
+      color: var(--text-secondary);
+      flex-shrink: 0;
+    }
+    .chip-tsumitate {
+      font-size: var(--size-lg);
+      font-weight: var(--fw-bold);
+      color: var(--text-primary);
+      padding: 8px 0;
+    }
+
+    /* ===== フッター ===== */
+    .footer {
+      flex-shrink: 0;
+      background: var(--bg-primary);
+    }
+    .cta-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-4);
+      padding: var(--space-16);
+    }
+    .btn {
+      width: 100%;
+      min-height: 48px;
+      border-radius: var(--radius-md);
+      font-size: var(--size-md);
+      font-weight: var(--fw-bold);
+      font-family: var(--font);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: var(--lh-button);
+      border: none;
+      transition: opacity 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn:active { opacity: 0.7; }
+    .btn-primary {
+      background: var(--brand-primary);
+      color: var(--text-white);
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: var(--size-sm);
+      min-height: 40px;
+    }
+
+    /* ===== ホームインジケーター ===== */
+    .home-indicator {
+      height: 34px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 8px;
+    }
+    .home-bar {
+      width: 134px;
+      height: 5px;
+      background: var(--text-primary);
+      border-radius: 100px;
+    }
+
+    /* =============================================
+       ハーフモーダル
+    ============================================= */
+    .modal-overlay {
+      position: absolute;
+      inset: 0;
+      background: var(--bg-overlay);
+      z-index: 200;
+      display: flex;
+      align-items: flex-end;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      border-radius: 44px; /* phone と合わせる */
+      overflow: hidden;
+    }
+    .modal-overlay.is-open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal-sheet {
+      width: 100%;
+      background: var(--bg-primary);
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(100%);
+      transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+      max-height: 67%;
+    }
+    .modal-overlay.is-open .modal-sheet {
+      transform: translateY(0);
+    }
+
+    /* ドラッグハンドル */
+    .drag-handle-wrap {
+      padding: 12px 0 8px;
+      display: flex;
+      justify-content: center;
+      flex-shrink: 0;
+      cursor: grab;
+    }
+    .drag-handle {
+      width: 36px;
+      height: 4px;
+      background: var(--dot-inactive);
+      border-radius: var(--radius-full);
+    }
+
+    /* モーダルヘッダー */
+    .modal-header {
+      padding: 0 var(--space-16) var(--space-16);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .modal-title {
+      font-size: var(--size-lg);
+      font-weight: var(--fw-bold);
+      color: var(--text-primary);
+      text-align: center;
+    }
+
+    /* 選択肢リスト */
+    .options-list {
+      overflow-y: auto;
+      flex: 1;
+      padding: 0 var(--space-16);
+    }
+    .option-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-16) var(--space-8);
+      border-bottom: 1px solid var(--bg-secondary);
+      cursor: pointer;
+      transition: background 0.1s;
+      border-radius: var(--radius-sm);
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    .option-item:last-child { border-bottom: none; }
+    .option-item:active { background: var(--bg-secondary); }
+    .option-label {
+      font-size: var(--size-lg);
+      font-weight: var(--fw-regular);
+      color: var(--text-primary);
+    }
+    .option-item.selected .option-label {
+      font-weight: var(--fw-bold);
+      color: var(--brand-primary);
+    }
+    .option-check {
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .option-item.selected .option-check { opacity: 1; }
+
+    /* モーダル補足テキスト */
+    .modal-hint {
+      padding: var(--space-8) var(--space-16) var(--space-4);
+      font-size: var(--size-xs);
+      color: var(--text-tertiary);
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    /* モーダル CTA */
+    .modal-cta {
+      padding: var(--space-12) var(--space-16);
+      flex-shrink: 0;
+    }
+    .modal-cta .btn-primary {
+      min-height: 44px;
+    }
+    .modal-home {
+      height: 28px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+<div class="phone">
+
+  <!-- ① Status Bar -->
+  <div class="status-bar">
+    <span class="status-time">9:41</span>
+    <div style="width:110px;"></div>
+    <div class="status-icons">
+      <svg width="19" height="12" viewBox="0 0 19 12" fill="none">
+        <rect x="0"  y="8"  width="3" height="4"  rx="0.5" fill="#333"/>
+        <rect x="4"  y="5"  width="3" height="7"  rx="0.5" fill="#333"/>
+        <rect x="8"  y="2"  width="3" height="10" rx="0.5" fill="#333"/>
+        <rect x="12" y="0"  width="3" height="12" rx="0.5" fill="#333"/>
+      </svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+        <circle cx="8" cy="10.5" r="1.5" fill="#333"/>
+        <path d="M4 7.2C5.2 5.8 6.5 5.1 8 5.1s2.8.7 4 2.1" stroke="#333" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+        <path d="M0.5 4C2.8 1.6 5.2 0.3 8 0.3S13.2 1.6 15.5 4" stroke="#333" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+      </svg>
+      <svg width="27" height="13" viewBox="0 0 27 13" fill="none">
+        <rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#333" stroke-opacity="0.35"/>
+        <rect x="2" y="2" width="18" height="9" rx="1.5" fill="#333"/>
+        <path d="M24.5 4.5v4a2 2 0 0 0 0-4z" fill="#333" fill-opacity="0.4"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ② Top Navigation -->
+  <div class="top-nav">
+    <button class="nav-btn nav-btn-left" aria-label="閉じる" onclick="alert('閉じる')">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M18 6L6 18M6 6l12 12" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <span class="nav-title">ビットコインをはじめよう</span>
+  </div>
+  <div class="separator"></div>
+
+  <!-- ③ ステップインジケーター（3/3） -->
+  <div class="step-indicators">
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot active"></div>
+  </div>
+
+  <!-- ④ メインスクリーン -->
+  <div class="screen">
+    <div class="page3-content">
+
+      <!-- おすすめバッジ + テキスト -->
+      <div class="recommend-section">
+        <span class="recommend-badge">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M6 1l1.3 2.6 2.9.4-2.1 2 .5 2.9L6 7.5 3.4 8.9l.5-2.9L2 4l2.9-.4L6 1z" fill="#ff333f"/>
+          </svg>
+          こんな人におすすめ
+        </span>
+        <p class="recommend-title">買い時が<br>わからない</p>
+        <p class="recommend-desc">価格を気にせず、毎月自動で少額から<br>コツコツ積み立てられます。</p>
+      </div>
+
+      <!-- イラストエリア -->
+      <div class="illust-area">
+        <img
+          src="https://www.figma.com/api/mcp/asset/75f87bf4-5bfa-466f-af96-b2cb3b235181"
+          alt="積立イラスト"
+        />
+      </div>
+
+      <!-- 積立設定カード -->
+      <div class="settings-card">
+        <p class="settings-card-label">積立の設定</p>
+        <div class="settings-row">
+          <!-- 頻度チップ -->
+          <button class="chip" id="chip-freq" onclick="openModal('frequency')" aria-label="頻度を変更">
+            <span id="chip-freq-label">月1回</span>
+            <svg class="chip-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M3 5l4 4 4-4" stroke="#999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+          <!-- 金額チップ -->
+          <button class="chip" id="chip-amount" onclick="openModal('amount')" aria-label="金額を変更">
+            <span id="chip-amount-label">1,000円</span>
+            <svg class="chip-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M3 5l4 4 4-4" stroke="#999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+          <span class="chip-tsumitate">つみたてる</span>
+        </div>
+      </div>
+
+    </div><!-- /page3-content -->
+
+    <!-- フッター CTA -->
+    <div class="footer">
+      <div class="separator"></div>
+      <div class="cta-wrap">
+        <button class="btn btn-primary" onclick="alert('設定を確認します')">確認する</button>
+        <button class="btn btn-ghost" onclick="alert('あとで設定します')">あとでにする</button>
+      </div>
+      <div class="home-indicator">
+        <div class="home-bar"></div>
+      </div>
+    </div>
+
+  </div><!-- /screen -->
+
+
+  <!-- =============================================
+       ハーフモーダル（金額選択）
+  ============================================= -->
+  <div class="modal-overlay" id="modal-amount" onclick="handleOverlayClick(event, 'amount')">
+    <div class="modal-sheet">
+      <!-- ドラッグハンドル -->
+      <div class="drag-handle-wrap" onclick="event.stopPropagation()">
+        <div class="drag-handle"></div>
+      </div>
+      <!-- タイトル -->
+      <div class="modal-header" onclick="event.stopPropagation()">
+        <p class="modal-title">金額を選択</p>
+      </div>
+      <!-- 選択肢 -->
+      <div class="options-list" onclick="event.stopPropagation()">
+        <div class="option-item" data-value="500" data-label="500円" onclick="selectOption('amount', this)">
+          <span class="option-label">500円</span>
+          <span class="option-check">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </div>
+        <div class="option-item selected" data-value="1000" data-label="1,000円" onclick="selectOption('amount', this)">
+          <span class="option-label">1,000円</span>
+          <span class="option-check">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </div>
+        <div class="option-item" data-value="3000" data-label="3,000円" onclick="selectOption('amount', this)">
+          <span class="option-label">3,000円</span>
+          <span class="option-check">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </div>
+        <div class="option-item" data-value="5000" data-label="5,000円" onclick="selectOption('amount', this)">
+          <span class="option-label">5,000円</span>
+          <span class="option-check">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </div>
+        <div class="option-item" data-value="10000" data-label="10,000円" onclick="selectOption('amount', this)">
+          <span class="option-label">10,000円</span>
+          <span class="option-check">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </div>
+      </div>
+      <!-- 補足 -->
+      <p class="modal-hint" onclick="event.stopPropagation()">少額からはじめられます</p>
+      <!-- CTA -->
+      <div class="modal-cta" onclick="event.stopPropagation()">
+        <button class="btn btn-primary" onclick="confirmModal('amount')">決定</button>
+      </div>
+      <div class="modal-home">
+        <div class="home-bar"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- =============================================
+       ハーフモーダル（頻度選択）
+  ============================================= -->
+  <div class="modal-overlay" id="modal-frequency" onclick="handleOverlayClick(event, 'frequency')">
+    <div class="modal-sheet">
+      <!-- ドラッグハンドル -->
+      <div class="drag-handle-wrap" onclick="event.stopPropagation()">
+        <div class="drag-handle"></div>
+      </div>
+      <!-- タイトル -->
+      <div class="modal-header" onclick="event.stopPropagation()">
+        <p class="modal-title">頻度を選択</p>
+      </div>
+      <!-- 選択肢 -->
+      <div class="options-list" onclick="event.stopPropagation()">
+        <div class="option-item" data-value="daily" data-label="毎日" onclick="selectOption('frequency', this)">
+          <span class="option-label">毎日</span>
+          <span class="option-check">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </div>
+        <div class="option-item" data-value="weekly" data-label="毎週" onclick="selectOption('frequency', this)">
+          <span class="option-label">毎週</span>
+          <span class="option-check">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </div>
+        <div class="option-item selected" data-value="monthly" data-label="月1回" onclick="selectOption('frequency', this)">
+          <span class="option-label">月1回</span>
+          <span class="option-check">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M4 10l4 4 8-8" stroke="#ff333f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </div>
+      </div>
+      <!-- CTA -->
+      <div class="modal-cta" onclick="event.stopPropagation()">
+        <button class="btn btn-primary" onclick="confirmModal('frequency')">決定</button>
+      </div>
+      <div class="modal-home">
+        <div class="home-bar"></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /phone -->
+
+<script>
+  // ===== 状態管理 =====
+  const state = {
+    amount:    { value: '1000',   label: '1,000円' },
+    frequency: { value: 'monthly', label: '月1回'  },
+  };
+  // 各モーダルの一時選択（確定前）
+  const pending = { amount: null, frequency: null };
+
+  // ===== モーダル開閉 =====
+  function openModal(type) {
+    const overlay = document.getElementById('modal-' + type);
+    // 一時選択をリセット（現在の確定値を反映）
+    pending[type] = null;
+    overlay.classList.add('is-open');
+  }
+
+  function closeModal(type) {
+    const overlay = document.getElementById('modal-' + type);
+    overlay.classList.remove('is-open');
+  }
+
+  function handleOverlayClick(event, type) {
+    // overlay 背景クリック（= sheet 外）で閉じる
+    if (event.target === document.getElementById('modal-' + type)) {
+      closeModal(type);
+    }
+  }
+
+  // ===== オプション選択 =====
+  function selectOption(type, el) {
+    // 同一リスト内の全選択を解除
+    const list = el.closest('.options-list');
+    list.querySelectorAll('.option-item').forEach(item => item.classList.remove('selected'));
+    // 選択
+    el.classList.add('selected');
+    // 一時保存
+    pending[type] = {
+      value: el.dataset.value,
+      label: el.dataset.label,
+    };
+  }
+
+  // ===== 決定ボタン =====
+  function confirmModal(type) {
+    // pending があれば確定、なければ現状維持
+    if (pending[type]) {
+      state[type] = { ...pending[type] };
+    }
+    // チップ表示を更新
+    if (type === 'amount') {
+      document.getElementById('chip-amount-label').textContent = state.amount.label;
+    } else {
+      document.getElementById('chip-freq-label').textContent = state.frequency.label;
+    }
+    closeModal(type);
+  }
+</script>
+</body>
+</html>
