@@ -255,6 +255,28 @@
       margin-bottom: var(--global-spacing20);
     }
 
+    /* キャラクター */
+    .hero-char-turtle {
+      position: absolute;
+      bottom: 0;
+      left: -4px;
+      width: 80px;
+      height: auto;
+      transform: scaleX(1);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .hero-char-cat {
+      position: absolute;
+      bottom: 0;
+      right: -4px;
+      width: 80px;
+      height: auto;
+      z-index: 2;
+      pointer-events: none;
+    }
+
     /* ジグザグ区切り */
     .zigzag {
       height: 16px;
@@ -825,6 +847,10 @@
     <div class="hero-eyebrow">🔰 はじめての方限定キャンペーン</div>
 
     <div class="hero-kv">
+      <!-- キャラクター：ゼニー（亀）左 ／ ミケ（猫）右 -->
+      <img class="hero-char-turtle" src="https://www.figma.com/api/mcp/asset/57af04ec-0333-45c1-9bb4-d25b6cba7755" alt="ゼニー" />
+      <img class="hero-char-cat"    src="https://www.figma.com/api/mcp/asset/48fc1626-a958-4c5b-8d94-d8cd498b24fc" alt="ミケ" />
+
       <p class="hero-sub-label">ビットコインつみたて 3ヶ月達成で</p>
 
       <div class="hero-amount-wrap">
