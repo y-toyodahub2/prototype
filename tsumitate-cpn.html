@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ビットコインつみたてキャンペーン | メルコイン</title>
+  <style>
+    :root {
+      /* === DS4.0 Semantic Colors === */
+      --background-basic-primary-default: #f5f5f5;
+      --background-basic-tertiary-default: #ffffff;
+      --fill-basic-quaternary-default: #ffffff;
+      --border-basic-primary-default: #c7c7c7;
+      --foreground-basic-primary-default: #333333;
+      --foreground-basic-secondary-default: #666666;
+      --foreground-basic-tertiary-default: #999999;
+
+      /* === DS4.0 Spacing === */
+      --global-spacing0: 0px;
+      --global-spacing4: 4px;
+      --global-spacing8: 8px;
+      --global-spacing12: 12px;
+      --global-spacing16: 16px;
+      --global-spacing20: 20px;
+      --global-spacing24: 24px;
+      --global-spacing32: 32px;
+      --global-spacing40: 40px;
+      --global-spacing48: 48px;
+      --global-spacing56: 56px;
+
+      /* === DS4.0 Border Radius === */
+      --global-extra-thin: 0.5px;
+      --global-small: 4px;
+      --global-medium: 8px;
+      --global-large: 16px;
+      --global-full: 99px;
+
+      /* === DS4.0 Typography === */
+      --font-family-base: 'Tazugane Gothic For Mercari', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+      --font-size-xsmall: 11px;
+      --font-size-small: 13px;
+      --font-size-medium: 15px;
+      --font-size-large: 17px;
+      --font-size-xlarge: 20px;
+      --font-size-xxlarge: 26px;
+      --line-height-base: 1.6;
+
+      /* === Campaign / Brand Colors (from Figma) === */
+      --mercari-red: #ff333f;
+      --mercari-blue: #006ed1;
+      --bitcoin-orange: #F7931A;
+      --campaign-yellow: #FFD600;
+      --campaign-bg: #FFF9E6;
+      --callout-blue: #4DC9FF;
+      --campaign-table-header: #FF8C00;
+      --campaign-badge-bg: #FF3D00;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-family-base);
+      color: var(--foreground-basic-primary-default);
+      background: var(--background-basic-primary-default);
+      max-width: 375px;
+      margin: 0 auto;
+      font-size: var(--font-size-medium);
+      line-height: var(--line-height-base);
+      padding-bottom: 80px; /* for sticky CTA */
+    }
+
+    /* ============================
+       Header
+    ============================ */
+    .header {
+      background: var(--background-basic-tertiary-default);
+      padding: var(--global-spacing12) var(--global-spacing16);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: var(--global-extra-thin) solid var(--border-basic-primary-default);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-logo {
+      font-size: var(--font-size-large);
+      font-weight: 700;
+      color: var(--mercari-red);
+      letter-spacing: -0.5px;
+    }
+
+    .header-logo span {
+      color: var(--foreground-basic-primary-default);
+      font-size: var(--font-size-small);
+      font-weight: 400;
+      margin-left: var(--global-spacing4);
+    }
+
+    .header-close {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--foreground-basic-secondary-default);
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    /* ============================
+       Hero / Campaign Banner
+    ============================ */
+    .hero {
+      background: linear-gradient(160deg, #FFD600 0%, #FF8C00 100%);
+      padding: var(--global-spacing24) var(--global-spacing16) var(--global-spacing32);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 24px;
+      background: var(--background-basic-primary-default);
+      clip-path: ellipse(55% 100% at 50% 100%);
+    }
+
+    .hero-eyebrow {
+      font-size: var(--font-size-xsmall);
+      font-weight: 700;
+      color: rgba(0,0,0,0.6);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: var(--global-spacing8);
+    }
+
+    .hero-bitcoin-icon {
+      width: 56px;
+      height: 56px;
+      background: var(--background-basic-tertiary-default);
+      border-radius: var(--global-full);
+      margin: 0 auto var(--global-spacing12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+    }
+
+    .hero-headline {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--background-basic-tertiary-default);
+      line-height: 1.3;
+      margin-bottom: var(--global-spacing8);
+      text-shadow: 0 1px 4px rgba(0,0,0,0.15);
+    }
+
+    .hero-headline .amount {
+      font-size: 44px;
+      display: block;
+      letter-spacing: -1px;
+    }
+
+    .hero-sub {
+      font-size: var(--font-size-small);
+      color: rgba(255,255,255,0.9);
+      margin-bottom: var(--global-spacing24);
+      line-height: 1.5;
+    }
+
+    .hero-cta {
+      display: block;
+      background: var(--mercari-red);
+      color: var(--background-basic-tertiary-default);
+      font-size: var(--font-size-large);
+      font-weight: 700;
+      padding: 14px var(--global-spacing24);
+      border-radius: var(--global-full);
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(255,51,63,0.4);
+      margin-bottom: var(--global-spacing8);
+    }
+
+    .hero-skip {
+      font-size: var(--font-size-xsmall);
+      color: rgba(255,255,255,0.8);
+    }
+
+    /* ============================
+       Section common
+    ============================ */
+    .section {
+      background: var(--background-basic-tertiary-default);
+      margin-bottom: var(--global-spacing8);
+      padding: var(--global-spacing24) var(--global-spacing16);
+    }
+
+    .section-label {
+      font-size: var(--font-size-xsmall);
+      font-weight: 700;
+      color: var(--foreground-basic-tertiary-default);
+      letter-spacing: 0.1em;
+      text-align: center;
+      margin-bottom: var(--global-spacing8);
+    }
+
+    .section-label::before,
+    .section-label::after {
+      content: '–';
+      margin: 0 var(--global-spacing8);
+    }
+
+    .section-title {
+      font-size: var(--font-size-xlarge);
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: var(--global-spacing20);
+      color: var(--foreground-basic-primary-default);
+    }
+
+    /* ============================
+       Campaign Condition Section
+    ============================ */
+    .cpn-condition {
+      background: var(--campaign-bg);
+      border-radius: var(--global-large);
+      padding: var(--global-spacing16);
+      border: 2px solid var(--campaign-yellow);
+    }
+
+    .cpn-condition-title {
+      font-size: var(--font-size-large);
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: var(--global-spacing4);
+      color: var(--foreground-basic-primary-default);
+    }
+
+    .cpn-condition-sub {
+      font-size: var(--font-size-small);
+      color: var(--foreground-basic-secondary-default);
+      text-align: center;
+      margin-bottom: var(--global-spacing16);
+    }
+
+    .cpn-table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: var(--global-medium);
+      overflow: hidden;
+      font-size: var(--font-size-small);
+    }
+
+    .cpn-table thead tr {
+      background: var(--campaign-table-header);
+      color: var(--background-basic-tertiary-default);
+    }
+
+    .cpn-table th {
+      padding: var(--global-spacing8) var(--global-spacing12);
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .cpn-table td {
+      padding: var(--global-spacing12);
+      text-align: center;
+      border-bottom: var(--global-extra-thin) solid var(--border-basic-primary-default);
+      background: var(--background-basic-tertiary-default);
+    }
+
+    .cpn-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .cpn-table .highlight-row td {
+      background: #FFF3E0;
+      font-weight: 700;
+    }
+
+    .cpn-amount {
+      font-size: var(--font-size-medium);
+      font-weight: 700;
+      color: var(--mercari-red);
+    }
+
+    .cpn-badge {
+      display: inline-block;
+      background: var(--campaign-badge-bg);
+      color: white;
+      font-size: var(--font-size-xsmall);
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: var(--global-full);
+      margin-bottom: var(--global-spacing4);
+    }
+
+    .cpn-notice {
+      margin-top: var(--global-spacing12);
+      font-size: var(--font-size-xsmall);
+      color: var(--foreground-basic-secondary-default);
+      line-height: 1.5;
+    }
+
+    .cpn-notice li {
+      list-style: none;
+      padding-left: 1em;
+      text-indent: -1em;
+    }
+
+    .cpn-notice li::before {
+      content: '※ ';
+    }
+
+    .cpn-period {
+      display: flex;
+      align-items: center;
+      gap: var(--global-spacing8);
+      background: rgba(0,110,209,0.08);
+      border-radius: var(--global-medium);
+      padding: var(--global-spacing8) var(--global-spacing12);
+      margin-bottom: var(--global-spacing16);
+    }
+
+    .cpn-period-label {
+      font-size: var(--font-size-xsmall);
+      font-weight: 700;
+      color: var(--mercari-blue);
+      white-space: nowrap;
+    }
+
+    .cpn-period-value {
+      font-size: var(--font-size-small);
+      color: var(--foreground-basic-primary-default);
+    }
+
+    /* ============================
+       Why つみたて — Positioning
+    ============================ */
+    .positioning-callout {
+      background: #E8F4FD;
+      border-left: 3px solid var(--callout-blue);
+      border-radius: 0 var(--global-medium) var(--global-medium) 0;
+      padding: var(--global-spacing12) var(--global-spacing16);
+      margin-bottom: var(--global-spacing20);
+      font-size: var(--font-size-small);
+      color: var(--foreground-basic-primary-default);
+      line-height: 1.6;
+    }
+
+    .positioning-callout strong {
+      display: block;
+      font-size: var(--font-size-medium);
+      margin-bottom: var(--global-spacing4);
+      color: #005BAA;
+    }
+
+    .benefits-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--global-spacing12);
+    }
+
+    .benefit-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--global-spacing12);
+      padding: var(--global-spacing16);
+      background: var(--background-basic-primary-default);
+      border-radius: var(--global-large);
+    }
+
+    .benefit-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--global-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    .benefit-icon.blue { background: #E8F4FD; }
+    .benefit-icon.green { background: #E8F5E9; }
+    .benefit-icon.orange { background: #FFF3E0; }
+
+    .benefit-body {}
+
+    .benefit-title {
+      font-size: var(--font-size-medium);
+      font-weight: 700;
+      margin-bottom: var(--global-spacing4);
+    }
+
+    .benefit-desc {
+      font-size: var(--font-size-small);
+      color: var(--foreground-basic-secondary-default);
+      line-height: 1.6;
+    }
+
+    /* ============================
+       Simulation
+    ============================ */
+    .sim-lead {
+      font-size: var(--font-size-small);
+      color: var(--foreground-basic-secondary-default);
+      text-align: center;
+      margin-bottom: var(--global-spacing16);
+      line-height: 1.6;
+    }
+
+    .sim-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--global-spacing8);
+      margin-bottom: var(--global-spacing12);
+    }
+
+    .sim-card {
+      background: var(--background-basic-primary-default);
+      border-radius: var(--global-large);
+      padding: var(--global-spacing16) var(--global-spacing12);
+      text-align: center;
+    }
+
+    .sim-card-label {
+      font-size: var(--font-size-xsmall);
+      color: var(--foreground-basic-secondary-default);
+      margin-bottom: var(--global-spacing8);
+      line-height: 1.4;
+    }
+
+    .sim-card-amount {
+      font-size: var(--font-size-xlarge);
+      font-weight: 700;
+      color: var(--foreground-basic-primary-default);
+    }
+
+    .sim-card-gain {
+      font-size: var(--font-size-small);
+      color: #E53935;
+      font-weight: 700;
+      margin-top: var(--global-spacing4);
+    }
+
+    .sim-card-icon {
+      font-size: 24px;
+      margin-bottom: var(--global-spacing8);
+    }
+
+    .sim-disclaimer {
+      font-size: 10px;
+      color: var(--foreground-basic-tertiary-default);
+      line-height: 1.5;
+      text-align: left;
+      background: var(--background-basic-primary-default);
+      border-radius: var(--global-medium);
+      padding: var(--global-spacing8) var(--global-spacing12);
+    }
+
+    /* ============================
+       How to Start
+    ============================ */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: var(--global-spacing16);
+    }
+
+    .step {
+      display: flex;
+      gap: var(--global-spacing12);
+      align-items: flex-start;
+    }
+
+    .step-number {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--global-full);
+      background: var(--mercari-red);
+      color: white;
+      font-size: var(--font-size-small);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .step-body {}
+
+    .step-title {
+      font-size: var(--font-size-medium);
+      font-weight: 700;
+      margin-bottom: var(--global-spacing4);
+    }
+
+    .step-desc {
+      font-size: var(--font-size-small);
+      color: var(--foreground-basic-secondary-default);
+      line-height: 1.6;
+    }
+
+    .step-connector {
+      width: 1px;
+      height: 16px;
+      background: var(--border-basic-primary-default);
+      margin-left: 15px;
+    }
+
+    /* ============================
+       FAQ
+    ============================ */
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .faq-item {
+      border-bottom: var(--global-extra-thin) solid var(--border-basic-primary-default);
+    }
+
+    .faq-item:last-child {
+      border-bottom: none;
+    }
+
+    .faq-question {
+      width: 100%;
+      text-align: left;
+      padding: var(--global-spacing16) 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: var(--global-spacing8);
+      font-size: var(--font-size-small);
+      font-weight: 700;
+      cursor: pointer;
+      background: none;
+      border: none;
+      color: var(--foreground-basic-primary-default);
+      line-height: 1.5;
+    }
+
+    .faq-q-prefix {
+      color: var(--mercari-red);
+      font-size: var(--font-size-large);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .faq-q-text {
+      flex: 1;
+    }
+
+    .faq-chevron {
+      flex-shrink: 0;
+      color: var(--foreground-basic-tertiary-default);
+      transition: transform 0.2s;
+      font-size: var(--font-size-medium);
+    }
+
+    .faq-item.open .faq-chevron {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      display: none;
+      padding: 0 0 var(--global-spacing16) var(--global-spacing24);
+    }
+
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+
+    .faq-a-prefix {
+      color: var(--mercari-blue);
+      font-weight: 700;
+      font-size: var(--font-size-large);
+      margin-right: var(--global-spacing8);
+    }
+
+    .faq-a-text {
+      font-size: var(--font-size-small);
+      color: var(--foreground-basic-secondary-default);
+      line-height: 1.6;
+    }
+
+    /* ============================
+       Legal
+    ============================ */
+    .legal {
+      background: var(--background-basic-primary-default);
+      padding: var(--global-spacing16);
+      margin-bottom: var(--global-spacing8);
+    }
+
+    .legal-text {
+      font-size: 10px;
+      color: var(--foreground-basic-tertiary-default);
+      line-height: 1.6;
+    }
+
+    .legal-risk {
+      margin-top: var(--global-spacing8);
+      padding-top: var(--global-spacing8);
+      border-top: var(--global-extra-thin) solid var(--border-basic-primary-default);
+    }
+
+    /* ============================
+       Sticky Bottom CTA
+    ============================ */
+    .sticky-cta {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 375px;
+      background: var(--fill-basic-quaternary-default);
+      padding: var(--global-spacing12) var(--global-spacing16);
+      box-shadow: 0 -1px 0 var(--border-basic-primary-default), 0 -4px 16px rgba(0,0,0,0.08);
+      z-index: 100;
+    }
+
+    .sticky-cta-inner {
+      display: flex;
+      flex-direction: column;
+      gap: var(--global-spacing4);
+    }
+
+    .sticky-cta-btn {
+      display: block;
+      background: var(--mercari-red);
+      color: white;
+      font-size: var(--font-size-medium);
+      font-weight: 700;
+      padding: 14px var(--global-spacing24);
+      border-radius: var(--global-full);
+      text-align: center;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .sticky-cta-note {
+      font-size: 10px;
+      color: var(--foreground-basic-tertiary-default);
+      text-align: center;
+    }
+
+    /* ============================
+       Chip (銘柄 = ビットコイン固定)
+    ============================ */
+    .chip-fixed {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--global-spacing4);
+      background: #FF8C00;
+      color: white;
+      border-radius: var(--global-full);
+      padding: 4px var(--global-spacing12);
+      font-size: var(--font-size-small);
+      font-weight: 700;
+      margin-bottom: var(--global-spacing16);
+    }
+
+    .chip-fixed::before {
+      content: '₿';
+    }
+
+    /* ============================
+       Footer spacer
+    ============================ */
+    .footer {
+      text-align: center;
+      padding: var(--global-spacing16);
+      font-size: 10px;
+      color: var(--foreground-basic-tertiary-default);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-logo">
+      mercari<span>ビットコイン</span>
+    </div>
+    <div class="header-close">×</div>
+  </header>
+
+  <!-- ① Hero / Campaign Banner -->
+  <section class="hero">
+    <p class="hero-eyebrow">期間限定キャンペーン</p>
+    <div class="hero-bitcoin-icon">₿</div>
+    <h1 class="hero-headline">
+      つみたて3ヶ月で
+      <span class="amount">最大3,000円分</span>
+      もらえる
+    </h1>
+    <p class="hero-sub">ビットコインつみたてキャンペーン<br>はじめての方限定</p>
+    <a href="#" class="hero-cta">最大3,000円分もらう</a>
+    <p class="hero-skip">いつでも解除できます。まず試してみよう。</p>
+  </section>
+
+  <!-- ② Campaign Conditions -->
+  <section class="section">
+    <p class="section-label">キャンペーン内容</p>
+
+    <div class="cpn-period">
+      <span class="cpn-period-label">エントリー期間</span>
+      <span class="cpn-period-value">2026/04/03（水）〜 2026/04/20（日）23:59</span>
+    </div>
+
+    <div class="cpn-condition">
+      <p class="cpn-badge">特典</p>
+      <p class="cpn-condition-title">対象期間に3ヶ月以上<br>つみたてが成功すると…</p>
+      <p class="cpn-condition-sub">各月のつみたて額に応じてビットコインをプレゼント</p>
+
+      <table class="cpn-table">
+        <thead>
+          <tr>
+            <th>各月のつみたて額</th>
+            <th>もらえるビットコイン</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>¥3,000以上</td>
+            <td><span class="cpn-amount">500円分</span></td>
+          </tr>
+          <tr>
+            <td>¥5,000以上</td>
+            <td><span class="cpn-amount">1,000円分</span></td>
+          </tr>
+          <tr class="highlight-row">
+            <td>¥10,000以上</td>
+            <td><span class="cpn-amount">3,000円分 🎉</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <ul class="cpn-notice">
+        <li>特典付与時期：条件達成月の翌月上旬頃</li>
+        <li>はじめてビットコインのつみたて購入を実施される方が対象です</li>
+        <li>必ずキャンペーンページのボタンからエントリー後につみたて設定を行ってください</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ③ Why つみたて（UXR-informed positioning） -->
+  <section class="section">
+    <p class="section-label">簡単にご紹介</p>
+    <h2 class="section-title">つみたてのいいところ</h2>
+
+    <div class="positioning-callout">
+      <strong>投資初心者だからこそ、つみたてがおすすめ</strong>
+      「今買うべき？」「いくらが正解？」。その迷いをまるごとなくせるのが、つみたてのしくみです。
+    </div>
+
+    <div class="benefits-list">
+      <div class="benefit-item">
+        <div class="benefit-icon blue">🎯</div>
+        <div class="benefit-body">
+          <p class="benefit-title">買い時を迷わなくていい</p>
+          <p class="benefit-desc">価格が高いときも低いときも自動で少しずつ購入。タイミングを判断する必要がありません。価格変動のリスクを分散できます。</p>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-icon green">⚙️</div>
+        <div class="benefit-body">
+          <p class="benefit-title">設定したら、あとは自動</p>
+          <p class="benefit-desc">金額・頻度・つみたて日を一度決めるだけ。毎月自動で積み上がるので、忘れても安心。解除・変更もいつでもできます。</p>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-icon orange">💴</div>
+        <div class="benefit-body">
+          <p class="benefit-title">売上金をそのまま活用できる</p>
+          <p class="benefit-desc">メルカリの売上金でそのまま始められます。生活費とは別の"臨時収入"を資産形成に活かせます。¥1,000から設定可能。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ④ Simulation（バイブス醸成として） -->
+  <section class="section">
+    <p class="section-label">シミュレーション</p>
+    <h2 class="section-title">もし続けていたら？</h2>
+
+    <p class="sim-lead">
+      「長期でコツコツ」がつみたての本質。<br>
+      直近1年間、毎月つみたてていたとしたら…
+    </p>
+
+    <div style="text-align: center; margin-bottom: var(--global-spacing16);">
+      <span class="chip-fixed">ビットコイン</span>
+    </div>
+
+    <div class="sim-cards">
+      <div class="sim-card">
+        <div class="sim-card-icon">📅</div>
+        <p class="sim-card-label">毎月¥3,000<br>つみたて（1年間）</p>
+        <p class="sim-card-amount">¥108,000</p>
+        <p class="sim-card-gain" style="color: var(--foreground-basic-secondary-default); font-weight: 400;">投資元本</p>
+      </div>
+      <div class="sim-card">
+        <div class="sim-card-icon">📈</div>
+        <p class="sim-card-label">直近1年間<br>つみたてしていたら</p>
+        <p class="sim-card-amount">¥350,000</p>
+        <p class="sim-card-gain">+¥242,000</p>
+      </div>
+    </div>
+
+    <div class="sim-disclaimer">
+      ※本シミュレーションは過去の実績をもとにした試算であり、将来の収益を保証するものではありません。スプレッド（取引コスト）を含みます。暗号資産の価格は大きく変動することがあります。
+    </div>
+  </section>
+
+  <!-- ⑤ How to Start -->
+  <section class="section">
+    <p class="section-label">はじめ方</p>
+    <h2 class="section-title">3ステップで完了</h2>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-body">
+          <p class="step-title">「最大3,000円分もらう」をタップ</p>
+          <p class="step-desc">このページのボタンからエントリーしてください。エントリー後につみたて設定を行うことが条件です。</p>
+        </div>
+      </div>
+      <div class="step-connector"></div>
+
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-body">
+          <p class="step-title">金額・頻度・つみたて日を設定</p>
+          <p class="step-desc">¥1,000から設定可能。月1回・週1回など好きなペースでOK。銘柄はビットコインが対象です。</p>
+        </div>
+      </div>
+      <div class="step-connector"></div>
+
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-body">
+          <p class="step-title">3ヶ月つみたてて特典を受け取る</p>
+          <p class="step-desc">条件達成月の翌月上旬にビットコインが付与されます。つみたての変更・解除はいつでも可能です。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑥ FAQ -->
+  <section class="section">
+    <p class="section-label">FAQ</p>
+    <h2 class="section-title">よくある質問</h2>
+
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-q-prefix">Q</span>
+          <span class="faq-q-text">キャンペーンページ以外からつみたてを始めた場合は対象外ですか？</span>
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p><span class="faq-a-prefix">A</span><span class="faq-a-text">対象外となります。必ずキャンペーンページの「最大3,000円分もらう」ボタンをタップした後に、つみたて設定を行ってください。ただし、エントリー期間中に一度ボタンをタップしていれば、期間内に他のページからつみたてを設定しても対象となります。</span></p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-q-prefix">Q</span>
+          <span class="faq-q-text">利用するにあたって費用はかかりますか？</span>
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p><span class="faq-a-prefix">A</span><span class="faq-a-text">利用手数料は無料です。ただし、つみたて購入時の取引価格はスプレッド（取引コスト）を含めた金額となります。</span></p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-q-prefix">Q</span>
+          <span class="faq-q-text">つみたての変更や解除はできますか？</span>
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p><span class="faq-a-prefix">A</span><span class="faq-a-text">いつでも変更・解除が可能です（メンテナンス時を除く）。解除に費用はかかりません。ただし、キャンペーン特典を受け取るには、条件期間中のつみたて購入が必要です。変更・解除のタイミングにはご注意ください。</span></p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-q-prefix">Q</span>
+          <span class="faq-q-text">つみたて日に残高が足りなかった場合はどうなりますか？</span>
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p><span class="faq-a-prefix">A</span><span class="faq-a-text">メルペイ残高がある場合は自動チャージされます。残高が不足する場合は登録した銀行口座から自動チャージされます。銀行口座からのチャージができなかった場合、その回のつみたては行われません（後日の合算はありません）。</span></p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-q-prefix">Q</span>
+          <span class="faq-q-text">売上金やメルカリポイントは使えますか？</span>
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p><span class="faq-a-prefix">A</span><span class="faq-a-text">メルペイ残高（売上金）はつみたての原資として利用できます。メルカリの無償ポイントもご利用いただけます（「マイページ＞ビットコイン＞設定＞購入時にポイントを使用」をONに設定してください）。</span></p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-q-prefix">Q</span>
+          <span class="faq-q-text">つみたての途中でビットコインを売ることはできますか？</span>
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p><span class="faq-a-prefix">A</span><span class="faq-a-text">保有しているビットコインはいつでも売ることができます（メンテナンス時を除く）。売却したお金はメルペイ残高に移すことができます。</span></p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Legal -->
+  <div class="legal">
+    <p class="legal-text">
+      ※ 18歳未満および75歳以上のお客さまはご利用いただけません。<br>
+      ※ エントリー期間前にビットコインのつみたて購入を完了したことがある場合は対象外です。<br>
+      ※ 過去のキャンペーン等によるビットコイン付与は、つみたて購入には含まれません。<br>
+      ※ キャンペーンは予告なく変更・中止・延長する場合があります。
+    </p>
+    <div class="legal-risk">
+      <p class="legal-text">
+        暗号資産は、本邦通貨または外国通貨ではありません。暗号資産取引は、取引対象である暗号資産の価格変動により損失が生じるおそれがあります。暗号資産の売買に関する手数料は無料ですが、スプレッド（取引コスト）を含めた金額がお客さまへの提示価格になります。取引を開始される前に暗号資産取引に伴うリスクについて十分にご理解ください。<br><br>
+        株式会社メルコイン　暗号資産交換業者　関東財務局長 第00030号<br>
+        加入協会：一般社団法人日本暗号資産取引業協会
+      </p>
+    </div>
+  </div>
+
+  <div class="footer">© Mercoin, Inc.</div>
+
+  <!-- Sticky Bottom CTA -->
+  <div class="sticky-cta">
+    <div class="sticky-cta-inner">
+      <button class="sticky-cta-btn">最大3,000円分もらう</button>
+      <p class="sticky-cta-note">いつでも解除できます ・ 手数料無料 ・ ¥1,000から</p>
+    </div>
+  </div>
+
+  <script>
+    function toggleFaq(btn) {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      // Close all
+      document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+      // Open clicked if it was closed
+      if (!isOpen) item.classList.add('open');
+    }
+  </script>
+
+</body>
+</html>
