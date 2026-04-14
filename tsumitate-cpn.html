@@ -8,11 +8,10 @@
     :root {
       /* === DS4.0 Base === */
       --background-basic-tertiary-default: #ffffff;
-      --fill-basic-quaternary-default: #ffffff;
-      --border-basic-primary-default: #e8d5da;
-      --foreground-basic-primary-default: #3d2b30;
-      --foreground-basic-secondary-default: #7a5a60;
-      --foreground-basic-tertiary-default: #b08890;
+      --border-basic-primary-default: #E8E0D0;
+      --foreground-basic-primary-default: #1A1A1A;
+      --foreground-basic-secondary-default: #555555;
+      --foreground-basic-tertiary-default: #999999;
 
       /* === DS4.0 Spacing === */
       --global-spacing4: 4px;
@@ -26,10 +25,9 @@
 
       /* === DS4.0 Border Radius === */
       --global-extra-thin: 0.5px;
-      --global-small: 4px;
       --global-medium: 8px;
       --global-large: 16px;
-      --global-xlarge: 24px;
+      --global-xlarge: 20px;
       --global-full: 99px;
 
       /* === DS4.0 Typography === */
@@ -41,22 +39,16 @@
       --font-size-xlarge: 20px;
       --line-height-base: 1.6;
 
-      /* === Spring Palette === */
-      --spring-sakura:    #FFB7C5;   /* 桜ピンク */
-      --spring-petal:     #FFDDE8;   /* 花びら */
-      --spring-cream:     #FFF6F8;   /* クリームピンク */
-      --spring-green:     #7CC8A0;   /* 若草 */
-      --spring-green-bg:  #E8F7EF;   /* 若草うすめ */
-      --spring-yellow:    #FFD966;   /* 菜の花 */
-      --spring-yellow-bg: #FFFBEB;   /* 菜の花うすめ */
-      --spring-sky:       #AEE6F8;   /* 春の空 */
-      --spring-sky-bg:    #EBF8FE;   /* 空うすめ */
-      --spring-coral:     #FF7E7E;   /* 春のコーラル */
-
-      /* === Brand === */
-      --mercari-red: #ff333f;
-      --mercari-blue: #006ed1;
-      --bitcoin-orange: #F7931A;
+      /* === Campaign Palette (Figma参照) === */
+      --bg-warm:       #FFFBEA;   /* 全体の暖かいクリーム */
+      --bg-section:    #FFF4CC;   /* セクション背景イエロー */
+      --accent-red:    #FF333F;   /* メルカリレッド */
+      --accent-orange: #FF7A00;   /* オレンジ */
+      --accent-yellow: #FFD600;   /* ビビッドイエロー */
+      --accent-green:  #2ECC71;   /* アクセントグリーン */
+      --text-white:    #FFFFFF;
+      --card-shadow:   0 4px 16px rgba(0,0,0,0.10);
+      --card-border:   2px solid #1A1A1A;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -64,24 +56,23 @@
     body {
       font-family: var(--font-family-base);
       color: var(--foreground-basic-primary-default);
-      background: var(--spring-cream);
+      background: var(--bg-warm);
       max-width: 375px;
       margin: 0 auto;
       font-size: var(--font-size-medium);
       line-height: var(--line-height-base);
-      padding-bottom: 88px;
+      padding-bottom: 90px;
     }
 
     /* ============================
        Header
     ============================ */
     .header {
-      background: var(--background-basic-tertiary-default);
+      background: var(--accent-red);
       padding: var(--global-spacing12) var(--global-spacing16);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid var(--border-basic-primary-default);
       position: sticky;
       top: 0;
       z-index: 100;
@@ -90,27 +81,27 @@
     .header-logo {
       font-size: var(--font-size-large);
       font-weight: 700;
-      color: var(--mercari-red);
+      color: white;
       letter-spacing: -0.3px;
     }
 
     .header-logo span {
-      color: var(--foreground-basic-secondary-default);
       font-size: var(--font-size-small);
       font-weight: 400;
+      opacity: 0.85;
       margin-left: var(--global-spacing4);
     }
 
     .header-close {
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--foreground-basic-tertiary-default);
-      font-size: 18px;
+      color: white;
+      font-size: 16px;
       cursor: pointer;
-      background: var(--spring-cream);
+      background: rgba(255,255,255,0.2);
       border-radius: var(--global-full);
     }
 
@@ -118,122 +109,174 @@
        Hero
     ============================ */
     .hero {
-      background: linear-gradient(155deg, #FFD0DC 0%, #FFB7C5 45%, #FFCBA0 100%);
-      padding: var(--global-spacing32) var(--global-spacing16) var(--global-spacing40);
+      background: var(--bg-section);
+      padding: var(--global-spacing24) var(--global-spacing16) 0;
       text-align: center;
       position: relative;
       overflow: hidden;
     }
 
-    /* 桜の花びら装飾 */
-    .hero::before {
-      content: '🌸 🌸 🌸';
+    /* ★ デコレーション */
+    .hero-stars {
+      display: flex;
+      justify-content: center;
+      gap: var(--global-spacing8);
+      margin-bottom: var(--global-spacing12);
+    }
+
+    .star {
+      font-size: 18px;
+      color: var(--accent-orange);
+      animation: twinkle 2s ease-in-out infinite;
+    }
+
+    .star:nth-child(2) { animation-delay: 0.4s; }
+    .star:nth-child(3) { animation-delay: 0.8s; }
+
+    @keyframes twinkle {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.7; }
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--global-spacing4);
+      background: var(--accent-red);
+      color: white;
+      font-size: var(--font-size-xsmall);
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: var(--global-full);
+      margin-bottom: var(--global-spacing12);
+      letter-spacing: 0.05em;
+    }
+
+    .hero-kv {
+      background: var(--accent-red);
+      border-radius: var(--global-xlarge) var(--global-xlarge) 0 0;
+      padding: var(--global-spacing24) var(--global-spacing16) var(--global-spacing20);
+      margin: 0 -16px;
+      position: relative;
+    }
+
+    .hero-kv::before {
+      content: '★ ★ ★ ★ ★';
       position: absolute;
       top: 10px;
       left: 0;
       right: 0;
-      font-size: 18px;
-      letter-spacing: 24px;
-      opacity: 0.45;
-      pointer-events: none;
+      font-size: 12px;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 10px;
+      text-align: center;
     }
 
-    .hero::after {
-      content: '';
-      position: absolute;
-      bottom: -1px;
-      left: 0;
-      right: 0;
-      height: 28px;
-      background: var(--spring-cream);
-      clip-path: ellipse(55% 100% at 50% 100%);
-    }
-
-    /* 初心者マーク バナー */
-    .hero-beginner-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--global-spacing4);
-      background: rgba(255,255,255,0.85);
-      border-radius: var(--global-full);
-      padding: 4px 14px;
-      font-size: var(--font-size-xsmall);
-      font-weight: 700;
-      color: var(--foreground-basic-primary-default);
-      margin-bottom: var(--global-spacing16);
-    }
-
-    .hero-icon-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: var(--global-spacing8);
-      margin-bottom: var(--global-spacing16);
-    }
-
-    .hero-btc-circle {
-      width: 64px;
-      height: 64px;
-      background: white;
-      border-radius: var(--global-full);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 36px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    .hero-sub-label {
+      font-size: var(--font-size-small);
+      color: rgba(255,255,255,0.85);
+      margin-bottom: var(--global-spacing4);
     }
 
     .hero-headline {
       font-size: 15px;
       font-weight: 700;
-      color: rgba(61,43,48,0.85);
-      margin-bottom: var(--global-spacing4);
+      color: var(--accent-yellow);
+      margin-bottom: 0;
+      letter-spacing: 0.02em;
     }
 
-    .hero-amount {
-      font-size: 46px;
-      font-weight: 700;
-      color: white;
-      line-height: 1.1;
-      letter-spacing: -1px;
-      text-shadow: 0 2px 8px rgba(180,60,80,0.25);
-      margin-bottom: var(--global-spacing4);
+    .hero-amount-wrap {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 4px;
+      margin: var(--global-spacing4) 0;
     }
 
-    .hero-amount-sub {
-      font-size: var(--font-size-large);
+    .hero-amount-num {
+      font-size: 60px;
       font-weight: 700;
       color: white;
+      line-height: 1;
+      letter-spacing: -2px;
+      text-shadow: 0 3px 0 rgba(0,0,0,0.2);
+    }
+
+    .hero-amount-unit {
+      font-size: 22px;
+      font-weight: 700;
+      color: white;
+    }
+
+    .hero-amount-suffix {
+      font-size: var(--font-size-xlarge);
+      font-weight: 700;
+      color: var(--accent-yellow);
       margin-bottom: var(--global-spacing8);
     }
 
-    .hero-condition-pill {
+    .hero-condition-tag {
       display: inline-block;
-      background: rgba(255,255,255,0.8);
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.4);
       border-radius: var(--global-full);
       padding: 4px 14px;
       font-size: var(--font-size-xsmall);
-      color: var(--foreground-basic-primary-default);
-      margin-bottom: var(--global-spacing24);
+      color: white;
+      margin-bottom: var(--global-spacing20);
     }
 
     .hero-cta {
       display: block;
-      background: var(--mercari-red);
-      color: white;
+      background: var(--accent-yellow);
+      color: var(--foreground-basic-primary-default);
       font-size: var(--font-size-large);
       font-weight: 700;
-      padding: 15px var(--global-spacing24);
+      padding: 16px var(--global-spacing24);
       border-radius: var(--global-full);
       text-decoration: none;
-      box-shadow: 0 4px 16px rgba(255,51,63,0.35);
-      margin-bottom: var(--global-spacing8);
+      box-shadow: 0 5px 0 #C9A000, 0 8px 20px rgba(0,0,0,0.2);
+      margin-bottom: 6px;
       letter-spacing: 0.02em;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .hero-cta:active {
+      transform: translateY(2px);
+      box-shadow: 0 3px 0 #C9A000;
     }
 
     .hero-skip {
       font-size: var(--font-size-xsmall);
-      color: rgba(61,43,48,0.6);
+      color: rgba(255,255,255,0.65);
+      margin-bottom: var(--global-spacing20);
+    }
+
+    /* ジグザグ区切り */
+    .zigzag {
+      height: 16px;
+      background: var(--bg-warm);
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .zigzag::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      right: -10px;
+      height: 26px;
+      background:
+        linear-gradient(135deg, var(--bg-warm) 33.33%, transparent 33.33%) 0 0,
+        linear-gradient(225deg, var(--bg-warm) 33.33%, transparent 33.33%) 0 0;
+      background-color: var(--accent-red);
+      background-size: 20px 16px;
+      background-repeat: repeat-x;
     }
 
     /* ============================
@@ -245,82 +288,95 @@
       padding: var(--global-spacing24) var(--global-spacing16);
     }
 
-    .section-heading {
+    .section.yellow-bg {
+      background: var(--bg-section);
+    }
+
+    .section-header {
       text-align: center;
       margin-bottom: var(--global-spacing20);
     }
 
-    .section-heading .sakura-deco {
+    .section-header-tag {
+      display: inline-block;
+      background: var(--foreground-basic-primary-default);
+      color: white;
       font-size: var(--font-size-xsmall);
-      color: var(--spring-sakura);
-      letter-spacing: 4px;
-      display: block;
-      margin-bottom: var(--global-spacing4);
+      font-weight: 700;
+      padding: 3px 12px;
+      border-radius: var(--global-full);
+      margin-bottom: var(--global-spacing8);
+      letter-spacing: 0.08em;
     }
 
-    .section-heading h2 {
-      font-size: var(--font-size-xlarge);
+    .section-title {
+      font-size: 22px;
       font-weight: 700;
       color: var(--foreground-basic-primary-default);
+      line-height: 1.3;
     }
 
+    .section-title .red { color: var(--accent-red); }
+
     /* ============================
-       Campaign Condition
+       Campaign Period
     ============================ */
-    .cpn-period-row {
+    .period-bar {
       display: flex;
       align-items: center;
       gap: var(--global-spacing8);
-      background: var(--spring-sky-bg);
+      background: #FFF0F0;
+      border: 1.5px solid #FFB0B0;
       border-radius: var(--global-medium);
       padding: var(--global-spacing8) var(--global-spacing12);
       margin-bottom: var(--global-spacing16);
-      border: 1px solid var(--spring-sky);
+      font-size: var(--font-size-small);
     }
 
-    .cpn-period-label {
-      font-size: var(--font-size-xsmall);
+    .period-label {
       font-weight: 700;
-      color: var(--mercari-blue);
+      color: var(--accent-red);
       white-space: nowrap;
     }
 
-    .cpn-period-value {
-      font-size: var(--font-size-small);
-      color: var(--foreground-basic-primary-default);
-    }
-
+    /* ============================
+       Campaign Box
+    ============================ */
     .cpn-box {
-      background: var(--spring-yellow-bg);
-      border: 2px solid var(--spring-yellow);
+      background: white;
+      border: var(--card-border);
       border-radius: var(--global-xlarge);
-      padding: var(--global-spacing20) var(--global-spacing16);
+      overflow: hidden;
+      box-shadow: 4px 4px 0 #1A1A1A;
     }
 
-    .cpn-box-title {
+    .cpn-box-header {
+      background: var(--accent-orange);
+      padding: var(--global-spacing16);
+      text-align: center;
+    }
+
+    .cpn-box-header-title {
       font-size: var(--font-size-large);
       font-weight: 700;
-      text-align: center;
-      margin-bottom: var(--global-spacing4);
+      color: white;
+      line-height: 1.4;
     }
 
-    .cpn-box-sub {
-      font-size: var(--font-size-small);
-      color: var(--foreground-basic-secondary-default);
-      text-align: center;
-      margin-bottom: var(--global-spacing16);
+    .cpn-box-body {
+      padding: var(--global-spacing16);
     }
 
     .cpn-table {
       width: 100%;
       border-collapse: collapse;
+      font-size: var(--font-size-small);
       border-radius: var(--global-medium);
       overflow: hidden;
-      font-size: var(--font-size-small);
     }
 
     .cpn-table thead tr {
-      background: #FF8C4A;
+      background: var(--foreground-basic-primary-default);
       color: white;
     }
 
@@ -333,112 +389,109 @@
     .cpn-table td {
       padding: var(--global-spacing12);
       text-align: center;
-      border-bottom: 1px solid #F5E0CC;
+      border-bottom: 1px solid #F0E8D8;
       background: white;
     }
 
-    .cpn-table tr:last-child td {
-      border-bottom: none;
-    }
+    .cpn-table tr:last-child td { border-bottom: none; }
 
-    .cpn-table .highlight-row td {
-      background: #FFF3E0;
+    .cpn-table .best-row td {
+      background: #FFF9D6;
       font-weight: 700;
     }
 
     .cpn-amount {
-      font-size: var(--font-size-medium);
+      font-size: var(--font-size-large);
       font-weight: 700;
-      color: #D94F00;
+      color: var(--accent-red);
     }
 
     .cpn-notice {
       margin-top: var(--global-spacing12);
       font-size: var(--font-size-xsmall);
       color: var(--foreground-basic-secondary-default);
-      line-height: 1.6;
+      line-height: 1.7;
     }
 
     .cpn-notice li {
       list-style: none;
-      padding-left: 1.4em;
-      text-indent: -1.4em;
+      padding-left: 1.6em;
+      text-indent: -1.6em;
     }
 
     .cpn-notice li::before { content: '※ '; }
 
     /* ============================
-       Beginner Positioning
+       Beginner Callout
     ============================ */
     .beginner-card {
-      background: linear-gradient(135deg, var(--spring-petal) 0%, #FFE8D0 100%);
+      background: white;
+      border: var(--card-border);
       border-radius: var(--global-xlarge);
       padding: var(--global-spacing20);
-      margin-bottom: var(--global-spacing20);
       text-align: center;
-      border: 1.5px solid var(--spring-sakura);
+      margin-bottom: var(--global-spacing20);
+      box-shadow: 4px 4px 0 #1A1A1A;
+      position: relative;
     }
 
-    .beginner-mark {
-      font-size: 40px;
-      display: block;
+    .beginner-mark-big {
+      font-size: 48px;
+      line-height: 1;
       margin-bottom: var(--global-spacing8);
+      display: block;
     }
 
     .beginner-card-title {
       font-size: var(--font-size-large);
       font-weight: 700;
       margin-bottom: var(--global-spacing8);
-      color: var(--foreground-basic-primary-default);
+      line-height: 1.4;
     }
 
     .beginner-card-body {
       font-size: var(--font-size-small);
       color: var(--foreground-basic-secondary-default);
-      line-height: 1.6;
+      line-height: 1.7;
     }
 
+    /* ============================
+       Benefits
+    ============================ */
     .benefits-list {
       display: flex;
       flex-direction: column;
       gap: var(--global-spacing12);
     }
 
-    .benefit-item {
-      display: flex;
-      align-items: flex-start;
-      gap: var(--global-spacing12);
-      padding: var(--global-spacing16);
+    .benefit-card {
+      background: white;
+      border: var(--card-border);
       border-radius: var(--global-xlarge);
-      border: 1.5px solid;
+      padding: var(--global-spacing16);
+      display: flex;
+      gap: var(--global-spacing12);
+      align-items: flex-start;
+      box-shadow: 3px 3px 0 #1A1A1A;
     }
 
-    .benefit-item.pink {
-      background: var(--spring-petal);
-      border-color: var(--spring-sakura);
-    }
-
-    .benefit-item.green {
-      background: var(--spring-green-bg);
-      border-color: #A8DFC0;
-    }
-
-    .benefit-item.yellow {
-      background: var(--spring-yellow-bg);
-      border-color: #F5D87A;
-    }
-
-    .benefit-icon {
-      width: 44px;
-      height: 44px;
+    .benefit-num {
+      width: 40px;
+      height: 40px;
       border-radius: var(--global-full);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 22px;
+      font-size: var(--font-size-large);
+      font-weight: 700;
+      color: white;
       flex-shrink: 0;
-      background: rgba(255,255,255,0.7);
+      border: 2px solid #1A1A1A;
     }
+
+    .benefit-num.c1 { background: var(--accent-red); }
+    .benefit-num.c2 { background: var(--accent-orange); }
+    .benefit-num.c3 { background: #1DA46A; }
 
     .benefit-title {
       font-size: var(--font-size-medium);
@@ -467,75 +520,80 @@
       display: inline-flex;
       align-items: center;
       gap: var(--global-spacing4);
-      background: var(--bitcoin-orange);
+      background: #F7931A;
       color: white;
       border-radius: var(--global-full);
       padding: 4px 14px;
       font-size: var(--font-size-small);
       font-weight: 700;
       margin-bottom: var(--global-spacing16);
+      border: 2px solid #1A1A1A;
     }
 
     .sim-cards {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: var(--global-spacing8);
+      gap: var(--global-spacing12);
       margin-bottom: var(--global-spacing12);
     }
 
     .sim-card {
-      background: var(--spring-cream);
+      background: white;
+      border: var(--card-border);
       border-radius: var(--global-xlarge);
       padding: var(--global-spacing16) var(--global-spacing12);
       text-align: center;
-      border: 1.5px solid var(--border-basic-primary-default);
+      box-shadow: 3px 3px 0 #1A1A1A;
     }
 
-    .sim-card-emoji { font-size: 24px; margin-bottom: var(--global-spacing8); display: block; }
+    .sim-card-emoji { font-size: 28px; display: block; margin-bottom: var(--global-spacing8); }
 
     .sim-card-label {
       font-size: var(--font-size-xsmall);
       color: var(--foreground-basic-secondary-default);
       margin-bottom: var(--global-spacing8);
-      line-height: 1.4;
+      line-height: 1.5;
     }
 
     .sim-card-amount {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 700;
       color: var(--foreground-basic-primary-default);
     }
 
     .sim-card-gain {
       font-size: var(--font-size-small);
-      color: #C0392B;
+      color: var(--accent-red);
       font-weight: 700;
       margin-top: var(--global-spacing4);
+    }
+
+    .sim-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: var(--foreground-basic-tertiary-default);
     }
 
     .sim-disclaimer {
       font-size: 10px;
       color: var(--foreground-basic-tertiary-default);
-      line-height: 1.5;
-      background: var(--spring-cream);
+      line-height: 1.6;
+      background: #F8F5EE;
       border-radius: var(--global-medium);
       padding: var(--global-spacing8) var(--global-spacing12);
     }
 
     /* ============================
-       How to Start
+       Steps
     ============================ */
-    .steps {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
+    .steps { display: flex; flex-direction: column; gap: 0; }
 
     .step {
       display: flex;
       gap: var(--global-spacing12);
       align-items: flex-start;
-      position: relative;
     }
 
     .step-left {
@@ -545,32 +603,34 @@
       flex-shrink: 0;
     }
 
-    .step-number {
-      width: 34px;
-      height: 34px;
+    .step-num {
+      width: 36px;
+      height: 36px;
       border-radius: var(--global-full);
-      background: linear-gradient(135deg, var(--spring-sakura), var(--spring-coral));
+      background: var(--accent-red);
       color: white;
-      font-size: var(--font-size-small);
+      font-size: var(--font-size-large);
       font-weight: 700;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 2px 8px rgba(255,126,126,0.3);
+      border: 2px solid #1A1A1A;
+      box-shadow: 2px 2px 0 #1A1A1A;
     }
 
     .step-line {
       width: 2px;
       flex: 1;
-      background: linear-gradient(to bottom, var(--spring-sakura), var(--spring-petal));
-      min-height: 24px;
+      min-height: 20px;
+      background: repeating-linear-gradient(
+        to bottom,
+        #1A1A1A 0, #1A1A1A 4px,
+        transparent 4px, transparent 8px
+      );
       margin: var(--global-spacing4) 0;
     }
 
-    .step-body {
-      padding-bottom: var(--global-spacing20);
-      padding-top: 6px;
-    }
+    .step-body { padding-bottom: var(--global-spacing20); padding-top: 7px; }
 
     .step-title {
       font-size: var(--font-size-medium);
@@ -587,20 +647,20 @@
     /* ============================
        FAQ
     ============================ */
-    .faq-list { display: flex; flex-direction: column; }
+    .faq-list { display: flex; flex-direction: column; gap: var(--global-spacing8); }
 
     .faq-item {
-      border-bottom: 1px solid var(--border-basic-primary-default);
+      background: white;
+      border: 1.5px solid var(--border-basic-primary-default);
+      border-radius: var(--global-large);
+      overflow: hidden;
     }
-
-    .faq-item:last-child { border-bottom: none; }
 
     .faq-question {
       width: 100%;
       text-align: left;
-      padding: var(--global-spacing16) 0;
+      padding: var(--global-spacing16);
       display: flex;
-      justify-content: space-between;
       align-items: flex-start;
       gap: var(--global-spacing8);
       font-size: var(--font-size-small);
@@ -612,11 +672,11 @@
       line-height: 1.5;
     }
 
-    .faq-q-mark {
+    .faq-q-badge {
       width: 22px;
       height: 22px;
       border-radius: var(--global-full);
-      background: var(--spring-sakura);
+      background: var(--accent-red);
       color: white;
       font-size: var(--font-size-xsmall);
       font-weight: 700;
@@ -624,7 +684,7 @@
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      margin-top: 1px;
+      border: 1.5px solid #1A1A1A;
     }
 
     .faq-q-text { flex: 1; }
@@ -633,38 +693,50 @@
       flex-shrink: 0;
       color: var(--foreground-basic-tertiary-default);
       transition: transform 0.2s;
-      font-size: 12px;
-      margin-top: 3px;
+      font-size: 11px;
+      margin-top: 4px;
     }
 
     .faq-item.open .faq-chevron { transform: rotate(180deg); }
+    .faq-item.open { border-color: var(--accent-red); }
 
     .faq-answer {
       display: none;
-      padding: 0 0 var(--global-spacing16) 30px;
+      padding: 0 var(--global-spacing16) var(--global-spacing16) var(--global-spacing16);
+      border-top: 1px solid #F0E8D8;
     }
 
     .faq-item.open .faq-answer { display: block; }
 
-    .faq-a-mark {
+    .faq-a-badge {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       width: 22px;
       height: 22px;
       border-radius: var(--global-full);
-      background: var(--spring-green);
+      background: #1DA46A;
       color: white;
       font-size: var(--font-size-xsmall);
       font-weight: 700;
       margin-right: var(--global-spacing8);
+      border: 1.5px solid #1A1A1A;
       vertical-align: middle;
+      flex-shrink: 0;
+    }
+
+    .faq-answer-inner {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--global-spacing8);
+      padding-top: var(--global-spacing12);
     }
 
     .faq-a-text {
       font-size: var(--font-size-small);
       color: var(--foreground-basic-secondary-default);
-      line-height: 1.6;
+      line-height: 1.7;
+      flex: 1;
     }
 
     /* ============================
@@ -672,13 +744,13 @@
     ============================ */
     .legal {
       padding: var(--global-spacing16);
-      margin-bottom: var(--global-spacing8);
+      background: #F8F5EE;
     }
 
     .legal-text {
       font-size: 10px;
       color: var(--foreground-basic-tertiary-default);
-      line-height: 1.7;
+      line-height: 1.8;
     }
 
     .legal-divider {
@@ -698,23 +770,23 @@
       width: 375px;
       background: white;
       padding: var(--global-spacing12) var(--global-spacing16);
-      box-shadow: 0 -1px 0 var(--border-basic-primary-default),
-                  0 -4px 20px rgba(180,60,100,0.10);
+      border-top: 2px solid var(--foreground-basic-primary-default);
       z-index: 100;
     }
 
     .sticky-cta-btn {
       display: block;
-      background: var(--mercari-red);
+      background: var(--accent-red);
       color: white;
-      font-size: var(--font-size-medium);
+      font-size: var(--font-size-large);
       font-weight: 700;
-      padding: 14px;
+      padding: 15px;
       border-radius: var(--global-full);
       text-align: center;
-      border: none;
+      border: 2px solid var(--foreground-basic-primary-default);
       cursor: pointer;
       width: 100%;
+      box-shadow: 3px 3px 0 var(--foreground-basic-primary-default);
       letter-spacing: 0.02em;
     }
 
@@ -738,112 +810,121 @@
 
   <!-- Header -->
   <header class="header">
-    <div class="header-logo">
-      mercari<span>ビットコイン</span>
-    </div>
+    <div class="header-logo">mercari<span>ビットコイン</span></div>
     <div class="header-close">✕</div>
   </header>
 
   <!-- ① Hero -->
   <section class="hero">
-    <div class="hero-beginner-tag">🔰 はじめての方限定キャンペーン</div>
-
-    <div class="hero-icon-row">
-      <div class="hero-btc-circle">₿</div>
+    <div class="hero-stars">
+      <span class="star">★</span>
+      <span class="star">★</span>
+      <span class="star">★</span>
     </div>
 
-    <p class="hero-headline">つみたて3ヶ月達成で</p>
-    <p class="hero-amount">最大3,000円分</p>
-    <p class="hero-amount-sub">ビットコインもらえる</p>
-    <p class="hero-condition-pill">🌸 春のスタートキャンペーン</p>
+    <div class="hero-eyebrow">🔰 はじめての方限定キャンペーン</div>
 
-    <a href="#" class="hero-cta">🔰 最大3,000円分もらう</a>
-    <p class="hero-skip">いつでも解除できます。まず気軽に試してみよう。</p>
+    <div class="hero-kv">
+      <p class="hero-sub-label">ビットコインつみたて 3ヶ月達成で</p>
+
+      <div class="hero-amount-wrap">
+        <span class="hero-amount-num">3,000</span>
+        <span class="hero-amount-unit">円分</span>
+      </div>
+      <p class="hero-amount-suffix">もらえる！</p>
+
+      <p class="hero-condition-tag">🔰 投資知識ゼロでも大丈夫</p>
+
+      <button class="hero-cta">🔰 最大3,000円分もらう</button>
+      <p class="hero-skip">いつでも解除できます。まず気軽に試してみよう。</p>
+    </div>
   </section>
+  <div class="zigzag"></div>
 
   <!-- ② Campaign Conditions -->
   <section class="section">
-    <div class="section-heading">
-      <span class="sakura-deco">🌸 🌸 🌸</span>
-      <h2>キャンペーン内容</h2>
+    <div class="section-header">
+      <span class="section-header-tag">キャンペーン内容</span>
+      <p class="section-title">3ヶ月つみたてで<br><span class="red">最大3,000円分</span>GET！</p>
     </div>
 
-    <div class="cpn-period-row">
-      <span class="cpn-period-label">📅 エントリー期間</span>
-      <span class="cpn-period-value">2026/04/03 〜 2026/04/20 23:59</span>
+    <div class="period-bar">
+      <span class="period-label">📅 エントリー期間</span>
+      <span style="font-size: var(--font-size-small);">2026/04/03 〜 2026/04/20 23:59</span>
     </div>
 
     <div class="cpn-box">
-      <p class="cpn-box-title">🎉 対象期間に3ヶ月以上<br>つみたてが成功すると…</p>
-      <p class="cpn-box-sub">各月のつみたて額に応じてビットコインプレゼント</p>
+      <div class="cpn-box-header">
+        <p class="cpn-box-header-title">対象期間に3ヶ月以上つみたてが成功すると…<br>各月の金額に応じてビットコインをプレゼント</p>
+      </div>
+      <div class="cpn-box-body">
+        <table class="cpn-table">
+          <thead>
+            <tr>
+              <th>各月のつみたて額</th>
+              <th>もらえるビットコイン</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>¥3,000以上</td>
+              <td><span class="cpn-amount">500円分</span></td>
+            </tr>
+            <tr>
+              <td>¥5,000以上</td>
+              <td><span class="cpn-amount">1,000円分</span></td>
+            </tr>
+            <tr class="best-row">
+              <td>¥10,000以上 🏆</td>
+              <td><span class="cpn-amount">3,000円分</span></td>
+            </tr>
+          </tbody>
+        </table>
 
-      <table class="cpn-table">
-        <thead>
-          <tr>
-            <th>各月のつみたて額</th>
-            <th>もらえるビットコイン</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>¥3,000以上</td>
-            <td><span class="cpn-amount">500円分</span></td>
-          </tr>
-          <tr>
-            <td>¥5,000以上</td>
-            <td><span class="cpn-amount">1,000円分</span></td>
-          </tr>
-          <tr class="highlight-row">
-            <td>¥10,000以上</td>
-            <td><span class="cpn-amount">3,000円分 🎊</span></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <ul class="cpn-notice">
-        <li>特典付与時期：条件達成月の翌月上旬頃</li>
-        <li>はじめてビットコインのつみたて購入を実施される方が対象です</li>
-        <li>必ずキャンペーンページのボタンからエントリー後につみたて設定を行ってください</li>
-      </ul>
+        <ul class="cpn-notice">
+          <li>特典付与時期：条件達成月の翌月上旬頃</li>
+          <li>はじめてビットコインのつみたて購入を実施される方が対象です</li>
+          <li>必ずキャンペーンページのボタンからエントリー後につみたて設定を行ってください</li>
+        </ul>
+      </div>
     </div>
   </section>
 
   <!-- ③ Beginner Positioning + Benefits -->
-  <section class="section">
-    <div class="section-heading">
-      <span class="sakura-deco">🌸 🌸 🌸</span>
-      <h2>つみたてのいいところ</h2>
+  <section class="section yellow-bg">
+    <div class="section-header">
+      <span class="section-header-tag">簡単にご紹介</span>
+      <p class="section-title">つみたてのいいところ</p>
     </div>
 
-    <!-- 初心者マーク callout -->
     <div class="beginner-card">
-      <span class="beginner-mark">🔰</span>
-      <p class="beginner-card-title">投資初心者だからこそ、つみたてがおすすめ</p>
+      <span class="beginner-mark-big">🔰</span>
+      <p class="beginner-card-title">投資初心者だからこそ、<br>つみたてがおすすめ！</p>
       <p class="beginner-card-body">「今買うべき？」「いくらが正解？」<br>その迷いをまるごとなくせるのがつみたてのしくみ。<br>知識ゼロでも、気軽にはじめられます。</p>
     </div>
 
     <div class="benefits-list">
-      <div class="benefit-item pink">
-        <div class="benefit-icon">🎯</div>
+      <div class="benefit-card">
+        <div class="benefit-num c1">1</div>
         <div>
           <p class="benefit-title">買い時を迷わなくていい</p>
-          <p class="benefit-desc">価格が高くても低くても自動で少しずつ購入。「今が買い時？」を考えなくてOK。価格変動のリスクも分散できます。</p>
+          <p class="benefit-desc">価格が高くても低くても自動で少しずつ購入。「今が買い時？」を考えなくてOK。価格変動のリスクも自動で分散。</p>
         </div>
       </div>
 
-      <div class="benefit-item green">
-        <div class="benefit-icon">⚙️</div>
+      <div class="benefit-card">
+        <div class="benefit-num c2">2</div>
         <div>
-          <p class="benefit-title">設定したら、あとは自動</p>
-          <p class="benefit-desc">金額・頻度・つみたて日を一度決めるだけ。毎月自動で積み上がるので、忘れても安心。変更・解除はいつでも無料。</p>
+          <p class="benefit-title">設定したら、あとは全自動</p>
+          <p class="benefit-desc">金額・頻度・つみたて日を一度決めるだけ。毎月自動で積み上がります。変更・解除はいつでも無料でOK。</p>
         </div>
       </div>
 
-      <div class="benefit-item yellow">
-        <div class="benefit-icon">💴</div>
+      <div class="benefit-card">
+        <div class="benefit-num c3">3</div>
         <div>
           <p class="benefit-title">売上金をそのまま活かせる</p>
-          <p class="benefit-desc">メルカリの売上金でそのままスタート。生活費に影響なく、臨時収入を資産形成に活かせます。¥1,000から設定OK。</p>
+          <p class="benefit-desc">メルカリの売上金でそのままスタート。生活費を気にせず、臨時収入を資産形成に活かせます。¥1,000から設定OK。</p>
         </div>
       </div>
     </div>
@@ -851,9 +932,9 @@
 
   <!-- ④ Simulation -->
   <section class="section">
-    <div class="section-heading">
-      <span class="sakura-deco">🌸 🌸 🌸</span>
-      <h2>もし続けていたら？</h2>
+    <div class="section-header">
+      <span class="section-header-tag">シミュレーション</span>
+      <p class="section-title">もし続けていたら？</p>
     </div>
 
     <p class="sim-lead">
@@ -870,7 +951,7 @@
         <span class="sim-card-emoji">📅</span>
         <p class="sim-card-label">毎月¥3,000<br>つみたて（1年間）</p>
         <p class="sim-card-amount">¥36,000</p>
-        <p class="sim-card-gain" style="color: var(--foreground-basic-secondary-default); font-weight:400;">元本</p>
+        <p class="sim-card-gain" style="color:var(--foreground-basic-secondary-default); font-weight:400;">元本</p>
       </div>
       <div class="sim-card">
         <span class="sim-card-emoji">📈</span>
@@ -886,16 +967,16 @@
   </section>
 
   <!-- ⑤ How to Start -->
-  <section class="section">
-    <div class="section-heading">
-      <span class="sakura-deco">🌸 🌸 🌸</span>
-      <h2>3ステップで完了</h2>
+  <section class="section yellow-bg">
+    <div class="section-header">
+      <span class="section-header-tag">はじめ方</span>
+      <p class="section-title">3ステップで完了</p>
     </div>
 
     <div class="steps">
       <div class="step">
         <div class="step-left">
-          <div class="step-number">1</div>
+          <div class="step-num">1</div>
           <div class="step-line"></div>
         </div>
         <div class="step-body">
@@ -906,7 +987,7 @@
 
       <div class="step">
         <div class="step-left">
-          <div class="step-number">2</div>
+          <div class="step-num">2</div>
           <div class="step-line"></div>
         </div>
         <div class="step-body">
@@ -917,7 +998,7 @@
 
       <div class="step">
         <div class="step-left">
-          <div class="step-number">3</div>
+          <div class="step-num">3</div>
         </div>
         <div class="step-body">
           <p class="step-title">3ヶ月つみたてて特典を受け取る</p>
@@ -929,76 +1010,94 @@
 
   <!-- ⑥ FAQ -->
   <section class="section">
-    <div class="section-heading">
-      <span class="sakura-deco">🌸 🌸 🌸</span>
-      <h2>よくある質問</h2>
+    <div class="section-header">
+      <span class="section-header-tag">FAQ</span>
+      <p class="section-title">よくある質問</p>
     </div>
 
     <div class="faq-list">
 
       <div class="faq-item">
         <button class="faq-question" onclick="toggleFaq(this)">
-          <span class="faq-q-mark">Q</span>
+          <span class="faq-q-badge">Q</span>
           <span class="faq-q-text">キャンペーンページ以外からつみたてを始めた場合は対象外ですか？</span>
           <span class="faq-chevron">▼</span>
         </button>
         <div class="faq-answer">
-          <p><span class="faq-a-mark">A</span><span class="faq-a-text">対象外となります。必ずこのページのボタンをタップ後につみたて設定を行ってください。エントリー期間中に一度ボタンをタップしていれば、期間内に他のページから設定しても対象となります。</span></p>
+          <div class="faq-answer-inner">
+            <span class="faq-a-badge">A</span>
+            <span class="faq-a-text">対象外となります。必ずこのページのボタンをタップ後につみたて設定を行ってください。エントリー期間中に一度ボタンをタップしていれば、期間内に他のページから設定しても対象となります。</span>
+          </div>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-question" onclick="toggleFaq(this)">
-          <span class="faq-q-mark">Q</span>
-          <span class="faq-q-text">利用するにあたって費用はかかりますか？</span>
+          <span class="faq-q-badge">Q</span>
+          <span class="faq-q-text">費用はかかりますか？</span>
           <span class="faq-chevron">▼</span>
         </button>
         <div class="faq-answer">
-          <p><span class="faq-a-mark">A</span><span class="faq-a-text">利用手数料は無料です。ただし購入価格にはスプレッド（取引コスト）が含まれます。</span></p>
+          <div class="faq-answer-inner">
+            <span class="faq-a-badge">A</span>
+            <span class="faq-a-text">利用手数料は無料です。ただし購入価格にはスプレッド（取引コスト）が含まれます。</span>
+          </div>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-question" onclick="toggleFaq(this)">
-          <span class="faq-q-mark">Q</span>
+          <span class="faq-q-badge">Q</span>
           <span class="faq-q-text">つみたての変更や解除はできますか？</span>
           <span class="faq-chevron">▼</span>
         </button>
         <div class="faq-answer">
-          <p><span class="faq-a-mark">A</span><span class="faq-a-text">いつでも変更・解除が可能です（メンテナンス時を除く）。解除費用はかかりません。ただしキャンペーン特典には条件期間中のつみたて購入が必要です。</span></p>
+          <div class="faq-answer-inner">
+            <span class="faq-a-badge">A</span>
+            <span class="faq-a-text">いつでも変更・解除が可能です（メンテナンス時を除く）。解除費用はかかりません。ただしキャンペーン特典には条件期間中のつみたて購入が必要です。</span>
+          </div>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-question" onclick="toggleFaq(this)">
-          <span class="faq-q-mark">Q</span>
+          <span class="faq-q-badge">Q</span>
           <span class="faq-q-text">つみたて日に残高が足りなかった場合は？</span>
           <span class="faq-chevron">▼</span>
         </button>
         <div class="faq-answer">
-          <p><span class="faq-a-mark">A</span><span class="faq-a-text">メルペイ残高がある場合は自動チャージされます。不足する場合は登録銀行口座から自動チャージ。チャージできなかった場合はその回のつみたては行われません（後日の合算はありません）。</span></p>
+          <div class="faq-answer-inner">
+            <span class="faq-a-badge">A</span>
+            <span class="faq-a-text">メルペイ残高がある場合は自動チャージされます。不足する場合は登録銀行口座から自動チャージ。チャージできなかった場合はその回のつみたては行われません（後日の合算はありません）。</span>
+          </div>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-question" onclick="toggleFaq(this)">
-          <span class="faq-q-mark">Q</span>
+          <span class="faq-q-badge">Q</span>
           <span class="faq-q-text">売上金やメルカリポイントは使えますか？</span>
           <span class="faq-chevron">▼</span>
         </button>
         <div class="faq-answer">
-          <p><span class="faq-a-mark">A</span><span class="faq-a-text">メルペイ残高（売上金）はつみたての原資として利用できます。無償メルカリポイントもご利用いただけます（「設定 ＞ 購入時にポイントを使用」をONにしてください）。</span></p>
+          <div class="faq-answer-inner">
+            <span class="faq-a-badge">A</span>
+            <span class="faq-a-text">メルペイ残高（売上金）はつみたての原資として利用できます。無償メルカリポイントもご利用いただけます（「設定 ＞ 購入時にポイントを使用」をONにしてください）。</span>
+          </div>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-question" onclick="toggleFaq(this)">
-          <span class="faq-q-mark">Q</span>
+          <span class="faq-q-badge">Q</span>
           <span class="faq-q-text">途中でビットコインを売ることはできますか？</span>
           <span class="faq-chevron">▼</span>
         </button>
         <div class="faq-answer">
-          <p><span class="faq-a-mark">A</span><span class="faq-a-text">保有しているビットコインはいつでも売ることができます（メンテナンス時を除く）。売却したお金はメルペイ残高に移せます。</span></p>
+          <div class="faq-answer-inner">
+            <span class="faq-a-badge">A</span>
+            <span class="faq-a-text">保有しているビットコインはいつでも売ることができます（メンテナンス時を除く）。売却したお金はメルペイ残高に移せます。</span>
+          </div>
         </div>
       </div>
 
@@ -1021,7 +1120,7 @@
     </p>
   </div>
 
-  <div class="footer">🌸 © Mercoin, Inc.</div>
+  <div class="footer">© Mercoin, Inc.</div>
 
   <!-- Sticky CTA -->
   <div class="sticky-cta">
