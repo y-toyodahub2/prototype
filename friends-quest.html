@@ -20,20 +20,24 @@
       --global-spacing24: 24px;
 
       --global-extra-thin: 0.5px;
+      --global-thin:       1px;
+      --global-small:      4px;
       --global-medium:     8px;
       --global-large:      16px;
       --global-full:       99px;
 
       --font-family-base: 'Tazugane Gothic For Mercari', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
-      --font-size-xsmall: 11px;
-      --font-size-small:  13px;
+      --font-size-xsmall: 12px;
+      --font-size-small:  14px;
       --font-size-medium: 15px;
       --font-size-large:  17px;
       --line-height-base: 1.6;
 
-      --accent-red:    #FF333F;
-      --progress-bg:   #E8E8E8;
-      --progress-fill: #FF333F;
+      /* Foreground/Attention/Primary/Default */
+      --foreground-attention-primary-default: #FF333F;
+      /* Border/Basic/Primary/Default をトラック色として代用（専用トークン未定義） */
+      --progress-bg:   var(--border-basic-primary-default);
+      --progress-fill: var(--foreground-attention-primary-default);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -114,7 +118,7 @@
       position: relative;
       background: var(--progress-bg);
       border-radius: var(--global-full);
-      height: 28px;
+      height: var(--global-spacing24);
       overflow: hidden;
     }
 
@@ -134,7 +138,7 @@
     .progress-current {
       font-size: var(--font-size-small);
       font-weight: 600;
-      color: var(--accent-red);
+      color: var(--foreground-attention-primary-default);
     }
 
     .progress-target {
@@ -161,7 +165,7 @@
       gap: var(--global-spacing8);
       width: 100%;
       padding: var(--global-spacing12);
-      border: 1.5px solid var(--border-basic-primary-default);
+      border: var(--global-thin) solid var(--border-basic-primary-default);
       border-radius: var(--global-medium);
       background: var(--background-basic-tertiary-default);
       font-family: var(--font-family-base);
