@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>出品目標 達成 | メルコイン</title>
+  <style>
+    :root {
+      --background-basic-tertiary-default: #ffffff;
+      --border-basic-primary-default: #c7c7c7;
+      --foreground-basic-primary-default: #333333;
+      --foreground-basic-secondary-default: #666666;
+      --foreground-basic-tertiary-default: #999999;
+
+      --global-spacing4:  4px;
+      --global-spacing8:  8px;
+      --global-spacing12: 12px;
+      --global-spacing16: 16px;
+      --global-spacing20: 20px;
+      --global-spacing24: 24px;
+
+      --global-extra-thin: 0.5px;
+      --global-thin:       1px;
+      --global-small:      4px;
+      --global-medium:     8px;
+      --global-large:      16px;
+      --global-full:       99px;
+
+      --font-family-base: 'Tazugane Gothic For Mercari', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
+      --font-size-xsmall: 12px;
+      --font-size-small:  14px;
+      --font-size-medium: 15px;
+      --font-size-large:  17px;
+      --line-height-base: 1.6;
+
+      --foreground-attention-primary-default: #FF333F;
+      --background-accent-primary-default:    #006ED1;
+      --progress-bg:   var(--border-basic-primary-default);
+      --progress-fill: var(--background-accent-primary-default);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-family-base);
+      color: var(--foreground-basic-primary-default);
+      background: #f5f5f5;
+      max-width: 375px;
+      margin: 0 auto;
+      padding: var(--global-spacing24) var(--global-spacing16);
+    }
+
+    .quest-card {
+      background: var(--background-basic-tertiary-default);
+      border-radius: var(--global-large);
+      border: var(--global-extra-thin) solid var(--border-basic-primary-default);
+      overflow: hidden;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--global-spacing8) var(--global-spacing16);
+    }
+
+    .card-header-title {
+      font-size: var(--font-size-small);
+      font-weight: 600;
+      color: var(--foreground-basic-secondary-default);
+    }
+
+    .card-header-timer {
+      font-size: var(--font-size-small);
+      color: var(--foreground-basic-secondary-default);
+    }
+
+    .quest-body {
+      padding: 0 var(--global-spacing16) var(--global-spacing12);
+    }
+
+    .quest-title {
+      font-size: var(--font-size-medium);
+      font-weight: 600;
+      color: var(--foreground-basic-primary-default);
+      line-height: var(--line-height-base);
+      margin-bottom: var(--global-spacing8);
+    }
+
+    .progress-section {
+      display: flex;
+      flex-direction: column;
+      gap: var(--global-spacing4);
+    }
+
+    .progress-bar-wrap {
+      background: var(--progress-bg);
+      border-radius: var(--global-full);
+      height: var(--global-spacing8);
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 100%;
+      background: var(--progress-fill);
+      border-radius: var(--global-full);
+    }
+
+    .progress-amounts {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .progress-current {
+      font-size: var(--font-size-xsmall);
+      font-weight: 600;
+      color: var(--background-accent-primary-default);
+    }
+
+    .progress-right {
+      display: flex;
+      align-items: center;
+      gap: var(--global-spacing4);
+    }
+
+    .progress-target {
+      font-size: var(--font-size-xsmall);
+      color: var(--foreground-basic-tertiary-default);
+    }
+
+    .progress-monthly {
+      font-size: var(--font-size-xsmall);
+      color: var(--foreground-basic-tertiary-default);
+    }
+
+    .card-cta {
+      padding: var(--global-spacing8) var(--global-spacing16) var(--global-spacing12);
+      border-top: var(--global-extra-thin) solid var(--border-basic-primary-default);
+    }
+
+    .btn-disabled {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: var(--global-spacing8) var(--global-spacing12);
+      border: var(--global-thin) solid var(--border-basic-primary-default);
+      border-radius: var(--global-medium);
+      background: var(--background-basic-tertiary-default);
+      font-family: var(--font-family-base);
+      font-size: var(--font-size-medium);
+      font-weight: 600;
+      color: var(--foreground-basic-tertiary-default);
+      cursor: default;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="quest-card">
+
+    <div class="card-header">
+      <span class="card-header-title">出品目標</span>
+      <span class="card-header-timer">⏱ あと15日</span>
+    </div>
+
+    <div class="quest-body">
+      <div class="quest-title">今月のつみたて達成！</div>
+
+      <div class="progress-section">
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill"></div>
+        </div>
+        <div class="progress-amounts">
+          <span class="progress-current">¥3,000</span>
+          <div class="progress-right">
+            <span class="progress-target">/ ¥3,000</span>
+            <span class="progress-monthly">（3,000円/月）</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-cta">
+      <button class="btn-disabled" disabled>出品する</button>
+    </div>
+
+  </div>
+
+</body>
+</html>
