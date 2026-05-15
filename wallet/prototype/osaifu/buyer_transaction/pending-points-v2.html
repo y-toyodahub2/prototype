@@ -10343,14 +10343,60 @@
     </div>
   </div>
 <script>
-// Auto-trigger: pending-points pattern auto-submits evaluation on page load
+// Auto-trigger: directly open configured eval sheet for pending-points
 (function() {
   var p = new URLSearchParams(window.location.search).get('pattern');
   if (p \!== 'pending-points') return;
-  document.addEventListener('DOMContentLoaded', function() {
+  window.addEventListener('load', function() {
     setTimeout(function() {
-      submitEvaluation();
-    }, 500);
+      // Hide comment, bonus-regular, gold
+      var comment = document.querySelector('.eval-sheet-comment');
+      if (comment) comment.style.display = 'none';
+      var bonus = document.getElementById('eval-sheet-bonus-regular');
+      if (bonus) bonus.style.display = 'none';
+      var gold = document.getElementById('eval-sheet-gold');
+      if (gold) gold.style.display = 'none';
+
+      // Hide belongings, coupon; show pending-points
+      ['belongings','coupon'].forEach(function(k){
+        var el = document.getElementById('eval-sheet-' + k);
+        if (el) el.style.display = 'none';
+      });
+      var pp = document.getElementById('eval-sheet-pending-points');
+      if (pp) pp.style.display = '';
+
+      // Set product image and price
+      var thumb = document.querySelector('.eval-sheet-thumb');
+      if (thumb) thumb.src = 'assets/items/sony-wf1000xm5.webp';
+      var price = document.querySelector('.eval-sheet-row-price');
+      if (price) price.innerHTML = '&yen;<strong>12,500</strong>';
+      var detail = document.querySelector('.eval-sheet-detail');
+      if (detail) {
+        detail.innerHTML =
+          '<div class="eval-sheet-detail-row"><span>商品代金</span><span class="eval-sheet-detail-strong">&yen;12,500</span></div>' +
+          '<div class="eval-sheet-detail-row"><span>クーポン利用</span><span>利用なし</span></div>' +
+          '<div class="eval-sheet-detail-row"><span>ポイント利用</span><span>利用なし</span></div>' +
+          '<div class="eval-sheet-detail-row"><span>メルペイ残高利用</span><span class="eval-sheet-detail-strong">&yen;12,500</span></div>' +
+          '<div class="eval-sheet-detail-row"><span>送料</span><span>送料込み(出品者負担)</span></div>' +
+          '<div class="eval-sheet-detail-row"><span>購入日時</span><span>2026年4月7日 09:41</span></div>';
+      }
+
+      // Hide lottie, show checkmark
+      var lottie = document.getElementById('eval-sheet-lottie');
+      if (lottie) lottie.style.display = 'none';
+      var circle = document.getElementById('eval-sheet-circle');
+      if (circle) {
+        circle.style.display = '';
+        circle.innerHTML = '<div style="width:80px;height:80px;margin:0 auto;background:#E3FFEA;border-radius:50%;display:flex;align-items:center;justify-content:center"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="#1F6C27"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>';
+      }
+
+      // CTA
+      var cta = document.getElementById('eval-sheet-cta-btn');
+      if (cta) cta.textContent = '次へ';
+
+      // Open overlay
+      document.getElementById('eval-sheet-overlay').classList.add('open');
+    }, 300);
   });
 })();
 </script>
