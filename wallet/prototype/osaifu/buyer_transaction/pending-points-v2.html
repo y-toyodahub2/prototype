@@ -10342,5 +10342,17 @@
       </div>
     </div>
   </div>
+<script>
+// Auto-trigger: pending-points pattern auto-submits evaluation on page load
+(function() {
+  var p = new URLSearchParams(window.location.search).get('pattern');
+  if (p \!== 'pending-points') return;
+  document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+      submitEvaluation();
+    }, 500);
+  });
+})();
+</script>
 </body>
 </html>
