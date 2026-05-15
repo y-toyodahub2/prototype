@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="apple-touch-icon" href="prototype/osaifu/buyer_transaction/assets/images/icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Prototype">
+  <title>20260513-14 test</title>
+  <style>
+    :root {
+      --color-bg: #f5f5f5;
+      --color-surface: #ffffff;
+      --color-text: #1a1a1a;
+      --color-text-sub: #6e6e6e;
+      --color-border: #e5e5e5;
+      --color-primary: #ff4a4d;
+      --color-primary-fade: rgba(255, 74, 77, 0.08);
+      --radius: 12px;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Helvetica Neue', Arial, sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text);
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 32px 20px 80px;
+    }
+    header { padding: 8px 4px 24px; }
+    h1 { margin: 0 0 6px; font-size: 22px; font-weight: 700; }
+    .sub { margin: 0; color: var(--color-text-sub); font-size: 13px; line-height: 1.6; }
+    .list { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+    .card {
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      padding: 16px 12px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      text-decoration: none; color: inherit;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+    .card:active {
+      transform: scale(0.985);
+      background: var(--color-primary-fade);
+      border-color: var(--color-primary);
+    }
+    .icon {
+      flex: 0 0 auto; width: 40px; height: 40px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+    .icon-belongings { background: #FFF5D0; color: #805A00; }
+    .icon-coupon { background: #FFF5D0; color: #805A00; }
+    .icon-pending-points { background: #FFF2E9; color: #A34100; }
+    .icon-belongings-snackbar { background: #EFF7FF; color: #006ED1; }
+    .icon-coupon-snackbar { background: #EFF7FF; color: #006ED1; }
+    .icon-pending-points-snackbar { background: #EFF7FF; color: #006ED1; }
+    .icon-belongings-push { background: #FFE5E7; color: #FF0211; }
+    .icon-coupon-push { background: #FFE5E7; color: #FF0211; }
+    .icon-pending-points-push { background: #FFE5E7; color: #FF0211; }
+    .body { text-align: center; }
+    .title { font-size: 15px; font-weight: 600; margin: 0; }
+    .chev { display: none; }
+    .section-label {
+      margin: 24px 0 8px; padding: 0 4px;
+      font-size: 12px; font-weight: 700; color: var(--color-text-sub);
+      letter-spacing: 0.04em; text-transform: uppercase;
+    }
+    .section-label:first-of-type { margin-top: 8px; }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-bg: #0f0f10; --color-surface: #1a1a1c;
+        --color-text: #f2f2f4; --color-text-sub: #9a9aa0; --color-border: #2a2a2e;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>20260513-14 test</h1>
+    </header>
+    <div class="section-label">パターン1（Buy）</div>
+    <div class="list">
+      <a class="card" href="prototype/osaifu/buyer_transaction/prototype.html?pattern=belongings">
+        <div class="icon" style="background:#FFF5D0;">🐶</div>
+        <div class="body">
+          <p class="title">A</p>
+        </div>
+        <div class="chev">›</div>
+      </a>
+      <a class="card" href="prototype/osaifu/buyer_transaction/prototype.html?pattern=coupon">
+        <div class="icon" style="background:#FFF5D0;">🐱</div>
+        <div class="body">
+          <p class="title">B</p>
+        </div>
+        <div class="chev">›</div>
+      </a>
+      <a class="card" href="prototype/osaifu/buyer_transaction/prototype.html?pattern=pending-points">
+        <div class="icon" style="background:#FFF2E9;">🐰</div>
+        <div class="body">
+          <p class="title">C</p>
+        </div>
+        <div class="chev">›</div>
+      </a>
+    </div>
+
+    <div class="section-label">パターン2（Buy）</div>
+    <div class="list">
+      <a class="card" href="prototype/osaifu/buyer_transaction/prototype.html?pattern=belongings-push">
+        <div class="icon" style="background:#FFE5E7;">🐻</div>
+        <div class="body">
+          <p class="title">A</p>
+        </div>
+        <div class="chev">›</div>
+      </a>
+      <a class="card" href="prototype/osaifu/buyer_transaction/prototype.html?pattern=coupon-push">
+        <div class="icon" style="background:#FFE5E7;">🦊</div>
+        <div class="body">
+          <p class="title">B</p>
+        </div>
+        <div class="chev">›</div>
+      </a>
+      <a class="card" href="prototype/osaifu/buyer_transaction/prototype.html?pattern=pending-points-push">
+        <div class="icon" style="background:#FFE5E7;">🐼</div>
+        <div class="body">
+          <p class="title">C</p>
+        </div>
+        <div class="chev">›</div>
+      </a>
+    </div>
+
+    <div class="section-label">パターン3（Sell）</div>
+    <div class="list">
+      <a class="card" href="prototype/osaifu/buyer_transaction/prototype.html?pattern=mobile-gift-scroll">
+        <div class="icon" style="background:#E3F2FD;">🐬</div>
+        <div class="body">
+          <p class="title">A</p>
+        </div>
+        <div class="chev">›</div>
+      </a>
+      <a class="card" href="prototype/osaifu/buyer_transaction/prototype.html?pattern=coupon-extend">
+        <div class="icon" style="background:#E3F2FD;">🦉</div>
+        <div class="body">
+          <p class="title">B</p>
+        </div>
+        <div class="chev">›</div>
+      </a>
+      <a class="card" href="prototype/osaifu/buyer_transaction/prototype.html?pattern=mobile">
+        <div class="icon" style="background:#E3F2FD;">🐧</div>
+        <div class="body">
+          <p class="title">C</p>
+        </div>
+        <div class="chev">›</div>
+      </a>
+    </div>
+  </div>
+</body>
+</html>

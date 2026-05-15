@@ -1,0 +1,6 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'>
+  <rect width='400' height='400' rx='48' fill='#F5B800'/>
+  <text x='200' y='270' text-anchor='middle' font-family="-apple-system, Helvetica Neue, Arial, sans-serif" font-weight='bold' fill='white'>
+    <tspan font-size='220' dy='0'>4</tspan><tspan font-size='85' dy='-20'>GB</tspan>
+  </text>
+</svg>
