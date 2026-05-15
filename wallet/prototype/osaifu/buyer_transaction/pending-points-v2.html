@@ -7790,8 +7790,8 @@
       // Lottie 表示、サークル非表示
       var bcrLottie = document.getElementById('eval-sheet-lottie'); /* v2: hide lottie for pending-points */ if (pattern === 'pending-points') { bcrLottie.style.display = 'none'; var bcrCircle2 = document.getElementById('eval-sheet-circle'); if (bcrCircle2) { bcrCircle2.style.display = ''; bcrCircle2.innerHTML = '<div style="width:80px;height:80px;margin:0 auto;background:#E3FFEA;border-radius:50%;display:flex;align-items:center;justify-content:center"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="#1F6C27"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>'; } }
       var bcrCircle = document.getElementById('eval-sheet-circle');
-      if (bcrLottie) bcrLottie.style.display = '';
-      if (bcrCircle) bcrCircle.style.display = 'none';
+      if (bcrLottie) bcrLottie.style.display = (pattern === 'pending-points') ? 'none' : '';
+      if (bcrCircle) bcrCircle.style.display = (pattern === 'pending-points') ? '' : 'none';
 
       // CTA: 該当 Top パネルに遷移
       var bcrCta = document.getElementById('eval-sheet-cta-btn');
@@ -7814,14 +7814,16 @@
 
       setTimeout(function() {
         document.getElementById('eval-sheet-overlay').classList.add('open');
-        if (!_evalLottie) {
-          _evalLottie = lottie.loadAnimation({
-            container: document.getElementById('eval-sheet-lottie'),
-            renderer: 'svg', loop: true, autoplay: true,
-            animationData: _mikeThxData
-          });
-        } else {
-          _evalLottie.goToAndPlay(0, true);
+        if (pattern \!== 'pending-points') {
+          if (\!_evalLottie) {
+            _evalLottie = lottie.loadAnimation({
+              container: document.getElementById('eval-sheet-lottie'),
+              renderer: 'svg', loop: true, autoplay: true,
+              animationData: _mikeThxData
+            });
+          } else {
+            _evalLottie.goToAndPlay(0, true);
+          }
         }
         // bonusエリアは非表示
         var b = document.getElementById('wal-asset-bonus');
